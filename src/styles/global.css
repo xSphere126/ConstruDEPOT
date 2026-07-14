@@ -309,7 +309,13 @@ table.cond td{ padding:16px; border-bottom:1px solid var(--line); font-size:14.5
    se nota menos que una caja de aviso, pero sigue quedando marcado como pendiente. */
 .placeholder-text{ font-style:italic; color:#6b6c64; }
 .placeholder-note{ display:inline-flex; align-items:center; gap:5px; font-family:'IBM Plex Mono', monospace; font-size:10.5px; letter-spacing:.04em; text-transform:uppercase; color:var(--amber); background:rgba(156,82,22,.08); border:1px solid rgba(156,82,22,.28); padding:4px 10px; border-radius:999px; margin-top:10px; }
-.team-avatar-placeholder{ width:64px; height:64px; border-radius:50%; background:var(--sand); color:var(--graphite); opacity:.7; display:flex; align-items:center; justify-content:center; margin-bottom:16px; }
+/* Avatares genéricos del equipo: cada persona lleva un color e ícono ligeramente
+   distintos para diferenciarse entre sí, sin copiar el aspecto de nadie real —
+   ver conversación sobre privacidad en el equipo. */
+.team-avatar{ width:72px; height:72px; border-radius:50%; display:flex; align-items:center; justify-content:center; margin-bottom:16px; color:#fff; }
+.team-avatar--1{ background:var(--green-dark); }
+.team-avatar--2{ background:var(--amber); }
+.team-avatar--3{ background:var(--ink); }
 
 /* =========================================================================
    FOOTER — compartido
