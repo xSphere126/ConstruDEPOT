@@ -1,0 +1,203 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SignatureMark from '../components/SignatureMark.astro';
+import IconInstagram from '../components/IconInstagram.astro';
+
+const snapwidgetId = import.meta.env.PUBLIC_SNAPWIDGET_ID || 'WIDGET_ID_PENDIENTE';
+---
+
+<BaseLayout
+  title="Inicio"
+  description="Materiales de construcción, reformas y decoración en Elche, Alicante. Para particulares y profesionales. Tu reforma inteligente empieza aquí."
+  headerVariant="transparent"
+  active="inicio"
+  bodyClass="home"
+>
+  <section class="hero">
+    <img class="hero-photo" src="https://images.unsplash.com/photo-1637241612956-b7309005288b?auto=format&fit=crop&w=1920&q=80" alt="Estanterías de materiales de construcción en almacén" referrerpolicy="no-referrer" loading="eager" />
+    <div class="hero-scrim"></div>
+    <div class="hero-scrim-top"></div>
+
+    <SignatureMark class="signature-ring" />
+
+    <div class="wrap hero-inner">
+      <div class="hero-content">
+        <div class="eyebrow">Almacén de materiales · Elche, Alicante</div>
+        <h1>Tu reforma <em>inteligente</em> empieza aquí</h1>
+        <p class="hero-sub">Materiales de construcción, reformas y decoración con el asesoramiento que mereces. Para particulares y profesionales.</p>
+        <div class="cta-row">
+          <a href="/contacto/" class="btn-primary">
+            Consultar disponibilidad
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+          <a href="/productos/" class="btn-ghost">Ver categorías de producto</a>
+        </div>
+        <div class="info-strip">
+          <div class="info-item"><span class="ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 21s-7-6.1-7-11a7 7 0 0 1 14 0c0 4.9-7 11-7 11Z"/><circle cx="12" cy="10" r="2.4"/></svg></span> Elche, Alicante</div>
+          <div class="info-item"><span class="ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg></span> Lun–Sáb · 7:30–20:00h</div>
+          <div class="badge-public"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="vertical-align:-1px; margin-right:4px;"><path d="M4 12l6 6L20 6"/></svg>Venta al público</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="scroll-cue">
+      Descubre más
+      <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+  </section>
+
+  <section class="trust-strip">
+    <div class="wrap trust-strip-inner">
+      <div class="trust-rating">
+        <span class="stars">★★★★★</span>
+        <strong>4,8/5</strong>
+        <span class="trust-note">· 35 opiniones en Google <span class="source-note">(dato de directorio externo, confirmar en vuestra ficha)</span></span>
+      </div>
+      <div class="trust-names">
+        <span>Aresio ★★★★★</span>
+        <span>Pío ★★★★☆</span>
+        <span>Hildegarda ★★★★★</span>
+        <span>Abelardo ★★★★★</span>
+        <span>Gonzalo ★★★★★</span>
+      </div>
+      <a href="https://www.google.com/maps/place/?q=place_id:ChIJr7CgOzy1Yw0RxNdaWmyXfNw" target="_blank" rel="noopener" class="google-link">Ver en Google →</a>
+    </div>
+  </section>
+
+  <section class="home-section">
+    <div class="wrap">
+      <div class="eyebrow-sm">Cómo trabajamos</div>
+      <h2>Un camino distinto para cada uno</h2>
+      <p class="section-sub">Particulares y profesionales buscan cosas distintas — os atendemos de forma distinta también.</p>
+      <div class="grid grid-2">
+        <div class="service-card">
+          <div class="icon-badge">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/><path d="M9 22V12h6v10"/></svg>
+          </div>
+          <h3>Particulares</h3>
+          <p>Vienes con una reforma en la cabeza, no con un catálogo memorizado. Te asesoramos material a material, sin tecnicismos, para que tomes la decisión correcta a la primera.</p>
+          <a href="/productos/" class="btn-ghost-dark">Ver categorías de producto</a>
+        </div>
+        <div class="service-card">
+          <div class="icon-badge">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V7l8-4 8 4v14M9 9h1M9 13h1M9 17h1M14 9h1M14 13h1M14 17h1"/></svg>
+          </div>
+          <h3>Profesionales</h3>
+          <p>Tu obra no puede parar. Suministro rápido, trato directo y materiales técnicos pensados para el ritmo real de una obra, no de una reforma doméstica.</p>
+          <a href="/contacto/#profesionales" class="btn-ghost-dark">Ver condiciones de suministro</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="home-section" style="background:var(--sand); padding-bottom:76px;">
+    <div class="wrap">
+      <div class="eyebrow-sm">Catálogo</div>
+      <h2>Todo lo que necesitas, por categorías</h2>
+      <p class="section-sub">Cinco categorías, un mismo asesoramiento honesto en cada una.</p>
+      <div class="grid grid-5">
+        <a href="/productos/#estructura-y-obra" class="cat-card" style="text-decoration:none;">
+          <div class="cat-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V10l7-7 7 7v11M9 21v-6h6v6"/></svg></div>
+          <h4>Estructura y Obra</h4>
+          <p>Hormigón, ladrillos, morteros</p>
+        </a>
+        <a href="/productos/#acabados-y-revestimientos" class="cat-card" style="text-decoration:none;">
+          <div class="cat-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></div>
+          <h4>Acabados y Revestimientos</h4>
+          <p>Pavimentos, gres, parqué</p>
+        </a>
+        <a href="/productos/#decoracion-y-pintura" class="cat-card" style="text-decoration:none;">
+          <div class="cat-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="13.5" cy="6.5" r="2.5"/><path d="M17.5 8.5L9 17l-5 1 1-5 8.5-8.5"/></svg></div>
+          <h4>Decoración y Pintura</h4>
+          <p>Pinturas, esmaltes, brochas</p>
+        </a>
+        <a href="/productos/#fontaneria-y-climatizacion" class="cat-card" style="text-decoration:none;">
+          <div class="cat-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C8 6 6 9.5 6 13a6 6 0 0 0 12 0c0-3.5-2-7-6-11Z"/></svg></div>
+          <h4>Fontanería y Climatización</h4>
+          <p>Grifería, sanitarios, A/A</p>
+        </a>
+        <a href="/productos/#jardin-y-exterior" class="cat-card" style="text-decoration:none;">
+          <div class="cat-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22V12M12 12C7 12 5 9 5 5c4 0 7 2 7 7Zm0 0c0-5 3-7 7-7 0 4-2 7-7 7Z"/></svg></div>
+          <h4>Jardín y Exterior</h4>
+          <p>Césped, hormigón impreso</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="home-section" style="padding-top:52px; padding-bottom:52px;">
+    <div class="wrap">
+      <div class="eyebrow-sm">Proveedores</div>
+      <h2 style="font-size:24px; margin-bottom:4px;">Marcas con las que trabajamos</h2>
+      <div class="brands-strip">
+        <a href="https://www.keraben.com/" target="_blank" rel="noopener" class="brand-name">KERABEN</a>
+        <a href="https://peronda.com/es" target="_blank" rel="noopener" class="brand-name">PERONDA</a>
+        <a href="https://www.massimagroup.com/" target="_blank" rel="noopener" class="brand-name">MASSIMA SURFACES</a>
+        <span class="brands-note">+ otras marcas líderes del sector</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="home-section" style="background:var(--sand);">
+    <div class="wrap">
+      <div class="insta-header">
+        <div>
+          <div class="eyebrow-sm">Redes sociales</div>
+          <h2 style="margin-bottom:0;">Síguenos en Instagram</h2>
+        </div>
+        <div class="insta-handle">
+          <div class="ic">
+            <IconInstagram width={18} height={18} />
+          </div>
+          <a href="https://www.instagram.com/construdepot_by_quiles/" target="_blank" rel="noopener" class="google-link" style="border-color:var(--ink); color:var(--ink);">@construdepot_by_quiles →</a>
+        </div>
+      </div>
+      <div class="insta-embed-wrap">
+        <!-- Feed en directo vía SnapWidget (gratuito, sin necesidad de API de Instagram).
+             Pasos para activarlo (5 minutos, los hace Pepe una vez):
+             1. Entrar en https://snapwidget.com y "Create a Widget" > Instagram Feed
+             2. Conectar la cuenta @construdepot_by_quiles
+             3. Elegir el estilo "Grid", 4 columnas
+             4. Copiar el ID del widget y ponerlo en sitio/.env como PUBLIC_SNAPWIDGET_ID=abc123 -->
+        <iframe src={`https://snapwidget.com/embed/${snapwidgetId}`} class="snapwidget-widget" style={snapwidgetId !== 'WIDGET_ID_PENDIENTE' ? 'display:block;' : undefined} allowtransparency="true" frameborder="0" scrolling="no" title="Feed de Instagram @construdepot_by_quiles"></iframe>
+        <div class="insta-fallback">
+          <div class="insta-grid">
+            {Array.from({ length: 4 }).map(() => (
+              <div class="insta-tile"><IconInstagram width={24} height={24} strokeWidth={1.6} /></div>
+            ))}
+          </div>
+        </div>
+      </div>
+      {snapwidgetId === 'WIDGET_ID_PENDIENTE' && (
+        <p style="font-size:12.5px; color:var(--graphite); margin-top:16px; font-family:'IBM Plex Mono', monospace;">⚑ PENDIENTE — activar el widget gratuito en snapwidget.com (5 min) y poner el ID en <code>sitio/.env</code> como <code>PUBLIC_SNAPWIDGET_ID</code>; se actualizará solo con cada publicación nueva. Mientras tanto se ve el mosaico de marcador de arriba.</p>
+      )}
+    </div>
+  </section>
+
+  <section class="home-section">
+    <div class="wrap">
+      <div class="eyebrow-sm">Cómo llegar</div>
+      <h2>Estamos en Elche</h2>
+      <div class="map-frame">
+        <iframe src="https://www.google.com/maps?q=place_id:ChIJr7CgOzy1Yw0RxNdaWmyXfNw&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Ubicación de Construdepot by Quiles en Elche"></iframe>
+      </div>
+      <div class="map-info">
+        <div class="map-info-item"><span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 21s-7-6.1-7-11a7 7 0 0 1 14 0c0 4.9-7 11-7 11Z"/><circle cx="12" cy="10" r="2.4"/></svg></span> Partida Jubalcoy, Elche, Alicante</div>
+        <div class="map-info-item"><span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg></span> Lun–Sáb · 7:30–20:00h</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="home-section" style="padding-top:0;">
+    <div class="final-cta">
+      <h2>¿Tienes un proyecto entre manos? Hablemos hoy mismo.</h2>
+      <div class="cta-buttons">
+        <a href="/contacto/" class="btn-primary">
+          Consultar disponibilidad
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <a href="https://wa.me/34607224454" target="_blank" rel="noopener" class="btn-primary" style="background:var(--green);">Escribir por WhatsApp</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,83 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SignatureMark from '../components/SignatureMark.astro';
+
+const categorias = [
+  {
+    id: 'estructura-y-obra',
+    nombre: 'Estructura y Obra',
+    desc: 'Los materiales de base para que cualquier construcción empiece con buenos cimientos.',
+    ejemplos: 'Hormigón · Ladrillos · Bloques · Morteros · Arena · Cementos',
+  },
+  {
+    id: 'acabados-y-revestimientos',
+    nombre: 'Acabados y Revestimientos',
+    desc: 'El punto final que define el estilo de cada espacio.',
+    ejemplos: 'Pavimentos cerámicos · Gres · Parqué flotante · Suelos vinílicos · Azulejos',
+  },
+  {
+    id: 'decoracion-y-pintura',
+    nombre: 'Decoración y Pintura',
+    desc: 'Todo lo necesario para dar el último toque, dentro y fuera.',
+    ejemplos: 'Pinturas interior/exterior · Esmaltes · Barnices · Herramientas · Brochas',
+  },
+  {
+    id: 'fontaneria-y-climatizacion',
+    nombre: 'Fontanería y Climatización',
+    desc: 'Instalaciones que no se ven pero que marcan la diferencia en el día a día.',
+    ejemplos: 'Grifería · Sanitarios · Tuberías · Bombas · Aire acondicionado · Calefacción',
+  },
+  {
+    id: 'jardin-y-exterior',
+    nombre: 'Jardín y Exterior',
+    desc: 'Para que el exterior de tu casa o proyecto esté a la altura del interior.',
+    ejemplos: 'Hormigón impreso · Césped artificial · Iluminación · Vallas',
+  },
+];
+---
+
+<BaseLayout
+  title="Productos"
+  description="Todo lo que necesitas, por categorías. Estructura y obra, acabados, decoración y pintura, fontanería y climatización, jardín y exterior."
+  headerVariant="solid"
+  active="productos"
+>
+  <section class="page-banner">
+    <SignatureMark class="icon-wm" />
+    <div class="wrap">
+      <div class="breadcrumb"><a href="/">Inicio</a> · Productos</div>
+      <h1>Todo lo que necesitas, por categorías. Sin vueltas.</h1>
+      <p>Cinco categorías, un mismo asesoramiento honesto en cada una.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="eyebrow-sm">Catálogo por categoría</div>
+      <h2>Encuentra tu categoría</h2>
+      <p class="section-sub">Trabajamos con primeras marcas. Si no lo tenemos en tienda, te decimos cuándo puede estar disponible.</p>
+      <div class="grid grid-3">
+        {categorias.map((cat) => (
+          <div class="card" id={cat.id}>
+            <span class="tag">Categoría</span>
+            <h3>{cat.nombre}</h3>
+            <p>{cat.desc}</p>
+            <p style="margin-top:10px; font-size:13px; color:#6b6c64;">{cat.ejemplos}</p>
+            <div style="margin-top:18px;">
+              <a href={`/contacto/?categoria=${encodeURIComponent(cat.nombre)}`} class="btn-outline" style="padding:10px 18px; font-size:13.5px;">Consultar disponibilidad →</a>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section style="background:var(--sand);">
+    <div class="wrap">
+      <div class="cta-band" style="background:var(--ink);">
+        <h3>¿No encuentras lo que buscas? Pregúntanos directamente — conocemos el catálogo mejor que cualquier buscador.</h3>
+        <a href="https://wa.me/34607224454" class="btn-primary">Escribir por WhatsApp →</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
