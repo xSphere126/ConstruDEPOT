@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SignatureMark from '../components/SignatureMark.astro';
 import IconInstagram from '../components/IconInstagram.astro';
+import GatedEmbed from '../components/GatedEmbed.astro';
 
 const snapwidgetId = import.meta.env.PUBLIC_SNAPWIDGET_ID || 'WIDGET_ID_PENDIENTE';
 ---
@@ -61,19 +62,45 @@ const snapwidgetId = import.meta.env.PUBLIC_SNAPWIDGET_ID || 'WIDGET_ID_PENDIENT
     <div class="wrap">
       <div class="eyebrow-sm">Testimonios</div>
       <h2>Lo que dicen nuestros clientes</h2>
-      <p class="section-sub">Una selección de clientes con reseña verificada en nuestra ficha de Google.</p>
+      <p class="section-sub">Reseñas reales de nuestra ficha de Google, tal cual las escribieron.</p>
       <div class="grid grid-3">
         {[
-          { name: 'Aresio', stars: 5 },
-          { name: 'Hildegarda', stars: 5 },
-          { name: 'Abelardo', stars: 5 },
-          { name: 'Gonzalo', stars: 5 },
-          { name: 'Pío', stars: 4 },
+          {
+            name: 'Pere Serrano',
+            badge: 'Local Guide · 68 reseñas',
+            stars: 5,
+            quote: 'Materiales de muy buena calidad y a muy buen precio. La amabilidad y el servicio de Pepe sin comparación. Me recomendó a un albañil, que me hizo la reforma de un baño grande en una semana. He quedado muy satisfecho con esta compañía.',
+          },
+          {
+            name: 'Ada da Silva',
+            badge: '5 reseñas',
+            stars: 5,
+            quote: 'Tras varias reformas siempre encontramos aquí el mejor precio y el mejor trato. Tanto Pepe como Tania son súper competentes y te ayudan a encontrar la mejor opción para cada estancia. Hemos comparado muchos sitios en estos años y la mejor calidad/precio sin duda está en Construdepot.',
+          },
+          {
+            name: 'FERRER MASTER',
+            badge: 'Local Guide · 87 reseñas',
+            stars: 5,
+            quote: 'Excelente almacén con materiales de construcción de primera a muy buenos precios. Super recomendable.',
+          },
+          {
+            name: 'davidplayer87',
+            badge: '14 reseñas',
+            stars: 5,
+            quote: 'Buen trato, buen material y muy atentos. Fuimos a varios sitios a ver material y terminamos comprando todo allí. Pepe nos dio un trato muy familiar y se adaptó a todo.',
+          },
+          {
+            name: 'Peugeot 2017',
+            badge: '2 reseñas',
+            stars: 5,
+            quote: 'Buena atención con todo el personal y el jefe, un tío 10 en lo que necesites. Carga rápida y sin esperas. Le doy un 10, y eso que soy de Alcoy y trabajo por Elche. Un saludo.',
+          },
         ].map((t) => (
           <div class="card">
-            <span class="stars" aria-label={`${t.stars} de 5 estrellas`}>{'★'.repeat(t.stars)}{'☆'.repeat(5 - t.stars)}</span>
+            <span class="stars" aria-label={`${t.stars} de 5 estrellas`}>{'★'.repeat(t.stars)}</span>
             <h3 style="margin-top:10px;">{t.name}</h3>
-            <p>Reseña verificada en Google</p>
+            <p style="font-size:12.5px; color:#8a8b83; font-family:'IBM Plex Mono', monospace; margin-bottom:12px;">{t.badge}</p>
+            <p>{t.quote}</p>
           </div>
         ))}
       </div>
@@ -175,15 +202,20 @@ const snapwidgetId = import.meta.env.PUBLIC_SNAPWIDGET_ID || 'WIDGET_ID_PENDIENT
              1. Entrar en https://snapwidget.com y "Create a Widget" > Instagram Feed
              2. Conectar la cuenta @construdepot_by_quiles
              3. Elegir el estilo "Grid", 4 columnas
-             4. Copiar el ID del widget y ponerlo en sitio/.env como PUBLIC_SNAPWIDGET_ID=abc123 -->
-        <iframe src={`https://snapwidget.com/embed/${snapwidgetId}`} class="snapwidget-widget" style={snapwidgetId !== 'WIDGET_ID_PENDIENTE' ? 'display:block;' : undefined} allowtransparency="true" frameborder="0" scrolling="no" title="Feed de Instagram @construdepot_by_quiles"></iframe>
-        <div class="insta-fallback">
-          <div class="insta-grid">
-            {Array.from({ length: 4 }).map(() => (
-              <div class="insta-tile"><IconInstagram width={24} height={24} strokeWidth={1.6} /></div>
-            ))}
+             4. Copiar el ID del widget y ponerlo en sitio/.env como PUBLIC_SNAPWIDGET_ID=abc123
+             El feed no carga hasta que el visitante acepta cookies de terceros (ver CookieConsent.astro) —
+             hasta entonces, o mientras no haya ID configurado, se ve el mosaico de marcador. -->
+        {snapwidgetId !== 'WIDGET_ID_PENDIENTE' ? (
+          <GatedEmbed category="social" src={`https://snapwidget.com/embed/${snapwidgetId}`} title="Feed de Instagram @construdepot_by_quiles" label="el feed de Instagram" style="height:400px;" />
+        ) : (
+          <div class="insta-fallback">
+            <div class="insta-grid">
+              {Array.from({ length: 4 }).map(() => (
+                <div class="insta-tile"><IconInstagram width={24} height={24} strokeWidth={1.6} /></div>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
       </div>
       {snapwidgetId === 'WIDGET_ID_PENDIENTE' && (
         <p style="font-size:12.5px; color:var(--graphite); margin-top:16px; font-family:'IBM Plex Mono', monospace;">⚑ PENDIENTE — activar el widget gratuito en snapwidget.com (5 min) y poner el ID en <code>sitio/.env</code> como <code>PUBLIC_SNAPWIDGET_ID</code>; se actualizará solo con cada publicación nueva. Mientras tanto se ve el mosaico de marcador de arriba.</p>
@@ -196,7 +228,7 @@ const snapwidgetId = import.meta.env.PUBLIC_SNAPWIDGET_ID || 'WIDGET_ID_PENDIENT
       <div class="eyebrow-sm">Cómo llegar</div>
       <h2>Estamos en Elche</h2>
       <div class="map-frame">
-        <iframe src="https://www.google.com/maps?q=Construdepot+by+Quiles,+N-340+Partida+Jubalcoy,+Elche,+Alicante&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Ubicación de Construdepot by Quiles en Elche"></iframe>
+        <GatedEmbed category="maps" src="https://www.google.com/maps?q=Construdepot+by+Quiles,+N-340+Partida+Jubalcoy,+Elche,+Alicante&output=embed" title="Ubicación de Construdepot by Quiles en Elche" label="el mapa de Google" />
       </div>
       <div class="map-info">
         <div class="map-info-item"><span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 21s-7-6.1-7-11a7 7 0 0 1 14 0c0 4.9-7 11-7 11Z"/><circle cx="12" cy="10" r="2.4"/></svg></span> N-340, Partida Jubalcoy, pol. 1, núm. 74 · 03295 Elche, Alicante</div>

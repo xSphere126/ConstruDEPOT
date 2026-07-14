@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SignatureMark from '../components/SignatureMark.astro';
+import GatedEmbed from '../components/GatedEmbed.astro';
 
 const formspreeId = import.meta.env.PUBLIC_FORMSPREE_ID || '';
 ---
@@ -127,7 +128,7 @@ const formspreeId = import.meta.env.PUBLIC_FORMSPREE_ID || '';
       <div class="eyebrow-sm">Cómo llegar</div>
       <h2>Mapa</h2>
       <div class="map-frame" style="height:340px;">
-        <iframe src="https://www.google.com/maps?q=Construdepot+by+Quiles,+N-340+Partida+Jubalcoy,+Elche,+Alicante&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Ubicación de Construdepot by Quiles en Elche"></iframe>
+        <GatedEmbed category="maps" src="https://www.google.com/maps?q=Construdepot+by+Quiles,+N-340+Partida+Jubalcoy,+Elche,+Alicante&output=embed" title="Ubicación de Construdepot by Quiles en Elche" label="el mapa de Google" />
       </div>
     </div>
   </section>
