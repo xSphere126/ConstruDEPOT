@@ -53,14 +53,31 @@ const snapwidgetId = import.meta.env.PUBLIC_SNAPWIDGET_ID || 'WIDGET_ID_PENDIENT
         <strong>4,5/5</strong>
         <span class="trust-note">· 243 opiniones en Google</span>
       </div>
-      <div class="trust-names">
-        <span>Aresio ★★★★★</span>
-        <span>Pío ★★★★☆</span>
-        <span>Hildegarda ★★★★★</span>
-        <span>Abelardo ★★★★★</span>
-        <span>Gonzalo ★★★★★</span>
-      </div>
       <a href="https://www.google.com/maps/place/?q=place_id:ChIJr7CgOzy1Yw0RxNdaWmyXfNw" target="_blank" rel="noopener" class="google-link">Ver en Google →</a>
+    </div>
+  </section>
+
+  <section class="home-section" style="padding-top:52px; padding-bottom:52px;">
+    <div class="wrap">
+      <div class="eyebrow-sm">Testimonios</div>
+      <h2>Lo que dicen nuestros clientes</h2>
+      <p class="section-sub">Una selección de clientes con reseña verificada en nuestra ficha de Google.</p>
+      <div class="grid grid-3">
+        {[
+          { name: 'Aresio', stars: 5 },
+          { name: 'Hildegarda', stars: 5 },
+          { name: 'Abelardo', stars: 5 },
+          { name: 'Gonzalo', stars: 5 },
+          { name: 'Pío', stars: 4 },
+        ].map((t) => (
+          <div class="card">
+            <span class="stars" aria-label={`${t.stars} de 5 estrellas`}>{'★'.repeat(t.stars)}{'☆'.repeat(5 - t.stars)}</span>
+            <h3 style="margin-top:10px;">{t.name}</h3>
+            <p>Reseña verificada en Google</p>
+          </div>
+        ))}
+      </div>
+      <p style="margin-top:24px;"><a href="https://www.google.com/maps/place/?q=place_id:ChIJr7CgOzy1Yw0RxNdaWmyXfNw" target="_blank" rel="noopener" class="google-link">Leer todas las reseñas en Google →</a></p>
     </div>
   </section>
 
