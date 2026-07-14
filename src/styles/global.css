@@ -91,6 +91,7 @@ header.solid nav.mainnav a{ color:var(--ink); }
 header.solid .schedule-pill{ color:var(--graphite); opacity:1; }
 .dot{ width:7px; height:7px; border-radius:50%; background:var(--green); box-shadow:0 0 0 3px rgba(65,183,24,.35); }
 header.solid .dot{ box-shadow:0 0 0 3px rgba(65,183,24,.18); }
+.dot.dot-closed{ background:var(--graphite); box-shadow:0 0 0 3px rgba(74,74,74,.28); }
 
 .btn-call{ display:none; align-items:center; justify-content:center; width:44px; height:44px; border-radius:50%; background:var(--ink); color:#fff; transition:background .15s ease; }
 .btn-call:hover{ background:var(--green-dark); }
