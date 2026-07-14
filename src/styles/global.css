@@ -92,7 +92,8 @@ header.solid .schedule-pill{ color:var(--graphite); opacity:1; }
 .dot{ width:7px; height:7px; border-radius:50%; background:var(--green); box-shadow:0 0 0 3px rgba(65,183,24,.35); }
 header.solid .dot{ box-shadow:0 0 0 3px rgba(65,183,24,.18); }
 
-.btn-call{ display:none; align-items:center; justify-content:center; width:44px; height:44px; border-radius:50%; background:var(--ink); color:#fff; }
+.btn-call{ display:none; align-items:center; justify-content:center; width:44px; height:44px; border-radius:50%; background:var(--ink); color:#fff; transition:background .15s ease; }
+.btn-call:hover{ background:var(--green-dark); }
 
 /* Botón de menú móvil — visible solo en el breakpoint compacto (≤900px) */
 .btn-menu{ display:none; align-items:center; justify-content:center; width:44px; height:44px; border-radius:50%; background:var(--ink); color:#fff; border:none; cursor:pointer; flex-shrink:0; }
@@ -107,10 +108,12 @@ header.solid .dot{ box-shadow:0 0 0 3px rgba(65,183,24,.18); }
 .mobile-menu-footer .schedule-pill{ display:flex; color:#fff; opacity:.85; }
 .mobile-menu-footer .btn-outline,
 .mobile-menu-footer .btn-whatsapp{ width:100%; justify-content:center; }
+.mobile-menu-footer .btn-outline{ border-color:rgba(255,255,255,.35); color:#fff; }
+.mobile-menu-footer .btn-outline:hover{ border-color:#fff; }
 body.menu-open{ overflow:hidden; }
 
-.btn-whatsapp{ display:flex; align-items:center; gap:8px; background:var(--green); color:var(--ink); font-weight:600; font-size:14px; padding:11px 20px; border-radius:999px; box-shadow:0 4px 14px rgba(65,183,24,.28); transition:transform .15s ease, box-shadow .15s ease; white-space:nowrap; flex-shrink:0; }
-.btn-whatsapp:hover{ transform:translateY(-1px); }
+.btn-whatsapp{ display:flex; align-items:center; gap:8px; background:var(--green); color:var(--ink); font-weight:600; font-size:14px; padding:11px 20px; border-radius:999px; box-shadow:0 4px 14px rgba(65,183,24,.28); transition:background .15s ease, color .15s ease, transform .15s ease, box-shadow .15s ease; white-space:nowrap; flex-shrink:0; }
+.btn-whatsapp:hover{ background:var(--green-dark); color:#fff; transform:translateY(-1px); }
 
 /* =========================================================================
    HERO INMERSIVO — solo Inicio
@@ -204,9 +207,11 @@ h1 em{ font-style:normal; color:var(--green); }
 body.home .btn-primary{ background:var(--green); color:var(--ink); padding:16px 28px; box-shadow:0 10px 30px -8px rgba(65,183,24,.6); }
 body.home .btn-primary:hover{ background:var(--green-dark); color:#fff; }
 
-.btn-outline{ border:1.5px solid var(--ink); color:var(--ink); font-weight:600; font-size:15px; padding:14px 24px; border-radius:999px; display:inline-flex; align-items:center; gap:8px; background:transparent; cursor:pointer; }
+.btn-outline{ border:1.5px solid var(--ink); color:var(--ink); font-weight:600; font-size:15px; padding:14px 24px; border-radius:999px; display:inline-flex; align-items:center; gap:8px; background:transparent; cursor:pointer; transition:border-color .15s ease, color .15s ease; }
+.btn-outline:hover{ border-color:var(--green-dark); color:var(--green-dark); }
 
-.btn-ghost{ font-weight:600; font-size:15px; color:#fff; padding:16px 6px; border-bottom:2px solid rgba(255,255,255,.55); display:inline-flex; align-items:center; gap:6px; }
+.btn-ghost{ font-weight:600; font-size:15px; color:#fff; padding:16px 6px; border-bottom:2px solid rgba(255,255,255,.55); display:inline-flex; align-items:center; gap:6px; transition:border-color .15s ease; }
+.btn-ghost:hover{ border-color:#fff; }
 .btn-ghost-dark{ font-weight:600; font-size:14.5px; color:var(--ink); padding:0; border-bottom:2px solid var(--ink); display:inline-flex; align-items:center; gap:6px; align-self:flex-start; }
 .btn-ghost-dark:hover{ color:var(--green-deep); border-color:var(--green-deep); }
 
