@@ -40,6 +40,74 @@ const navItems = [
         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2c-5.5 0-9.96 4.46-9.96 9.96 0 1.76.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.5 0 9.96-4.46 9.96-9.96C22 6.46 17.54 2 12.04 2Zm5.8 14.14c-.24.68-1.4 1.3-1.93 1.37-.5.07-1.02.1-3.27-.7-2.75-.98-4.53-3.76-4.67-3.94-.14-.18-1.12-1.49-1.12-2.84s.7-2.02.95-2.29c.24-.28.53-.34.7-.34h.5c.16 0 .38-.03.58.44.24.56.8 1.95.87 2.09.07.14.12.3.02.48-.09.18-.14.29-.28.45-.14.16-.29.36-.42.49-.14.14-.28.29-.12.56.16.28.7 1.16 1.51 1.88 1.04.93 1.92 1.22 2.2 1.36.28.14.44.12.6-.07.16-.19.68-.79.86-1.06.18-.28.36-.23.6-.14.24.09 1.55.73 1.81.86.26.14.44.2.5.32.07.12.07.68-.17 1.34Z"/></svg>
         607 224 454
       </a>
+      <button type="button" class="btn-menu" id="menuToggle" aria-expanded="false" aria-controls="mobileMenu" aria-label="Abrir menú">
+        <svg class="icon-menu" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        <svg class="icon-close is-hidden" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="mobile-menu" id="mobileMenu" hidden>
+    <nav>
+      {navItems.map((item) => (
+        <a href={item.href} class={active === item.key ? 'active' : undefined}>{item.label}</a>
+      ))}
+    </nav>
+    <div class="mobile-menu-footer">
+      <div class="schedule-pill"><span class="dot"></span> Abierto · cierra 20:00h</div>
+      <a href="tel:+34607224454" class="btn-outline" style="border-color:rgba(255,255,255,.35); color:#fff;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        607 224 454
+      </a>
+      <a href="https://wa.me/34607224454" class="btn-whatsapp">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2c-5.5 0-9.96 4.46-9.96 9.96 0 1.76.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.5 0 9.96-4.46 9.96-9.96C22 6.46 17.54 2 12.04 2Zm5.8 14.14c-.24.68-1.4 1.3-1.93 1.37-.5.07-1.02.1-3.27-.7-2.75-.98-4.53-3.76-4.67-3.94-.14-.18-1.12-1.49-1.12-2.84s.7-2.02.95-2.29c.24-.28.53-.34.7-.34h.5c.16 0 .38-.03.58.44.24.56.8 1.95.87 2.09.07.14.12.3.02.48-.09.18-.14.29-.28.45-.14.16-.29.36-.42.49-.14.14-.28.29-.12.56.16.28.7 1.16 1.51 1.88 1.04.93 1.92 1.22 2.2 1.36.28.14.44.12.6-.07.16-.19.68-.79.86-1.06.18-.28.36-.23.6-.14.24.09 1.55.73 1.81.86.26.14.44.2.5.32.07.12.07.68-.17 1.34Z"/></svg>
+        Escribir por WhatsApp
+      </a>
     </div>
   </div>
 </header>
+
+<script>
+  const menuToggle = document.getElementById('menuToggle');
+  const mobileMenu = document.getElementById('mobileMenu');
+  const iconMenu = menuToggle?.querySelector('.icon-menu');
+  const iconClose = menuToggle?.querySelector('.icon-close');
+
+  function openMenu() {
+    if (!mobileMenu || !menuToggle) return;
+    mobileMenu.hidden = false;
+    document.body.classList.add('menu-open');
+    menuToggle.setAttribute('aria-expanded', 'true');
+    menuToggle.setAttribute('aria-label', 'Cerrar menú');
+    iconMenu?.classList.add('is-hidden');
+    iconClose?.classList.remove('is-hidden');
+  }
+
+  function closeMenu() {
+    if (!mobileMenu || !menuToggle) return;
+    mobileMenu.hidden = true;
+    document.body.classList.remove('menu-open');
+    menuToggle.setAttribute('aria-expanded', 'false');
+    menuToggle.setAttribute('aria-label', 'Abrir menú');
+    iconClose?.classList.add('is-hidden');
+    iconMenu?.classList.remove('is-hidden');
+  }
+
+  menuToggle?.addEventListener('click', () => {
+    if (mobileMenu?.hidden) openMenu();
+    else closeMenu();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && mobileMenu && !mobileMenu.hidden) {
+      closeMenu();
+      menuToggle?.focus();
+    }
+  });
+
+  mobileMenu?.querySelectorAll('a').forEach((a) => a.addEventListener('click', closeMenu));
+
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 900 && mobileMenu && !mobileMenu.hidden) closeMenu();
+  });
+</script>
