@@ -1,0 +1,87 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SignatureMark from '../components/SignatureMark.astro';
+---
+
+<BaseLayout
+  title="Sobre nosotros"
+  description="Detrás de Construdepot hay un equipo, no solo un almacén. Materiales de construcción con nombre y cara conocida en Elche."
+  headerVariant="solid"
+  active="sobre-nosotros"
+>
+  <section class="page-banner">
+    <SignatureMark class="icon-wm" />
+    <div class="wrap">
+      <div class="breadcrumb"><a href="/">Inicio</a> · Sobre nosotros</div>
+      <h1>Detrás de Construdepot hay un equipo, no solo un almacén</h1>
+      <p>Materiales de construcción con nombre y cara conocida en Elche.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="eyebrow-sm">Nuestra historia</div>
+      <h2>Cómo empezamos</h2>
+      <p class="section-sub">Aquí va el recorrido real del negocio: año de fundación, quién lo empezó y cómo ha crecido hasta hoy.</p>
+      <div class="pending">Historia del negocio — año de fundación, fundadores y trayectoria. Con ese dato redactamos 2–3 párrafos breves.</div>
+    </div>
+  </section>
+
+  <section style="background:var(--sand);">
+    <div class="wrap">
+      <div class="eyebrow-sm">Lo que nos define</div>
+      <h2>Nuestros valores</h2>
+      <div class="grid grid-3">
+        <div class="card">
+          <h3>Cercanía real</h3>
+          <p>No somos una cadena. Conocemos a quien nos compra y le acompañamos en cada decisión, desde una baldosa hasta el suministro completo de una obra.</p>
+        </div>
+        <div class="card">
+          <h3>Asesoramiento honesto</h3>
+          <p>Te decimos lo que necesitas, no lo que nos interesa vender más. Si un material no encaja con tu proyecto, te lo decimos.</p>
+        </div>
+        <div class="card">
+          <h3>Compromiso con Elche</h3>
+          <p>Somos de aquí. Conocemos las obras del barrio y lo que necesita cada tipo de reforma en la zona.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="eyebrow-sm">El equipo</div>
+      <h2>Quién te atiende</h2>
+      <p class="section-sub">Caras y nombres reales — para que sepas con quién hablas antes incluso de venir a la tienda.</p>
+      <div class="grid grid-3">
+        <div class="card">
+          <span class="tag">Equipo</span>
+          <h3>Nombre — Rol</h3>
+          <p>Frase personal breve sobre esta persona.</p>
+          <div class="pending">Foto, nombre, rol y frase de esta persona</div>
+        </div>
+        <div class="card">
+          <span class="tag">Equipo</span>
+          <h3>Nombre — Rol</h3>
+          <p>Frase personal breve sobre esta persona.</p>
+          <div class="pending">Foto, nombre, rol y frase de esta persona</div>
+        </div>
+        <div class="card">
+          <span class="tag">Equipo</span>
+          <h3>Nombre — Rol</h3>
+          <p>Frase personal breve sobre esta persona.</p>
+          <div class="pending">Foto, nombre, rol y frase de esta persona</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="cta-band">
+        <h3>¿Tienes un proyecto entre manos? Ven a vernos o escríbenos, te asesoramos sin compromiso.</h3>
+        <a href="/contacto/" class="btn-primary">Consultar disponibilidad →</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
