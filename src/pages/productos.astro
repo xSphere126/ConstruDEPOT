@@ -7,31 +7,48 @@ const categorias = [
     id: 'estructura-y-obra',
     nombre: 'Estructura y Obra',
     desc: 'Los materiales de base para que cualquier construcción empiece con buenos cimientos.',
-    ejemplos: 'Hormigón · Ladrillos · Bloques · Morteros · Arena · Cementos',
+    productos: [
+      'Hormigón preparado', 'Cemento gris y blanco', 'Ladrillo cerámico', 'Bloque de hormigón',
+      'Mortero de cemento', 'Morteros técnicos', 'Arena y gravas', 'Mallas y varillas de armado',
+      'Aditivos para hormigón', 'Bovedillas',
+    ],
   },
   {
     id: 'acabados-y-revestimientos',
     nombre: 'Acabados y Revestimientos',
     desc: 'El punto final que define el estilo de cada espacio.',
-    ejemplos: 'Pavimentos cerámicos · Gres · Parqué flotante · Suelos vinílicos · Azulejos',
+    productos: [
+      'Gres porcelánico', 'Pavimento cerámico', 'Azulejo de pared', 'Parqué flotante',
+      'Suelo vinílico (SPC/LVT)', 'Rodapiés y perfilería', 'Piedra natural', 'Adhesivos y juntas de alicatado',
+    ],
+    marcas: ['Keraben', 'Peronda', 'Massima Surfaces'],
   },
   {
     id: 'decoracion-y-pintura',
     nombre: 'Decoración y Pintura',
     desc: 'Todo lo necesario para dar el último toque, dentro y fuera.',
-    ejemplos: 'Pinturas interior/exterior · Esmaltes · Barnices · Herramientas · Brochas',
+    productos: [
+      'Pintura plástica interior', 'Pintura de fachada', 'Esmaltes sintéticos', 'Imprimaciones y selladores',
+      'Barnices para madera', 'Rodillos y brochas', 'Cintas y protección', 'Pasta niveladora',
+    ],
   },
   {
     id: 'fontaneria-y-climatizacion',
     nombre: 'Fontanería y Climatización',
     desc: 'Instalaciones que no se ven pero que marcan la diferencia en el día a día.',
-    ejemplos: 'Grifería · Sanitarios · Tuberías · Bombas · Aire acondicionado · Calefacción',
+    productos: [
+      'Grifería de baño y cocina', 'Sanitarios e inodoros', 'Platos de ducha y mamparas', 'Tubería PVC y multicapa',
+      'Bombas de agua', 'Radiadores', 'Aire acondicionado', 'Termos eléctricos', 'Válvulas y racores',
+    ],
   },
   {
     id: 'jardin-y-exterior',
     nombre: 'Jardín y Exterior',
     desc: 'Para que el exterior de tu casa o proyecto esté a la altura del interior.',
-    ejemplos: 'Hormigón impreso · Césped artificial · Iluminación · Vallas',
+    productos: [
+      'Hormigón impreso', 'Césped artificial', 'Adoquín y baldosa de exterior', 'Piedra decorativa',
+      'Vallas y cerramientos', 'Iluminación exterior', 'Riego y goteo', 'Macetas y jardineras',
+    ],
   },
 ];
 ---
@@ -56,15 +73,24 @@ const categorias = [
       <div class="eyebrow-sm">Catálogo por categoría</div>
       <h2>Encuentra tu categoría</h2>
       <p class="section-sub">Trabajamos con primeras marcas. Si no lo tenemos en tienda, te decimos cuándo puede estar disponible.</p>
-      <div class="grid grid-3">
+      <div class="grid" style="gap:24px;">
         {categorias.map((cat) => (
-          <div class="card" id={cat.id}>
-            <span class="tag">Categoría</span>
-            <h3>{cat.nombre}</h3>
-            <p>{cat.desc}</p>
-            <p style="margin-top:10px; font-size:13px; color:#6b6c64;">{cat.ejemplos}</p>
-            <div style="margin-top:18px;">
-              <a href={`/contacto/?categoria=${encodeURIComponent(cat.nombre)}`} class="btn-outline" style="padding:10px 18px; font-size:13.5px;">Consultar disponibilidad →</a>
+          <div class="card" id={cat.id} style="padding:34px 32px;">
+            <div class="grid grid-2" style="gap:32px; align-items:start;">
+              <div>
+                <span class="tag">Categoría</span>
+                <h3>{cat.nombre}</h3>
+                <p>{cat.desc}</p>
+                {cat.marcas && (
+                  <p class="category-brands"><strong>Marcas:</strong> {cat.marcas.join(' · ')}</p>
+                )}
+                <div style="margin-top:20px;">
+                  <a href={`/contacto/?categoria=${encodeURIComponent(cat.nombre)}`} class="btn-outline" style="padding:10px 18px; font-size:13.5px;">Consultar disponibilidad →</a>
+                </div>
+              </div>
+              <div class="product-chips">
+                {cat.productos.map((p) => <span class="product-chip">{p}</span>)}
+              </div>
             </div>
           </div>
         ))}
