@@ -34,7 +34,7 @@ const navItems = [
       ))}
     </nav>
     <div class="header-right">
-      <div class="schedule-pill"><span class="dot"></span> Abierto · cierra 20:00h</div>
+      <div class="schedule-pill"><span class="dot"></span> <span class="schedule-text">Abierto · cierra 20:00h</span></div>
       <a href="tel:+34607224454" class="btn-call" aria-label="Llamar"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></a>
       <a href="https://wa.me/34607224454" class="btn-whatsapp">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2c-5.5 0-9.96 4.46-9.96 9.96 0 1.76.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.5 0 9.96-4.46 9.96-9.96C22 6.46 17.54 2 12.04 2Zm5.8 14.14c-.24.68-1.4 1.3-1.93 1.37-.5.07-1.02.1-3.27-.7-2.75-.98-4.53-3.76-4.67-3.94-.14-.18-1.12-1.49-1.12-2.84s.7-2.02.95-2.29c.24-.28.53-.34.7-.34h.5c.16 0 .38-.03.58.44.24.56.8 1.95.87 2.09.07.14.12.3.02.48-.09.18-.14.29-.28.45-.14.16-.29.36-.42.49-.14.14-.28.29-.12.56.16.28.7 1.16 1.51 1.88 1.04.93 1.92 1.22 2.2 1.36.28.14.44.12.6-.07.16-.19.68-.79.86-1.06.18-.28.36-.23.6-.14.24.09 1.55.73 1.81.86.26.14.44.2.5.32.07.12.07.68-.17 1.34Z"/></svg>
@@ -62,7 +62,7 @@ const navItems = [
     ))}
   </nav>
   <div class="mobile-menu-footer">
-    <div class="schedule-pill"><span class="dot"></span> Abierto · cierra 20:00h</div>
+    <div class="schedule-pill"><span class="dot"></span> <span class="schedule-text">Abierto · cierra 20:00h</span></div>
     <a href="tel:+34607224454" class="btn-outline">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
       607 224 454
@@ -130,6 +130,43 @@ const navItems = [
   window.addEventListener('resize', () => {
     if (window.innerWidth > 900 && mobileMenu && !mobileMenu.hidden) closeMenu();
   });
+
+  // Estado de apertura real de la tienda (Lun-Sáb 7:30-20:00h, domingo cerrado),
+  // calculado en el navegador de cada visitante para que siempre refleje su hora
+  // local en vez de quedar fijado en "Abierto" desde que se generó la página.
+  function scheduleStatus() {
+    const now = new Date();
+    const day = now.getDay(); // 0 = domingo … 6 = sábado
+    const minutesNow = now.getHours() * 60 + now.getMinutes();
+    const OPEN = 7 * 60 + 30;
+    const CLOSE = 20 * 60;
+    const isBusinessDay = day >= 1 && day <= 6;
+    const isOpen = isBusinessDay && minutesNow >= OPEN && minutesNow < CLOSE;
+
+    if (isOpen) return { isOpen, label: 'Abierto · cierra 20:00h' };
+
+    let when: string;
+    if (isBusinessDay && minutesNow < OPEN) {
+      when = 'hoy';
+    } else if (day === 6) {
+      when = 'el lunes';
+    } else {
+      when = 'mañana';
+    }
+    return { isOpen, label: `Cerrado · abre ${when} 7:30h` };
+  }
+
+  function updateSchedulePills() {
+    const { isOpen, label } = scheduleStatus();
+    document.querySelectorAll('.schedule-pill').forEach((el) => {
+      const textEl = el.querySelector('.schedule-text');
+      if (textEl) textEl.textContent = label;
+      el.querySelector('.dot')?.classList.toggle('dot-closed', !isOpen);
+    });
+  }
+
+  updateSchedulePills();
+  setInterval(updateSchedulePills, 60000);
 
   // Cabecera transparente de Inicio: se fija arriba con fondo sólido en cuanto
   // el usuario deja de ver la parte superior del hero, igual que el resto de
