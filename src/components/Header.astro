@@ -110,4 +110,16 @@ const navItems = [
   window.addEventListener('resize', () => {
     if (window.innerWidth > 900 && mobileMenu && !mobileMenu.hidden) closeMenu();
   });
+
+  // Cabecera transparente de Inicio: se fija arriba con fondo sólido en cuanto
+  // el usuario deja de ver la parte superior del hero, igual que el resto de
+  // páginas, en vez de desaparecer al hacer scroll.
+  const headerEl = document.querySelector('header');
+  if (headerEl && !headerEl.classList.contains('solid')) {
+    const onScroll = () => {
+      headerEl.classList.toggle('header-pinned', window.scrollY > 80);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  }
 </script>
