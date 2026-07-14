@@ -73,6 +73,17 @@ const navItems = [
   const iconMenu = menuToggle?.querySelector('.icon-menu');
   const iconClose = menuToggle?.querySelector('.icon-close');
 
+  // El panel de menú es una superposición a pantalla completa, pero el resto
+  // de la página (main, footer) sigue en el DOM detrás — sin esto, un usuario
+  // de teclado puede tabular más allá de los enlaces del menú y "perderse"
+  // dentro de contenido visualmente tapado por el propio menú.
+  function setBackgroundInert(isInert: boolean) {
+    document.querySelectorAll('main, footer').forEach((el) => {
+      if (isInert) el.setAttribute('inert', '');
+      else el.removeAttribute('inert');
+    });
+  }
+
   function openMenu() {
     if (!mobileMenu || !menuToggle) return;
     mobileMenu.hidden = false;
@@ -81,6 +92,7 @@ const navItems = [
     menuToggle.setAttribute('aria-label', 'Cerrar menú');
     iconMenu?.classList.add('is-hidden');
     iconClose?.classList.remove('is-hidden');
+    setBackgroundInert(true);
   }
 
   function closeMenu() {
@@ -91,6 +103,7 @@ const navItems = [
     menuToggle.setAttribute('aria-label', 'Abrir menú');
     iconClose?.classList.add('is-hidden');
     iconMenu?.classList.remove('is-hidden');
+    setBackgroundInert(false);
   }
 
   menuToggle?.addEventListener('click', () => {
