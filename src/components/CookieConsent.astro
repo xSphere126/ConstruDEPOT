@@ -65,30 +65,55 @@
     document.querySelectorAll('[data-gated-embed]').forEach(loadEmbed);
   }
 
+  // El banner es position:fixed anclado abajo, así que cuando el visitante llega
+  // al final de la página (footer) mientras el banner sigue visible, lo tapa
+  // por completo — en móvil el banner puede ocupar ~300px, suficiente para
+  // cubrir todo el footer. Reservamos ese espacio en el documento mientras el
+  // banner esté visible para que el footer nunca quede inalcanzable.
+  function syncBodyPadding() {
+    if (banner && !banner.hidden) {
+      document.body.style.paddingBottom = `${banner.offsetHeight}px`;
+    } else {
+      document.body.style.paddingBottom = '';
+    }
+  }
+
+  function showBanner() {
+    banner?.removeAttribute('hidden');
+    syncBodyPadding();
+  }
+
+  function hideBanner() {
+    banner?.setAttribute('hidden', '');
+    syncBodyPadding();
+  }
+
+  window.addEventListener('resize', syncBodyPadding);
+
   document.querySelectorAll('.gated-embed-accept').forEach((btn) => {
     btn.addEventListener('click', () => {
       setConsent(true);
       const el = btn.closest('[data-gated-embed]');
       if (el) loadEmbed(el);
-      banner?.setAttribute('hidden', '');
+      hideBanner();
     });
   });
 
   document.getElementById('cookieAcceptAll')?.addEventListener('click', () => {
     setConsent(true);
     activateGatedEmbeds();
-    banner?.setAttribute('hidden', '');
+    hideBanner();
   });
 
   document.getElementById('cookieRejectAll')?.addEventListener('click', () => {
     setConsent(false);
-    banner?.setAttribute('hidden', '');
+    hideBanner();
   });
 
   document.querySelectorAll('[data-open-cookie-settings]').forEach((el) => {
     el.addEventListener('click', (e) => {
       e.preventDefault();
-      banner?.removeAttribute('hidden');
+      showBanner();
     });
   });
 
@@ -96,6 +121,6 @@
   if (existing) {
     activateGatedEmbeds();
   } else {
-    banner?.removeAttribute('hidden');
+    showBanner();
   }
 </script>
