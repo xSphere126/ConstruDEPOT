@@ -25,6 +25,7 @@ const localBusinessLd = {
   '@type': 'HardwareStore',
   name: 'Construdepot by Quiles',
   telephone: '+34607224454',
+  email: 'jquiless@quiles.es',
   address: {
     '@type': 'PostalAddress',
     streetAddress: 'N-340, Partida Jubalcoy, pol. 1, núm. 74',
@@ -38,6 +39,13 @@ const localBusinessLd = {
     dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
     opens: '07:30',
     closes: '20:00',
+  },
+  // Verificado en vivo contra la ficha real de Google Maps (mismo Place ID que el
+  // mapa embebido) — no es una cifra de directorio de terceros sin confirmar.
+  aggregateRating: {
+    '@type': 'AggregateRating',
+    ratingValue: '4.5',
+    reviewCount: '243',
   },
   sameAs: [
     'https://www.instagram.com/construdepot_by_quiles/',
