@@ -50,6 +50,31 @@ dato real del cliente antes de publicar — historia de la empresa, equipo,
 dirección exacta, condiciones de suministro a profesionales, etc. No rellenar
 con datos inventados: son placeholders intencionados.
 
+## Antes de publicar: dominio, canonical y sitemap
+
+`BaseLayout.astro` solo emite `<link rel="canonical">` y las URLs absolutas de
+Open Graph cuando `site` está configurado en `astro.config.mjs` — así se evita
+publicar una URL inventada mientras no haya dominio elegido. Cuando lo haya:
+
+1. Descomentar y rellenar `site: 'https://tu-dominio.es'` en `astro.config.mjs`.
+2. `npx astro add sitemap` para generar `sitemap-index.xml` automáticamente.
+3. Descomentar la línea `Sitemap:` en `public/robots.txt`.
+
+## SEO técnico ya incluido
+
+- Meta tags Open Graph y Twitter Card (título/descripción se completan solos
+  por página; la imagen y la URL canónica se activan al fijar `site`, ver
+  arriba).
+- Datos estructurados JSON-LD (`schema.org/HardwareStore`) con nombre,
+  teléfono, horario y redes sociales. **No incluye valoración/reseñas**: la
+  valoración de 4,8/5 que se ve en Inicio está marcada en el propio texto
+  como dato de directorio externo sin confirmar, y publicarla en datos
+  estructurados no verificados incumple las políticas de rich results de
+  Google — añadirla en cuanto se confirme la ficha real de Google Business.
+- `robots.txt`, favicon con el isotipo real de marca (antes era el de Astro
+  por defecto), página 404 personalizada, enlace "saltar al contenido" para
+  navegación por teclado.
+
 ## Comandos
 
 | Comando | Acción |

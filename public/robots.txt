@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+
+# Cuando se elija el dominio definitivo, configurar `site` en astro.config.mjs,
+# añadir la integración @astrojs/sitemap (`npx astro add sitemap`) y descomentar:
+# Sitemap: https://TU-DOMINIO/sitemap-index.xml

@@ -12,6 +12,37 @@ interface Props {
 }
 
 const { title, description, headerVariant = 'solid', active, bodyClass } = Astro.props;
+
+const fullTitle = `${title} — Construdepot by Quiles`;
+// Astro.site solo existe una vez que se configure `site` en astro.config.mjs con el
+// dominio real (ver README). Hasta entonces, canonical/OG se omiten en vez de
+// publicar una URL inventada.
+const canonicalURL = Astro.site ? new URL(Astro.url.pathname, Astro.site) : undefined;
+const ogImage = Astro.site ? new URL('/og-cover.jpg', Astro.site) : undefined;
+
+const localBusinessLd = {
+  '@context': 'https://schema.org',
+  '@type': 'HardwareStore',
+  name: 'Construdepot by Quiles',
+  telephone: '+34607224454',
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Elche',
+    addressRegion: 'Alicante',
+    addressCountry: 'ES',
+  },
+  openingHoursSpecification: {
+    '@type': 'OpeningHoursSpecification',
+    dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+    opens: '07:30',
+    closes: '20:00',
+  },
+  sameAs: [
+    'https://www.instagram.com/construdepot_by_quiles/',
+    'https://www.facebook.com/ConstrudepotbyQuiles/',
+  ],
+  ...(canonicalURL ? { url: canonicalURL.toString() } : {}),
+};
 ---
 
 <!DOCTYPE html>
@@ -19,13 +50,33 @@ const { title, description, headerVariant = 'solid', active, bodyClass } = Astro
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{title} — Construdepot by Quiles</title>
+  <title>{fullTitle}</title>
   <meta name="description" content={description} />
+  <meta name="theme-color" content="#41B718" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="alternate icon" href="/favicon.ico" />
+  {canonicalURL && <link rel="canonical" href={canonicalURL} />}
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Construdepot by Quiles" />
+  <meta property="og:locale" content="es_ES" />
+  <meta property="og:title" content={fullTitle} />
+  <meta property="og:description" content={description} />
+  {canonicalURL && <meta property="og:url" content={canonicalURL} />}
+  {ogImage && <meta property="og:image" content={ogImage} />}
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={fullTitle} />
+  <meta name="twitter:description" content={description} />
+  {ogImage && <meta name="twitter:image" content={ogImage} />}
+
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(localBusinessLd)} />
 </head>
 <body class={bodyClass}>
+  <a href="#main" class="skip-link">Saltar al contenido</a>
   <Header variant={headerVariant} active={active} />
-  <slot />
+  <main id="main">
+    <slot />
+  </main>
   <Footer />
 </body>
 </html>

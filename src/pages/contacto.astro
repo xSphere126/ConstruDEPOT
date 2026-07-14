@@ -28,6 +28,7 @@ const formspreeId = import.meta.env.PUBLIC_FORMSPREE_ID || '';
           <div class="eyebrow-sm">Formulario</div>
           <h2>Cuéntanos qué necesitas</h2>
           <form id="contactForm" data-formspree-id={formspreeId} style="display:flex; flex-direction:column; gap:16px; margin-top:20px;">
+            <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute; left:-9999px;" />
             <div>
               <span class="field-label">¿Quién eres?</span>
               <div style="display:flex; gap:10px; margin-top:8px;">
