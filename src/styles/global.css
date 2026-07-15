@@ -313,10 +313,40 @@ table.cond td{ padding:16px; border-bottom:1px solid var(--line); font-size:14.5
 /* Avatares genéricos del equipo: cada persona lleva un color e ícono ligeramente
    distintos para diferenciarse entre sí, sin copiar el aspecto de nadie real —
    ver conversación sobre privacidad en el equipo. */
-.team-avatar{ width:72px; height:72px; border-radius:50%; display:flex; align-items:center; justify-content:center; margin-bottom:16px; color:#fff; }
+.team-avatar{ width:72px; height:72px; border-radius:50%; display:flex; align-items:center; justify-content:center; margin-bottom:16px; color:#fff; cursor:default; transition:transform .25s ease, box-shadow .25s ease; }
 .team-avatar--1{ background:var(--green-dark); }
 .team-avatar--2{ background:var(--amber); }
 .team-avatar--3{ background:var(--ink); }
+.team-avatar:hover{ transform:scale(1.08); box-shadow:0 10px 22px rgba(0,0,0,.22); }
+
+/* Toque de vida en los avatares del equipo: flotan suavemente y parpadean de vez
+   en cuando, cada uno con su propio ritmo para que no se muevan a la vez. La
+   flotación vive en un envoltorio interno (no en .team-avatar) para no pelear
+   con el transform:scale() del hover en el mismo elemento. */
+.team-avatar-float{ display:flex; animation:team-avatar-bob 3.6s ease-in-out infinite; }
+.team-avatar--2 .team-avatar-float{ animation-delay:.5s; animation-duration:4s; }
+.team-avatar--3 .team-avatar-float{ animation-delay:1s; animation-duration:3.3s; }
+@keyframes team-avatar-bob{
+  0%, 100%{ transform:translateY(0) rotate(0deg); }
+  50%{ transform:translateY(-3px) rotate(-1.5deg); }
+}
+
+.avatar-eyes{ transform-box:fill-box; transform-origin:center; animation:team-avatar-blink 5.5s ease-in-out infinite; }
+.team-avatar--2 .avatar-eyes{ animation-delay:1.6s; }
+.team-avatar--3 .avatar-eyes{ animation-delay:3.2s; }
+@keyframes team-avatar-blink{
+  0%, 92%, 100%{ transform:scaleY(1); }
+  95%{ transform:scaleY(.1); }
+}
+.team-avatar:hover .avatar-eyes{ animation:team-avatar-blink-fast .5s ease-in-out; }
+@keyframes team-avatar-blink-fast{
+  0%, 100%{ transform:scaleY(1); }
+  50%{ transform:scaleY(.1); }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .team-avatar-float, .avatar-eyes{ animation:none; }
+}
 
 /* =========================================================================
    FOOTER — compartido
