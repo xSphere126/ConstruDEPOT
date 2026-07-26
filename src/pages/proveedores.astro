@@ -1,0 +1,116 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SignatureMark from '../components/SignatureMark.astro';
+import PerondaLogo from '../components/PerondaLogo.astro';
+
+// Lista real de proveedores facilitada por el cliente (MARCAS MAS IMPORTANTES.pdf),
+// agrupada tal cual venía en el documento. El campo `logo` solo se rellena cuando
+// hay un archivo real descargado de la web oficial de la marca en /public/brands/ —
+// mientras no exista, el chip se muestra solo con el nombre y el enlace real, nunca
+// con un logo inventado o aproximado.
+interface Marca {
+  nombre: string;
+  url: string;
+  logo?: string;
+  white?: boolean;
+  svg?: boolean;
+}
+
+const grupos: { nombre: string; marcas: Marca[] }[] = [
+  {
+    nombre: 'Azulejo y pavimento',
+    marcas: [
+      { nombre: 'Keraben', url: 'https://www.keraben.com/', logo: '/brands/keraben.png', white: true },
+      { nombre: 'Peronda', url: 'https://peronda.com/es', svg: true },
+      { nombre: 'KTL Cerámica', url: 'https://ktlceramica.com/', logo: '/brands/ktl.jpg' },
+      { nombre: 'Villaceramica', url: 'https://villaceramica.es/', logo: '/brands/villaceramica.png' },
+      { nombre: 'Cerámica Mediterráneo', url: 'https://www.cdmcorp.es/', logo: '/brands/cdmcorp.png' },
+      { nombre: 'Porcelastone', url: 'https://www.porcelastone.com/', logo: '/brands/porcelastone.png' },
+      { nombre: 'Realonda', url: 'https://www.realonda.com/', logo: '/brands/realonda.svg' },
+      { nombre: 'Alma Cerámicas', url: 'https://almaceramica.es/', logo: '/brands/almaceramica.png' },
+      { nombre: 'Benesol', url: 'https://benesol.es/es/', logo: '/brands/benesol.jpg' },
+      { nombre: 'Massima Surfaces', url: 'https://www.massimagroup.com/', logo: '/brands/massima.png', white: true },
+      { nombre: 'Magnifica', url: 'https://magnificacollection.com/', logo: '/brands/magnifica.svg' },
+    ],
+  },
+  {
+    nombre: 'Baños',
+    marcas: [
+      { nombre: 'Roca', url: 'https://www.roca.es/', logo: '/brands/roca.svg' },
+      { nombre: 'Bathco', url: 'https://www.thebathcollection.com/', logo: '/brands/bathco.svg' },
+      { nombre: 'Imex', url: 'https://imexproducts.es/', logo: '/brands/imex.png', white: true },
+      { nombre: 'Ledimex', url: 'https://ledimex.es/', logo: '/brands/ledimex.png', white: true },
+      { nombre: 'Mediterránea del Baño', url: 'https://medimex.es/', logo: '/brands/medimex.png' },
+      { nombre: 'Profiltek', url: 'https://www.profiltek.com/', logo: '/brands/profiltek.svg' },
+      { nombre: 'Visobath', url: 'https://visobath.com/', logo: '/brands/visobath.svg' },
+      { nombre: 'Coycama', url: 'https://coycama.com/', logo: '/brands/coycama.png' },
+    ],
+  },
+  {
+    nombre: 'Resto de productos',
+    marcas: [
+      { nombre: 'Starmis', url: 'https://starmis.com/', logo: '/brands/starmis.png' },
+      { nombre: 'Industrias Bernabé', url: 'https://industriasbernabe.com/', logo: '/brands/industrias-bernabe.png' },
+      { nombre: 'Ladrillera Murciana', url: 'https://www.ladrilleramurciana.com/', logo: '/brands/ladrillera-murciana.jpg' },
+      { nombre: 'Holcim', url: 'https://www.holcim.es/', logo: '/brands/holcim.svg' },
+      { nombre: 'Chemical Building Project', url: 'https://chemicalbuildingproject.com/', logo: '/brands/chemicalbuildingproject.png' },
+      { nombre: 'Hormigones Cava', url: 'https://www.hormigonescava.es/', logo: '/brands/hormigones-cava.png' },
+      { nombre: 'La Escandella', url: 'https://www.laescandella.com/es/', logo: '/brands/laescandella.png' },
+      { nombre: 'Ladrillos Refractarios', url: '#' },
+    ],
+  },
+  {
+    nombre: 'Pladur',
+    marcas: [
+      { nombre: 'Escayescos', url: 'https://escayescos.com/', logo: '/brands/escayescos.svg', white: true },
+      { nombre: 'Valles', url: '#' },
+      { nombre: 'Levantia', url: 'https://levantia.es/', logo: '/brands/levantia.png' },
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title="Proveedores"
+  description="Las marcas con las que trabajamos en Construdepot by Quiles: azulejo y pavimento, baños, Pladur y mucho más."
+  headerVariant="solid"
+>
+  <section class="page-banner">
+    <SignatureMark class="icon-wm" />
+    <div class="wrap">
+      <div class="breadcrumb"><a href="/">Inicio</a> · <a href="/productos/">Productos</a> · Proveedores</div>
+      <h1>Las marcas con las que trabajamos</h1>
+      <p>Trabajamos con fabricantes de referencia en cada categoría. Si buscas una marca concreta, pregúntanos.</p>
+    </div>
+  </section>
+
+  {grupos.map((grupo) => (
+    <section>
+      <div class="wrap">
+        <div class="eyebrow-sm">{grupo.nombre}</div>
+        <div class="brands-strip">
+          {grupo.marcas.map((marca) => (
+            <a href={marca.url} target={marca.url !== '#' ? '_blank' : undefined} rel={marca.url !== '#' ? 'noopener' : undefined} class="brand-chip" aria-label={marca.nombre}>
+              {marca.logo ? (
+                <img src={marca.logo} alt={marca.nombre} class={`brand-logo${marca.white ? ' brand-logo--white' : ''}`} />
+              ) : marca.svg ? (
+                <PerondaLogo class="brand-logo brand-logo-svg" />
+              ) : (
+                <span class="brand-chip-text">{marca.nombre}</span>
+              )}
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  ))}
+
+  <section style="background:var(--sand);">
+    <div class="wrap">
+      <div class="cta-band" style="background:var(--ink);">
+        <h3>¿Buscas una marca que no ves aquí? Pregúntanos, seguro que podemos conseguirla.</h3>
+        <a href="https://wa.me/34607224454" class="btn-primary">Escribir por WhatsApp →</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

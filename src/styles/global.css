@@ -244,13 +244,27 @@ body.home .btn-primary:hover{ background:var(--green-dark); color:#fff; }
 .brands-strip{ display:flex; align-items:center; flex-wrap:wrap; gap:36px 48px; padding:36px 0; }
 .brand-chip{ display:flex; align-items:center; gap:14px; text-decoration:none; color:var(--graphite); transition:color .15s ease; }
 .brand-chip:hover{ color:var(--ink); }
-/* Los logos originales de Keraben y Massima son claros/blancos (pensados para
-   cabeceras oscuras); brightness(0) los recolorea a negro sólido conservando
-   su forma, para que se lean bien sobre el fondo claro de esta sección. */
-.brand-logo{ height:32px; width:auto; max-width:150px; object-fit:contain; display:block; filter:brightness(0); opacity:.6; transition:opacity .15s ease; }
-.brand-chip:hover .brand-logo{ opacity:.9; }
+/* Con ~25 logos reales de proveedores, algunos ya son de trazo muy fino o claro
+   de por sí (Holcim, Chemical Building Project, Hormigones Cava...). Probamos
+   primero a desaturar todo + bajar opacidad para un efecto "as seen in"
+   homogéneo, pero esos logos claros se volvían casi invisibles sobre el fondo
+   crema — así que se muestran a color y opacidad completa, priorizando que se
+   lean bien por encima de la uniformidad visual; el hover solo añade un
+   pequeño realce de escala. */
+.brand-logo{ height:32px; width:auto; max-width:150px; object-fit:contain; display:block; transition:transform .15s ease; }
+.brand-chip:hover .brand-logo{ transform:scale(1.05); }
+/* Algunos logos originales (Keraben, Massima, Imex, Ledimex, Escayescos) son
+   blancos, pensados para cabeceras oscuras — sin recolorear serían invisibles
+   sobre este fondo claro, así que se pasan a negro sólido con brightness(0). */
+.brand-logo--white{ filter:brightness(0); }
 .brand-logo-svg{ height:24px; max-width:150px; color:inherit; }
 .brands-note{ font-family:'Roboto', sans-serif; font-size:12.5px; color:var(--graphite); }
+
+/* Chip de texto para proveedores cuyo logo real todavía no se ha conseguido de su
+   web oficial — nunca se sustituye por un logo inventado, se queda así hasta que
+   haya un archivo real que enlazar. */
+.brand-chip-text{ font-size:13.5px; font-weight:500; color:var(--ink); background:var(--cream); border:1px solid var(--line); padding:9px 16px; border-radius:999px; white-space:nowrap; }
+.brand-chip:hover .brand-chip-text{ border-color:var(--green); }
 
 /* Feed de Instagram */
 .insta-header{ display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px; margin-bottom:28px; }
