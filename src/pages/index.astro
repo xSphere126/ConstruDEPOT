@@ -38,6 +38,12 @@ const testimonios = [
     stars: 5,
     quote: 'Buena atención con todo el personal y el jefe, un tío 10 en lo que necesites. Carga rápida y sin esperas. Le doy un 10, y eso que soy de Alcoy y trabajo por Elche. Un saludo.',
   },
+  {
+    name: 'Ainoa Pastor González',
+    badge: 'Local Guide · 11 reseñas',
+    stars: 5,
+    quote: 'Súper amables!!! Me han atendido genial he podido resolver todas mis dudas y ha encontrado justo todos los suelos y muebles exactamente como la idea que tenía en mente!!! Os lo recomiendo 100%',
+  },
 ];
 ---
 
@@ -69,7 +75,7 @@ const testimonios = [
         </div>
         <div class="info-strip">
           <div class="info-item"><span class="ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 21s-7-6.1-7-11a7 7 0 0 1 14 0c0 4.9-7 11-7 11Z"/><circle cx="12" cy="10" r="2.4"/></svg></span> Elche, Alicante</div>
-          <div class="info-item"><span class="ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg></span> Lun–Sáb · 7:30–20:00h</div>
+          <div class="info-item"><span class="ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg></span> Almacén 7:30–19h · Exposición 9–20h</div>
           <div class="badge-public"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="vertical-align:-1px; margin-right:4px;"><path d="M4 12l6 6L20 6"/></svg>Venta al público</div>
         </div>
       </div>
@@ -86,7 +92,7 @@ const testimonios = [
       <div class="trust-rating">
         <span class="stars">★★★★★</span>
         <strong>4,5/5</strong>
-        <span class="trust-note">· 243 opiniones en Google</span>
+        <span class="trust-note">· 245 opiniones en Google</span>
       </div>
       <a href="https://www.google.com/maps/place/?q=place_id:ChIJr7CgOzy1Yw0RxNdaWmyXfNw" target="_blank" rel="noopener" class="google-link">Ver en Google →</a>
     </div>
@@ -98,17 +104,7 @@ const testimonios = [
       <h2>Lo que dicen nuestros clientes</h2>
       <p class="section-sub">Reseñas reales de nuestra ficha de Google, tal cual las escribieron.</p>
       <div class="grid grid-3">
-        {testimonios.slice(0, 3).map((t) => (
-          <div class="card">
-            <span class="stars" aria-label={`${t.stars} de 5 estrellas`}>{'★'.repeat(t.stars)}</span>
-            <h3 style="margin-top:10px;">{t.name}</h3>
-            <p style="font-size:12.5px; color:#8a8b83; font-family:'IBM Plex Mono', monospace; margin-bottom:12px;">{t.badge}</p>
-            <p>{t.quote}</p>
-          </div>
-        ))}
-      </div>
-      <div class="testimonios-row-2">
-        {testimonios.slice(3).map((t) => (
+        {testimonios.map((t) => (
           <div class="card">
             <span class="stars" aria-label={`${t.stars} de 5 estrellas`}>{'★'.repeat(t.stars)}</span>
             <h3 style="margin-top:10px;">{t.name}</h3>
@@ -251,7 +247,7 @@ const testimonios = [
       </div>
       <div class="map-info">
         <div class="map-info-item"><span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 21s-7-6.1-7-11a7 7 0 0 1 14 0c0 4.9-7 11-7 11Z"/><circle cx="12" cy="10" r="2.4"/></svg></span> N-340, Partida Jubalcoy, pol. 1, núm. 74 · 03295 Elche, Alicante</div>
-        <div class="map-info-item"><span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg></span> Lun–Sáb · 7:30–20:00h</div>
+        <div class="map-info-item"><span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg></span> Almacén: L-V 7:30–19:00 · Sáb 8:30–13:30 &nbsp;·&nbsp; Exposición: L-V 9:00–20:00 · Sáb 8:30–13:30</div>
       </div>
     </div>
   </section>

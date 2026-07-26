@@ -35,18 +35,31 @@ const localBusinessLd = {
     addressRegion: 'Alicante',
     addressCountry: 'ES',
   },
-  openingHoursSpecification: {
-    '@type': 'OpeningHoursSpecification',
-    dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-    opens: '07:30',
-    closes: '20:00',
-  },
+  // Horario real 2026 (flyer oficial de tienda): Almacén L-V 7:30-19:00 y
+  // Exposición L-V 9:00-20:00 se solapan de sobra entre semana como para
+  // representarlos de cara al buscador como una única franja 7:30-20:00 (unión
+  // de ambas); el sábado, en cambio, ambas áreas cierran a las 13:30 — mucho
+  // antes que la franja de entre semana, así que necesita su propio tramo.
+  openingHoursSpecification: [
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+      opens: '07:30',
+      closes: '20:00',
+    },
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Saturday'],
+      opens: '08:30',
+      closes: '13:30',
+    },
+  ],
   // Verificado en vivo contra la ficha real de Google Maps (mismo Place ID que el
   // mapa embebido) — no es una cifra de directorio de terceros sin confirmar.
   aggregateRating: {
     '@type': 'AggregateRating',
     ratingValue: '4.5',
-    reviewCount: '243',
+    reviewCount: '245',
   },
   sameAs: [
     'https://www.instagram.com/construdepot_by_quiles/',
