@@ -7,6 +7,13 @@ import PerondaLogo from '../components/PerondaLogo.astro';
 import { todasLasMarcas } from '../data/marcas';
 
 const snapwidgetId = import.meta.env.PUBLIC_SNAPWIDGET_ID || 'WIDGET_ID_PENDIENTE';
+// Sección "Síguenos en Instagram" desactivada a petición del cliente: SnapWidget
+// (el widget que se iba a usar) resultó ser de pago, no gratuito como se creía,
+// y todavía no ha decidido si paga el plan, usa la API oficial de Instagram
+// (gratis pero con mantenimiento técnico recurrente) o prescinde del feed
+// embebido. Se deja el bloque completo en el código, solo oculto, para
+// reactivarlo en cuanto haya una decisión — ver [[construdepot-positioning]].
+const showInstagramSection = false;
 
 const testimonios = [
   {
@@ -210,47 +217,49 @@ const testimonios = [
     </div>
   </section>
 
-  <section class="home-section" style="background:var(--sand);">
-    <div class="wrap">
-      <div class="insta-header">
-        <div>
-          <div class="eyebrow-sm">Redes sociales</div>
-          <h2 style="margin-bottom:0;">Síguenos en Instagram</h2>
-        </div>
-        <div class="insta-handle">
-          <div class="ic">
-            <IconInstagram width={18} height={18} />
+  {showInstagramSection && (
+    <section class="home-section" style="background:var(--sand);">
+      <div class="wrap">
+        <div class="insta-header">
+          <div>
+            <div class="eyebrow-sm">Redes sociales</div>
+            <h2 style="margin-bottom:0;">Síguenos en Instagram</h2>
           </div>
-          <a href="https://www.instagram.com/construdepot_by_quiles/" target="_blank" rel="noopener" class="google-link" style="border-color:var(--ink); color:var(--ink);">@construdepot_by_quiles →</a>
-        </div>
-      </div>
-      <div class="insta-embed-wrap">
-        <!-- Feed en directo vía SnapWidget (de pago, no gratuito — confirmado por el
-             cliente; sin necesidad de API de Instagram).
-             Pasos para activarlo una vez decidido el plan:
-             1. Entrar en https://snapwidget.com y "Create a Widget" > Instagram Feed
-             2. Conectar la cuenta @construdepot_by_quiles
-             3. Elegir el estilo "Grid", 4 columnas
-             4. Copiar el ID del widget y ponerlo en sitio/.env como PUBLIC_SNAPWIDGET_ID=abc123
-             El feed no carga hasta que el visitante acepta cookies de terceros (ver CookieConsent.astro) —
-             hasta entonces, o mientras no haya ID configurado, se ve el mosaico de marcador. -->
-        {snapwidgetId !== 'WIDGET_ID_PENDIENTE' ? (
-          <GatedEmbed category="social" src={`https://snapwidget.com/embed/${snapwidgetId}`} title="Feed de Instagram @construdepot_by_quiles" label="el feed de Instagram" style="height:400px;" />
-        ) : (
-          <div class="insta-fallback">
-            <div class="insta-grid">
-              {Array.from({ length: 4 }).map(() => (
-                <div class="insta-tile"><IconInstagram width={24} height={24} strokeWidth={1.6} /></div>
-              ))}
+          <div class="insta-handle">
+            <div class="ic">
+              <IconInstagram width={18} height={18} />
             </div>
+            <a href="https://www.instagram.com/construdepot_by_quiles/" target="_blank" rel="noopener" class="google-link" style="border-color:var(--ink); color:var(--ink);">@construdepot_by_quiles →</a>
           </div>
+        </div>
+        <div class="insta-embed-wrap">
+          <!-- Feed en directo vía SnapWidget (de pago, no gratuito — confirmado por el
+               cliente; sin necesidad de API de Instagram).
+               Pasos para activarlo una vez decidido el plan:
+               1. Entrar en https://snapwidget.com y "Create a Widget" > Instagram Feed
+               2. Conectar la cuenta @construdepot_by_quiles
+               3. Elegir el estilo "Grid", 4 columnas
+               4. Copiar el ID del widget y ponerlo en sitio/.env como PUBLIC_SNAPWIDGET_ID=abc123
+               El feed no carga hasta que el visitante acepta cookies de terceros (ver CookieConsent.astro) —
+               hasta entonces, o mientras no haya ID configurado, se ve el mosaico de marcador. -->
+          {snapwidgetId !== 'WIDGET_ID_PENDIENTE' ? (
+            <GatedEmbed category="social" src={`https://snapwidget.com/embed/${snapwidgetId}`} title="Feed de Instagram @construdepot_by_quiles" label="el feed de Instagram" style="height:400px;" />
+          ) : (
+            <div class="insta-fallback">
+              <div class="insta-grid">
+                {Array.from({ length: 4 }).map(() => (
+                  <div class="insta-tile"><IconInstagram width={24} height={24} strokeWidth={1.6} /></div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+        {snapwidgetId === 'WIDGET_ID_PENDIENTE' && (
+          <p style="font-size:12.5px; color:var(--graphite); margin-top:16px; font-family:'Roboto', sans-serif;">⚑ PENDIENTE: SnapWidget es de pago, no gratuito. Decidir si se contrata un plan o se usa una alternativa antes de activar el widget; luego poner el ID en <code>sitio/.env</code> como <code>PUBLIC_SNAPWIDGET_ID</code>. Mientras tanto se ve el mosaico de marcador de arriba.</p>
         )}
       </div>
-      {snapwidgetId === 'WIDGET_ID_PENDIENTE' && (
-        <p style="font-size:12.5px; color:var(--graphite); margin-top:16px; font-family:'Roboto', sans-serif;">⚑ PENDIENTE: SnapWidget es de pago, no gratuito. Decidir si se contrata un plan o se usa una alternativa antes de activar el widget; luego poner el ID en <code>sitio/.env</code> como <code>PUBLIC_SNAPWIDGET_ID</code>. Mientras tanto se ve el mosaico de marcador de arriba.</p>
-      )}
-    </div>
-  </section>
+    </section>
+  )}
 
   <section class="home-section">
     <div class="wrap">
