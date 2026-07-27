@@ -258,13 +258,42 @@ body.home .btn-primary:hover{ background:var(--green-dark); color:#fff; }
    sobre este fondo claro, así que se pasan a negro sólido con brightness(0). */
 .brand-logo--white{ filter:brightness(0); }
 .brand-logo-svg{ height:24px; max-width:150px; color:inherit; }
+
+/* Página /proveedores/: con ~26 marcas reales repartidas en pocos grupos, la
+   tira suelta (.brands-strip) dejaba secciones cortas con mucho hueco vacío
+   alrededor. Se agrupan en tarjetas con borde dentro de una grid, para que la
+   página se sienta llena aunque un grupo tenga solo 2-3 marcas. */
+.brand-group{ margin-bottom:48px; }
+.brand-group:last-child{ margin-bottom:0; }
+.brand-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(150px, 1fr)); gap:14px; margin-top:20px; }
+.brand-tile{ background:var(--cream-card); border:1px solid var(--line); border-radius:16px; padding:22px 18px; min-height:88px; justify-content:center; transition:border-color .15s ease, box-shadow .15s ease, transform .15s ease; }
+.brand-tile:hover{ border-color:var(--green); box-shadow:0 10px 24px rgba(0,0,0,.07); transform:translateY(-3px); }
 .brands-note{ font-family:'Roboto', sans-serif; font-size:12.5px; color:var(--graphite); }
+
+/* Carrusel de marcas en Inicio: antes solo se veían 3 logos fijos (Keraben,
+   Peronda, Massima). Recorre las ~26 marcas reales en bucle continuo — el
+   contenido va duplicado una vez y la animación se desplaza exactamente el
+   50% del ancho de la pista, así que al llegar al final ya está mostrando
+   una copia idéntica y el bucle no se nota. La copia duplicada lleva
+   aria-hidden + tabindex="-1" para que un lector de pantalla o el tabulador
+   no la encuentren dos veces. */
+.brand-marquee{ overflow:hidden; margin-top:32px; -webkit-mask-image:linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); mask-image:linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); }
+.brand-marquee-track{ display:flex; align-items:center; gap:56px; width:max-content; padding:0 20px; animation:brand-marquee-scroll 38s linear infinite; }
+.brand-marquee:hover .brand-marquee-track, .brand-marquee:focus-within .brand-marquee-track{ animation-play-state:paused; }
+.brand-marquee-item{ flex-shrink:0; }
+@keyframes brand-marquee-scroll{
+  from{ transform:translateX(0); }
+  to{ transform:translateX(-50%); }
+}
+@media (prefers-reduced-motion: reduce){
+  .brand-marquee{ overflow-x:auto; }
+  .brand-marquee-track{ animation:none; }
+}
 
 /* Chip de texto para proveedores cuyo logo real todavía no se ha conseguido de su
    web oficial — nunca se sustituye por un logo inventado, se queda así hasta que
    haya un archivo real que enlazar. */
-.brand-chip-text{ font-size:13.5px; font-weight:500; color:var(--ink); background:var(--cream); border:1px solid var(--line); padding:9px 16px; border-radius:999px; white-space:nowrap; }
-.brand-chip:hover .brand-chip-text{ border-color:var(--green); }
+.brand-chip-text{ font-size:13.5px; font-weight:600; color:var(--ink); text-align:center; }
 
 /* Feed de Instagram */
 .insta-header{ display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px; margin-bottom:28px; }
