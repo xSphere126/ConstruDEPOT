@@ -179,6 +179,17 @@ h1 em{ font-style:normal; color:var(--green); }
    ========================================================================= */
 .page-banner{ position:relative; overflow:hidden; padding:64px 0 56px; background:linear-gradient(135deg, #234012 0%, #1B2A12 55%, #20211D 100%); color:#fff; }
 .page-banner .icon-wm{ position:absolute; right:-4%; top:-18%; width:360px; opacity:.10; display:block; }
+/* Variante con foto real de fondo: la propia imagen se pasa por la custom
+   property --banner-photo (style inline en la página) y se dibuja debajo de
+   un degradado de marca que hace de scrim para que el texto blanco siga
+   siendo legible. Sin --banner-photo esta clase no tiene efecto. */
+.page-banner--photo{
+  background-image:
+    linear-gradient(135deg, rgba(35,64,18,.90) 0%, rgba(27,42,18,.92) 55%, rgba(32,33,29,.95) 100%),
+    var(--banner-photo);
+  background-size: cover;
+  background-position: center;
+}
 .breadcrumb{ font-family:'Roboto', sans-serif; font-size:12px; letter-spacing:.06em; color:#BFEFA0; margin-bottom:14px; position:relative; z-index:2; }
 .breadcrumb a{ color:#BFEFA0; opacity:.8; }
 .breadcrumb a:hover{ opacity:1; text-decoration:underline; }
@@ -463,7 +474,7 @@ footer a:hover{ color:#fff; }
 /* =========================================================================
    CONTENIDO LEGAL — Aviso legal, Privacidad, Cookies
    ========================================================================= */
-.legal-content{ max-width:760px; }
+.legal-content{ max-width:760px; background:var(--cream-card); border:1px solid var(--line); border-radius:20px 44px 20px 20px; padding:44px 52px; }
 .legal-content h2{ font-size:22px; margin-top:44px; margin-bottom:14px; }
 .legal-content h2:first-child{ margin-top:0; }
 .legal-content h3{ font-family:'Roboto', sans-serif; font-size:17px; font-weight:600; margin-top:26px; margin-bottom:10px; }
@@ -511,6 +522,9 @@ footer a:hover{ color:#fff; }
   /* Page banner (interiores) */
   .page-banner{ padding:44px 0 40px; }
   .page-banner h1{ font-size:30px; }
+
+  /* Contenido legal */
+  .legal-content{ padding:28px 22px; border-radius:16px; }
 
   /* Secciones / grid */
   section, .home-section{ padding:52px 0; }
