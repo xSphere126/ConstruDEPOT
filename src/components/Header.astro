@@ -131,12 +131,32 @@ const navItems = [
     if (window.innerWidth > 900 && mobileMenu && !mobileMenu.hidden) closeMenu();
   });
 
-  // Estado de apertura real de la tienda, calculado en el navegador de cada
-  // visitante para que siempre refleje su hora local. Horario 2026 real (flyer
-  // oficial de tienda): Almacén y Exposición tienen franjas distintas entre
-  // semana, así que se calculan como dos áreas independientes en vez de un
-  // único horario — antes esto estaba simplificado a un solo tramo 7:30-20:00
-  // que en realidad solo aplicaba al almacén, y ni siquiera los sábados.
+  // Estado de apertura real de la tienda. Se calcula contra la hora de Elche
+  // (Europe/Madrid) siempre, no contra la hora local del dispositivo del
+  // visitante — con new Date().getHours() un visitante con el reloj puesto en
+  // otro huso horario (viajando, o con el dispositivo mal configurado) vería
+  // "Abierto" o "Cerrado" según SU hora, no la de la tienda. Horario 2026 real
+  // (flyer oficial de tienda): Almacén y Exposición tienen franjas distintas
+  // entre semana, así que se calculan como dos áreas independientes en vez de
+  // un único horario — antes esto estaba simplificado a un solo tramo
+  // 7:30-20:00 que en realidad solo aplicaba al almacén, y ni siquiera los
+  // sábados.
+  function getMadridDayAndMinutes() {
+    const parts = new Intl.DateTimeFormat('en-US', {
+      timeZone: 'Europe/Madrid',
+      weekday: 'short',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    }).formatToParts(new Date());
+    const map = Object.fromEntries(parts.map((p) => [p.type, p.value]));
+    const weekdayIndex: Record<string, number> = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
+    const day = weekdayIndex[map.weekday];
+    const hour = parseInt(map.hour, 10) % 24; // medianoche puede venir como "24"
+    const minute = parseInt(map.minute, 10);
+    return { day, minutesNow: hour * 60 + minute };
+  }
+
   function isAreaOpen(day: number, minutesNow: number, weekdayOpen: number, weekdayClose: number, satOpen: number, satClose: number) {
     if (day >= 1 && day <= 5) return minutesNow >= weekdayOpen && minutesNow < weekdayClose;
     if (day === 6) return minutesNow >= satOpen && minutesNow < satClose;
@@ -144,9 +164,7 @@ const navItems = [
   }
 
   function scheduleStatus() {
-    const now = new Date();
-    const day = now.getDay(); // 0 = domingo … 6 = sábado
-    const minutesNow = now.getHours() * 60 + now.getMinutes();
+    const { day, minutesNow } = getMadridDayAndMinutes();
     const SAT_OPEN = 8 * 60 + 30;
     const SAT_CLOSE = 13 * 60 + 30;
 
