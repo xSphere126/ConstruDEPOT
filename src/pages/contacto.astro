@@ -4,6 +4,16 @@ import SignatureMark from '../components/SignatureMark.astro';
 import GatedEmbed from '../components/GatedEmbed.astro';
 
 const formspreeId = import.meta.env.PUBLIC_FORMSPREE_ID || '';
+// Sección "Para profesionales" oculta a petición del cliente: la tabla de
+// condiciones (plazos, facturación, zona de reparto, contacto directo) sigue
+// sin datos reales y las 4 filas en "A concretar con el equipo" transmitían
+// poco terminado. Se guarda el bloque completo, solo oculto, para
+// reactivarlo en cuanto haya condiciones reales que mostrar — igual que se
+// hizo con la sección de Instagram en index.astro. Si se reactiva, revertir
+// también el enlace de "Ver condiciones de suministro" en index.astro y el
+// destino de la redirección en profesionales.astro, que ahora mismo apuntan
+// a /contacto/ en vez de /contacto/#profesionales.
+const showProfesionalesSection = false;
 ---
 
 <BaseLayout
@@ -17,7 +27,7 @@ const formspreeId = import.meta.env.PUBLIC_FORMSPREE_ID || '';
     <div class="wrap">
       <div class="breadcrumb"><a href="/">Inicio</a> · Contacto</div>
       <h1>Estamos aquí para ayudarte</h1>
-      <p id="banner-sub">Elige cómo prefieres hablar con nosotros. Si eres profesional, mira las condiciones de suministro más abajo.</p>
+      <p id="banner-sub">Elige cómo prefieres hablar con nosotros.</p>
     </div>
   </section>
 
@@ -90,41 +100,43 @@ const formspreeId = import.meta.env.PUBLIC_FORMSPREE_ID || '';
     </div>
   </section>
 
-  <section id="profesionales" style="background:var(--sand);">
-    <div class="wrap">
-      <div class="eyebrow-sm">Para profesionales</div>
-      <h2>Suministro para profesionales, sin esperas ni excusas</h2>
-      <p class="section-sub">Tu obra no puede parar. Nosotros tampoco. Si eres contratista o autónomo, esto es lo que necesitas saber.</p>
+  {showProfesionalesSection && (
+    <section id="profesionales" style="background:var(--sand);">
+      <div class="wrap">
+        <div class="eyebrow-sm">Para profesionales</div>
+        <h2>Suministro para profesionales, sin esperas ni excusas</h2>
+        <p class="section-sub">Tu obra no puede parar. Nosotros tampoco. Si eres contratista o autónomo, esto es lo que necesitas saber.</p>
 
-      <div class="grid grid-3" style="margin-bottom:40px;">
-        <div class="card">
-          <h3>Suministro rápido</h3>
-          <p>Pides hoy, lo tienes cuando lo necesitas. Sin depender de plazos de fabricante genéricos.</p>
+        <div class="grid grid-3" style="margin-bottom:40px;">
+          <div class="card">
+            <h3>Suministro rápido</h3>
+            <p>Pides hoy, lo tienes cuando lo necesitas. Sin depender de plazos de fabricante genéricos.</p>
+          </div>
+          <div class="card">
+            <h3>Trato directo</h3>
+            <p>Un contacto fijo para tus pedidos, no un formulario genérico que tarda días en responder.</p>
+          </div>
+          <div class="card">
+            <h3>Materiales técnicos</h3>
+            <p>Seleccionamos producto pensado para obra, no solo para reforma doméstica.</p>
+          </div>
         </div>
-        <div class="card">
-          <h3>Trato directo</h3>
-          <p>Un contacto fijo para tus pedidos, no un formulario genérico que tarda días en responder.</p>
+
+        <div class="card" style="border-radius:20px; padding:8px 8px; margin-bottom:12px;">
+          <table class="cond">
+            <tr><th>Condición</th><th>Detalle</th></tr>
+            <tr><td>Plazos de entrega</td><td class="placeholder-text">A concretar con el equipo</td></tr>
+            <tr><td>Facturación</td><td class="placeholder-text">A concretar con el equipo</td></tr>
+            <tr><td>Zona de reparto</td><td class="placeholder-text">A concretar con el equipo</td></tr>
+            <tr><td>Contacto directo</td><td class="placeholder-text">A concretar con el equipo</td></tr>
+          </table>
         </div>
-        <div class="card">
-          <h3>Materiales técnicos</h3>
-          <p>Seleccionamos producto pensado para obra, no solo para reforma doméstica.</p>
-        </div>
+        <span class="placeholder-note" style="margin-bottom:24px;">✎ Condiciones de ejemplo, pendientes de confirmar</span>
+
+        <p class="section-sub" style="margin-bottom:0;">Ya trabajamos con contratistas y autónomos de Elche y alrededores. Si necesitas referencias, pregúntanos: usa el formulario de arriba y marca "Profesional".</p>
       </div>
-
-      <div class="card" style="border-radius:20px; padding:8px 8px; margin-bottom:12px;">
-        <table class="cond">
-          <tr><th>Condición</th><th>Detalle</th></tr>
-          <tr><td>Plazos de entrega</td><td class="placeholder-text">A concretar con el equipo</td></tr>
-          <tr><td>Facturación</td><td class="placeholder-text">A concretar con el equipo</td></tr>
-          <tr><td>Zona de reparto</td><td class="placeholder-text">A concretar con el equipo</td></tr>
-          <tr><td>Contacto directo</td><td class="placeholder-text">A concretar con el equipo</td></tr>
-        </table>
-      </div>
-      <span class="placeholder-note" style="margin-bottom:24px;">✎ Condiciones de ejemplo, pendientes de confirmar</span>
-
-      <p class="section-sub" style="margin-bottom:0;">Ya trabajamos con contratistas y autónomos de Elche y alrededores. Si necesitas referencias, pregúntanos: usa el formulario de arriba y marca "Profesional".</p>
-    </div>
-  </section>
+    </section>
+  )}
 
   <section style="padding-top:0;">
     <div class="wrap">
