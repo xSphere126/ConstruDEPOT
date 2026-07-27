@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SignatureMark from '../components/SignatureMark.astro';
+import { withBase } from '../lib/url';
 ---
 
 <BaseLayout
@@ -11,7 +12,7 @@ import SignatureMark from '../components/SignatureMark.astro';
   <section class="page-banner">
     <SignatureMark class="icon-wm" />
     <div class="wrap">
-      <div class="breadcrumb"><a href="/">Inicio</a> · Política de privacidad</div>
+      <div class="breadcrumb"><a href={withBase('/')}>Inicio</a> · Política de privacidad</div>
       <h1>Política de privacidad</h1>
       <p>Cómo tratamos tus datos personales cuando usas el formulario de contacto o navegas por esta web.</p>
     </div>
@@ -35,7 +36,7 @@ import SignatureMark from '../components/SignatureMark.astro';
       <p>El formulario se procesa a través de <strong>Formspree</strong>, un proveedor externo que actúa como encargado del tratamiento y nos reenvía tu consulta por email. Formspree Inc. está radicada en Estados Unidos; su tratamiento de datos se ampara en las cláusulas contractuales tipo de la Comisión Europea. Puedes consultar su política en <a href="https://formspree.io/legal/privacy-policy" target="_blank" rel="noopener">formspree.io/legal/privacy-policy</a>.</p>
 
       <h3>Navegación y contenido de terceros</h3>
-      <p>Si aceptas las cookies de terceros (ver <a href="/politica-cookies/">Política de cookies</a>), esta web carga contenido embebido de Google Maps y de Instagram (vía SnapWidget), que pueden tratar datos de tu navegación conforme a sus propias políticas de privacidad.</p>
+      <p>Si aceptas las cookies de terceros (ver <a href={withBase('/politica-cookies/')}>Política de cookies</a>), esta web carga contenido embebido de Google Maps y de Instagram (vía SnapWidget), que pueden tratar datos de tu navegación conforme a sus propias políticas de privacidad.</p>
 
       <h2>3. Legitimación</h2>
       <p>La base legal para tratar tus datos del formulario de contacto es tu propio consentimiento, otorgado al rellenar y enviar el formulario de forma voluntaria (art. 6.1.a RGPD).</p>

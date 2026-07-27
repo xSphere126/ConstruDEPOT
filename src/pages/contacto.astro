@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SignatureMark from '../components/SignatureMark.astro';
 import GatedEmbed from '../components/GatedEmbed.astro';
+import { withBase } from '../lib/url';
 
 const formspreeId = import.meta.env.PUBLIC_FORMSPREE_ID || '';
 // Sección "Para profesionales" oculta a petición del cliente: la tabla de
@@ -25,7 +26,7 @@ const showProfesionalesSection = false;
   <section class="page-banner">
     <SignatureMark class="icon-wm" />
     <div class="wrap">
-      <div class="breadcrumb"><a href="/">Inicio</a> · Contacto</div>
+      <div class="breadcrumb"><a href={withBase('/')}>Inicio</a> · Contacto</div>
       <h1>Estamos aquí para ayudarte</h1>
       <p id="banner-sub">Elige cómo prefieres hablar con nosotros.</p>
     </div>

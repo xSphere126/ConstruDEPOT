@@ -2,6 +2,7 @@
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import CookieConsent from '../components/CookieConsent.astro';
+import { withBase } from '../lib/url';
 import '../styles/global.css';
 
 interface Props {
@@ -19,7 +20,7 @@ const fullTitle = `${title} · Construdepot by Quiles`;
 // dominio real (ver README). Hasta entonces, canonical/OG se omiten en vez de
 // publicar una URL inventada.
 const canonicalURL = Astro.site ? new URL(Astro.url.pathname, Astro.site) : undefined;
-const ogImage = Astro.site ? new URL('/og-cover.jpg', Astro.site) : undefined;
+const ogImage = Astro.site ? new URL(withBase('/og-cover.jpg'), Astro.site) : undefined;
 
 const localBusinessLd = {
   '@context': 'https://schema.org',
@@ -77,8 +78,8 @@ const localBusinessLd = {
   <title>{fullTitle}</title>
   <meta name="description" content={description} />
   <meta name="theme-color" content="#41B718" />
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <link rel="alternate icon" href="/favicon.ico" />
+  <link rel="icon" type="image/svg+xml" href={withBase('/favicon.svg')} />
+  <link rel="alternate icon" href={withBase('/favicon.ico')} />
   {canonicalURL && <link rel="canonical" href={canonicalURL} />}
 
   <meta property="og:type" content="website" />

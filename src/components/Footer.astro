@@ -1,6 +1,7 @@
 ---
 import Logo from './Logo.astro';
 import IconInstagram from './IconInstagram.astro';
+import { withBase } from '../lib/url';
 ---
 
 <footer>
@@ -13,10 +14,10 @@ import IconInstagram from './IconInstagram.astro';
       <div>
         <h4>Navegación</h4>
         <ul>
-          <li><a href="/">Inicio</a></li>
-          <li><a href="/sobre-nosotros/">Sobre nosotros</a></li>
-          <li><a href="/productos/">Productos</a></li>
-          <li><a href="/contacto/">Contacto</a></li>
+          <li><a href={withBase('/')}>Inicio</a></li>
+          <li><a href={withBase('/sobre-nosotros/')}>Sobre nosotros</a></li>
+          <li><a href={withBase('/productos/')}>Productos</a></li>
+          <li><a href={withBase('/contacto/')}>Contacto</a></li>
         </ul>
       </div>
       <div>
@@ -24,7 +25,7 @@ import IconInstagram from './IconInstagram.astro';
         <ul>
           <li><a href="https://wa.me/34607224454">+34 607 224 454</a></li>
           <li><a href="mailto:jquiless@quiles.es">jquiless@quiles.es</a></li>
-          <li><a href="/contacto/">Elche, Alicante</a></li>
+          <li><a href={withBase('/contacto/')}>Elche, Alicante</a></li>
           <li>Almacén: L-V 7:30–19:00 · Sáb 8:30–13:30</li>
           <li>Exposición: L-V 9:00–20:00 · Sáb 8:30–13:30</li>
         </ul>
@@ -40,9 +41,9 @@ import IconInstagram from './IconInstagram.astro';
     <div class="footer-bottom">
       <span>© 2026 Construdepot by Quiles. Todos los derechos reservados.</span>
       <div class="footer-legal-links">
-        <a href="/aviso-legal/">Aviso legal</a>
-        <a href="/politica-privacidad/">Privacidad</a>
-        <a href="/politica-cookies/">Cookies</a>
+        <a href={withBase('/aviso-legal/')}>Aviso legal</a>
+        <a href={withBase('/politica-privacidad/')}>Privacidad</a>
+        <a href={withBase('/politica-cookies/')}>Cookies</a>
         <a href="#" data-open-cookie-settings>Configurar cookies</a>
       </div>
       <span>Elche, Alicante</span>

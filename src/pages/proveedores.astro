@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import SignatureMark from '../components/SignatureMark.astro';
 import PerondaLogo from '../components/PerondaLogo.astro';
 import { grupos } from '../data/marcas';
+import { withBase } from '../lib/url';
 ---
 
 <BaseLayout
@@ -13,7 +14,7 @@ import { grupos } from '../data/marcas';
   <section class="page-banner">
     <SignatureMark class="icon-wm" />
     <div class="wrap">
-      <div class="breadcrumb"><a href="/">Inicio</a> · <a href="/productos/">Productos</a> · Proveedores</div>
+      <div class="breadcrumb"><a href={withBase('/')}>Inicio</a> · <a href={withBase('/productos/')}>Productos</a> · Proveedores</div>
       <h1>Las marcas con las que trabajamos</h1>
       <p>Trabajamos con fabricantes de referencia en cada categoría. Si buscas una marca concreta, pregúntanos.</p>
     </div>
@@ -28,7 +29,7 @@ import { grupos } from '../data/marcas';
             {grupo.marcas.map((marca) => (
               <a href={marca.url} target={marca.url !== '#' ? '_blank' : undefined} rel={marca.url !== '#' ? 'noopener' : undefined} class="brand-chip brand-tile" aria-label={marca.nombre}>
                 {marca.logo ? (
-                  <img src={marca.logo} alt={marca.nombre} class={`brand-logo${marca.white ? ' brand-logo--white' : ''}`} />
+                  <img src={withBase(marca.logo)} alt={marca.nombre} class={`brand-logo${marca.white ? ' brand-logo--white' : ''}`} />
                 ) : marca.svg ? (
                   <PerondaLogo class="brand-logo brand-logo-svg" />
                 ) : (
