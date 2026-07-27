@@ -19,9 +19,20 @@ const navItems = [
 <header class={variant === 'solid' ? 'solid' : undefined}>
   <div class="wrap">
     <div class={variant === 'transparent' ? 'logo-chip' : undefined}>
-      <div class="logo-mark">
-        <Logo />
-      </div>
+      {variant === 'transparent' ? (
+        <>
+          <div class="logo-mark logo-mark--chip">
+            <Logo primaryFill="#FFFFFF" secondaryFill="#20211D" />
+          </div>
+          <div class="logo-mark logo-mark--pinned">
+            <Logo />
+          </div>
+        </>
+      ) : (
+        <div class="logo-mark">
+          <Logo />
+        </div>
+      )}
     </div>
     <nav class="mainnav">
       {navItems.map((item) => (

@@ -57,28 +57,37 @@ h2{ font-family:'Roboto', sans-serif; font-weight:600; font-size:32px; letter-sp
    · header.solid      → sólido, sticky (páginas interiores)
    ========================================================================= */
 header{ position:absolute; top:0; left:0; right:0; z-index:50; transition:background-color .2s ease, border-color .2s ease; }
-header .wrap{ display:flex; align-items:center; justify-content:space-between; gap:24px; height:92px; }
+/* Misma altura en los tres estados (transparente, solid, pinned) a propósito:
+   antes el header transparente medía 92px y pasaba a 86px de golpe en cuanto
+   se fijaba al hacer scroll — sin transición, así que el logo y el nav daban
+   un salto visible justo en el momento de fijarse. Con la misma altura en
+   todos los estados, ese salto desaparece por completo. */
+header .wrap{ display:flex; align-items:center; justify-content:space-between; gap:24px; height:86px; }
 
 header.solid{ position:sticky; background:rgba(250,246,236,.94); backdrop-filter:blur(8px); border-bottom:1px solid var(--line); }
-header.solid .wrap{ height:86px; }
 
 /* Inicio: la cabecera nace transparente sobre el hero y, al hacer scroll,
    pasa a fija con el mismo aspecto sólido que el resto de páginas (ver script
    en Header.astro). position:fixed en vez de sticky para no dejar un hueco
    donde estaba antes (era absolute, sin espacio reservado en el flujo). */
 header.header-pinned{ position:fixed; background:rgba(250,246,236,.94); backdrop-filter:blur(8px); border-bottom:1px solid var(--line); }
-header.header-pinned .wrap{ height:86px; }
-header.header-pinned .logo-mark{ height:50px; }
-header.header-pinned .logo-chip{ background:transparent; backdrop-filter:none; border:none; padding:0; }
+header.header-pinned .logo-chip{ background:transparent; box-shadow:none; border:none; padding:0; }
 header.header-pinned nav.mainnav a{ color:var(--ink); }
 header.header-pinned .schedule-pill{ color:var(--graphite); opacity:1; }
 header.header-pinned .dot{ box-shadow:0 0 0 3px rgba(65,183,24,.18); }
 
-/* Logo: en Inicio va dentro de una placa (contraste garantizado sobre la foto) */
-.logo-chip{ display:flex; align-items:center; background:rgba(12,10,7,.42); backdrop-filter:blur(10px); border:1px solid rgba(255,255,255,.14); border-radius:14px; padding:10px 18px; }
-.logo-mark{ height:54px; width:auto; display:block; }
+/* Logo: en Inicio (header transparente sobre la foto) va en una placa verde de
+   marca —el mismo lockup blanco-sobre-verde del manual— en vez de una caja
+   oscura genérica, para que se lea claramente sin desentonar con la
+   identidad. Al fijarse el header (fondo claro) se cambia al logo a color
+   normal, igual que en el resto de páginas — ver .logo-mark--chip /
+   .logo-mark--pinned más abajo. */
+.logo-chip{ display:flex; align-items:center; background:var(--green); box-shadow:0 4px 16px rgba(0,0,0,.22); border-radius:14px; padding:10px 18px; }
+.logo-mark{ height:50px; width:auto; display:block; }
 .logo-mark svg, .logo-mark img{ height:100%; width:auto; display:block; }
-header.solid .logo-mark{ height:50px; }
+.logo-mark--pinned{ display:none; }
+header.header-pinned .logo-mark--chip{ display:none; }
+header.header-pinned .logo-mark--pinned{ display:block; }
 
 /* Navegación */
 nav.mainnav{ display:flex; align-items:center; gap:34px; flex-shrink:0; }
