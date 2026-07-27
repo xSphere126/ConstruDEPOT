@@ -295,6 +295,12 @@ body.home .btn-primary:hover{ background:var(--green-dark); color:#fff; }
    haya un archivo real que enlazar. */
 .brand-chip-text{ font-size:13.5px; font-weight:600; color:var(--ink); text-align:center; }
 
+/* Galería "Nuestro espacio" (Sobre nosotros): fotos reales de exposición y
+   almacén, no de catálogo. */
+.photo-group{ margin-top:8px; }
+.photo-grid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:16px; margin-top:16px; }
+.photo-grid img{ width:100%; height:260px; object-fit:cover; border-radius:20px 44px 20px 20px; display:block; }
+
 /* Feed de Instagram */
 .insta-header{ display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px; margin-bottom:28px; }
 .insta-handle{ display:flex; align-items:center; gap:10px; }
