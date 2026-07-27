@@ -1,5 +1,6 @@
 ---
 import Logo from './Logo.astro';
+import { withBase } from '../lib/url';
 
 interface Props {
   variant?: 'transparent' | 'solid';
@@ -36,7 +37,7 @@ const navItems = [
     </div>
     <nav class="mainnav">
       {navItems.map((item) => (
-        <a href={item.href} class={active === item.key ? 'active' : undefined}>
+        <a href={withBase(item.href)} class={active === item.key ? 'active' : undefined}>
           {item.label}
         </a>
       ))}
@@ -66,7 +67,7 @@ const navItems = [
 <div class="mobile-menu" id="mobileMenu" hidden>
   <nav>
     {navItems.map((item) => (
-      <a href={item.href} class={active === item.key ? 'active' : undefined}>{item.label}</a>
+      <a href={withBase(item.href)} class={active === item.key ? 'active' : undefined}>{item.label}</a>
     ))}
   </nav>
   <div class="mobile-menu-footer">

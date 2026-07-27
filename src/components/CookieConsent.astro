@@ -1,4 +1,5 @@
 ---
+import { withBase } from '../lib/url';
 ---
 
 <div id="cookieBanner" class="cookie-banner" hidden>
@@ -10,7 +11,7 @@
       <p class="cookie-banner-title">Tu privacidad</p>
       <p>
         Usamos cookies técnicas necesarias para el funcionamiento de la web. Con tu permiso, también
-        cargamos contenido de terceros (mapa y feed de Instagram) que usa sus propias cookies. <a href="/politica-cookies/">Más información</a>.
+        cargamos contenido de terceros (mapa y feed de Instagram) que usa sus propias cookies. <a href={withBase('/politica-cookies/')}>Más información</a>.
       </p>
     </div>
     <div class="cookie-banner-actions">

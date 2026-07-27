@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SignatureMark from '../components/SignatureMark.astro';
+import { withBase } from '../lib/url';
 ---
 
 <BaseLayout
@@ -11,7 +12,7 @@ import SignatureMark from '../components/SignatureMark.astro';
   <section class="page-banner">
     <SignatureMark class="icon-wm" />
     <div class="wrap">
-      <div class="breadcrumb"><a href="/">Inicio</a> · Aviso legal</div>
+      <div class="breadcrumb"><a href={withBase('/')}>Inicio</a> · Aviso legal</div>
       <h1>Aviso legal</h1>
       <p>Información sobre el titular de esta web, conforme a la Ley 34/2002, de Servicios de la Sociedad de la Información y de Comercio Electrónico (LSSI-CE).</p>
     </div>

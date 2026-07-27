@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SignatureMark from '../components/SignatureMark.astro';
+import { withBase } from '../lib/url';
 ---
 
 <BaseLayout
@@ -11,7 +12,7 @@ import SignatureMark from '../components/SignatureMark.astro';
   <section class="page-banner">
     <SignatureMark class="icon-wm" />
     <div class="wrap">
-      <div class="breadcrumb"><a href="/">Inicio</a> · Política de cookies</div>
+      <div class="breadcrumb"><a href={withBase('/')}>Inicio</a> · Política de cookies</div>
       <h1>Política de cookies</h1>
       <p>Qué cookies usa esta web, para qué sirven, y cómo puedes aceptarlas o rechazarlas.</p>
     </div>

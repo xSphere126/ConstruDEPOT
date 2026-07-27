@@ -5,6 +5,7 @@ import IconInstagram from '../components/IconInstagram.astro';
 import GatedEmbed from '../components/GatedEmbed.astro';
 import PerondaLogo from '../components/PerondaLogo.astro';
 import { todasLasMarcas } from '../data/marcas';
+import { withBase } from '../lib/url';
 
 const snapwidgetId = import.meta.env.PUBLIC_SNAPWIDGET_ID || 'WIDGET_ID_PENDIENTE';
 // Sección "Síguenos en Instagram" desactivada a petición del cliente: SnapWidget
@@ -63,7 +64,7 @@ const testimonios = [
   bodyClass="home"
 >
   <section class="hero">
-    <img class="hero-photo" src="/images/foto-hero.jpg" alt="Fachada real de Construdepot by Quiles en Elche, con palés de Pladur y materiales en la entrada" loading="eager" />
+    <img class="hero-photo" src={withBase('/images/foto-hero.jpg')} alt="Fachada real de Construdepot by Quiles en Elche, con palés de Pladur y materiales en la entrada" loading="eager" />
     <div class="hero-scrim"></div>
     <div class="hero-scrim-top"></div>
 
@@ -75,11 +76,11 @@ const testimonios = [
         <h1>Tu reforma <em>inteligente</em> empieza aquí</h1>
         <p class="hero-sub">Materiales de construcción, reformas y decoración con el asesoramiento que mereces. Para particulares y profesionales.</p>
         <div class="cta-row">
-          <a href="/contacto/" class="btn-primary">
+          <a href={withBase('/contacto/')} class="btn-primary">
             Consultar disponibilidad
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
           </a>
-          <a href="/productos/" class="btn-ghost">Ver categorías de producto</a>
+          <a href={withBase('/productos/')} class="btn-ghost">Ver categorías de producto</a>
         </div>
         <div class="info-strip">
           <div class="info-item"><span class="ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 21s-7-6.1-7-11a7 7 0 0 1 14 0c0 4.9-7 11-7 11Z"/><circle cx="12" cy="10" r="2.4"/></svg></span> Elche, Alicante</div>
@@ -137,7 +138,7 @@ const testimonios = [
           </div>
           <h3>Particulares</h3>
           <p>Vienes con una reforma en la cabeza, no con un catálogo memorizado. Te asesoramos material a material, sin tecnicismos, para que tomes la decisión correcta a la primera.</p>
-          <a href="/productos/" class="btn-ghost-dark">Ver categorías de producto</a>
+          <a href={withBase('/productos/')} class="btn-ghost-dark">Ver categorías de producto</a>
         </div>
         <div class="service-card">
           <div class="icon-badge">
@@ -145,7 +146,7 @@ const testimonios = [
           </div>
           <h3>Profesionales</h3>
           <p>Tu obra no puede parar. Suministro rápido, trato directo y materiales técnicos pensados para el ritmo real de una obra, no de una reforma doméstica.</p>
-          <a href="/contacto/" class="btn-ghost-dark">Contactar como profesional</a>
+          <a href={withBase('/contacto/')} class="btn-ghost-dark">Contactar como profesional</a>
         </div>
       </div>
     </div>
@@ -157,27 +158,27 @@ const testimonios = [
       <h2>Todo lo que necesitas, por categorías</h2>
       <p class="section-sub">Cinco categorías, un mismo asesoramiento honesto en cada una.</p>
       <div class="grid grid-5">
-        <a href="/productos/#estructura-y-obra" class="cat-card" style="text-decoration:none;">
+        <a href={withBase('/productos/#estructura-y-obra')} class="cat-card" style="text-decoration:none;">
           <div class="cat-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V10l7-7 7 7v11M9 21v-6h6v6"/></svg></div>
           <h4>Estructura y Obra</h4>
           <p>Hormigón, ladrillos, morteros</p>
         </a>
-        <a href="/productos/#acabados-y-revestimientos" class="cat-card" style="text-decoration:none;">
+        <a href={withBase('/productos/#acabados-y-revestimientos')} class="cat-card" style="text-decoration:none;">
           <div class="cat-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></div>
           <h4>Acabados y Revestimientos</h4>
           <p>Pavimentos, gres, parqué</p>
         </a>
-        <a href="/productos/#decoracion-y-pintura" class="cat-card" style="text-decoration:none;">
+        <a href={withBase('/productos/#decoracion-y-pintura')} class="cat-card" style="text-decoration:none;">
           <div class="cat-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="13.5" cy="6.5" r="2.5"/><path d="M17.5 8.5L9 17l-5 1 1-5 8.5-8.5"/></svg></div>
           <h4>Decoración y Pintura</h4>
           <p>Pinturas, esmaltes, brochas</p>
         </a>
-        <a href="/productos/#fontaneria-y-climatizacion" class="cat-card" style="text-decoration:none;">
+        <a href={withBase('/productos/#fontaneria-y-climatizacion')} class="cat-card" style="text-decoration:none;">
           <div class="cat-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C8 6 6 9.5 6 13a6 6 0 0 0 12 0c0-3.5-2-7-6-11Z"/></svg></div>
           <h4>Fontanería y Climatización</h4>
           <p>Grifería, sanitarios, A/A</p>
         </a>
-        <a href="/productos/#jardin-y-exterior" class="cat-card" style="text-decoration:none;">
+        <a href={withBase('/productos/#jardin-y-exterior')} class="cat-card" style="text-decoration:none;">
           <div class="cat-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22V12M12 12C7 12 5 9 5 5c4 0 7 2 7 7Zm0 0c0-5 3-7 7-7 0 4-2 7-7 7Z"/></svg></div>
           <h4>Jardín y Exterior</h4>
           <p>Césped, hormigón impreso</p>
@@ -190,7 +191,7 @@ const testimonios = [
     <div class="wrap">
       <div class="eyebrow-sm">Proveedores</div>
       <h2 style="font-size:24px; margin-bottom:4px;">Marcas con las que trabajamos</h2>
-      <p class="section-sub" style="margin-bottom:0;">Más de 25 fabricantes de referencia. <a href="/proveedores/" style="color:var(--green-dark); font-weight:600; text-decoration:underline;">Ver todas las marcas →</a></p>
+      <p class="section-sub" style="margin-bottom:0;">Más de 25 fabricantes de referencia. <a href={withBase('/proveedores/')} style="color:var(--green-dark); font-weight:600; text-decoration:underline;">Ver todas las marcas →</a></p>
     </div>
     <div class="brand-marquee">
       <div class="brand-marquee-track">
@@ -205,7 +206,7 @@ const testimonios = [
             tabindex={i >= todasLasMarcas.length ? -1 : undefined}
           >
             {marca.logo ? (
-              <img src={marca.logo} alt={marca.nombre} class={`brand-logo${marca.white ? ' brand-logo--white' : ''}`} loading="lazy" />
+              <img src={withBase(marca.logo)} alt={marca.nombre} class={`brand-logo${marca.white ? ' brand-logo--white' : ''}`} loading="lazy" />
             ) : marca.svg ? (
               <PerondaLogo class="brand-logo brand-logo-svg" />
             ) : (
@@ -279,7 +280,7 @@ const testimonios = [
     <div class="final-cta">
       <h2>¿Tienes un proyecto entre manos? Hablemos hoy mismo.</h2>
       <div class="cta-buttons">
-        <a href="/contacto/" class="btn-primary">
+        <a href={withBase('/contacto/')} class="btn-primary">
           Consultar disponibilidad
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </a>
