@@ -4,6 +4,7 @@ import SignatureMark from '../components/SignatureMark.astro';
 import IconInstagram from '../components/IconInstagram.astro';
 import GatedEmbed from '../components/GatedEmbed.astro';
 import PerondaLogo from '../components/PerondaLogo.astro';
+import { todasLasMarcas } from '../data/marcas';
 
 const snapwidgetId = import.meta.env.PUBLIC_SNAPWIDGET_ID || 'WIDGET_ID_PENDIENTE';
 
@@ -182,17 +183,29 @@ const testimonios = [
     <div class="wrap">
       <div class="eyebrow-sm">Proveedores</div>
       <h2 style="font-size:24px; margin-bottom:4px;">Marcas con las que trabajamos</h2>
-      <div class="brands-strip">
-        <a href="https://www.keraben.com/" target="_blank" rel="noopener" class="brand-chip">
-          <img src="/brands/keraben.png" alt="Keraben" class="brand-logo brand-logo--white" />
-        </a>
-        <a href="https://peronda.com/es" target="_blank" rel="noopener" class="brand-chip" aria-label="Peronda">
-          <PerondaLogo class="brand-logo brand-logo-svg" />
-        </a>
-        <a href="https://www.massimagroup.com/" target="_blank" rel="noopener" class="brand-chip">
-          <img src="/brands/massima.png" alt="Massima Surfaces" class="brand-logo brand-logo--white" />
-        </a>
-        <a href="/proveedores/" class="brands-note" style="text-decoration:underline;">Ver todas las marcas →</a>
+      <p class="section-sub" style="margin-bottom:0;">Más de 25 fabricantes de referencia. <a href="/proveedores/" style="color:var(--green-dark); font-weight:600; text-decoration:underline;">Ver todas las marcas →</a></p>
+    </div>
+    <div class="brand-marquee">
+      <div class="brand-marquee-track">
+        {[...todasLasMarcas, ...todasLasMarcas].map((marca, i) => (
+          <a
+            href={marca.url}
+            target="_blank"
+            rel="noopener"
+            class="brand-chip brand-marquee-item"
+            aria-label={marca.nombre}
+            aria-hidden={i >= todasLasMarcas.length ? 'true' : undefined}
+            tabindex={i >= todasLasMarcas.length ? -1 : undefined}
+          >
+            {marca.logo ? (
+              <img src={marca.logo} alt={marca.nombre} class={`brand-logo${marca.white ? ' brand-logo--white' : ''}`} loading="lazy" />
+            ) : marca.svg ? (
+              <PerondaLogo class="brand-logo brand-logo-svg" />
+            ) : (
+              <span class="brand-chip-text">{marca.nombre}</span>
+            )}
+          </a>
+        ))}
       </div>
     </div>
   </section>
