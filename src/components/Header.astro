@@ -38,9 +38,6 @@ const navItems = [
       {navItems.map((item) => (
         <a href={item.href} class={active === item.key ? 'active' : undefined}>
           {item.label}
-          {item.key === 'productos' && (
-            <svg class="caret" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M6 9l6 6 6-6"/></svg>
-          )}
         </a>
       ))}
     </nav>
