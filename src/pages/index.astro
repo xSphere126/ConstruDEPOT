@@ -225,8 +225,9 @@ const testimonios = [
         </div>
       </div>
       <div class="insta-embed-wrap">
-        <!-- Feed en directo vía SnapWidget (gratuito, sin necesidad de API de Instagram).
-             Pasos para activarlo (5 minutos, los hace Pepe una vez):
+        <!-- Feed en directo vía SnapWidget (de pago, no gratuito — confirmado por el
+             cliente; sin necesidad de API de Instagram).
+             Pasos para activarlo una vez decidido el plan:
              1. Entrar en https://snapwidget.com y "Create a Widget" > Instagram Feed
              2. Conectar la cuenta @construdepot_by_quiles
              3. Elegir el estilo "Grid", 4 columnas
@@ -246,7 +247,7 @@ const testimonios = [
         )}
       </div>
       {snapwidgetId === 'WIDGET_ID_PENDIENTE' && (
-        <p style="font-size:12.5px; color:var(--graphite); margin-top:16px; font-family:'Roboto', sans-serif;">⚑ PENDIENTE: activar el widget gratuito en snapwidget.com (5 min) y poner el ID en <code>sitio/.env</code> como <code>PUBLIC_SNAPWIDGET_ID</code>; se actualizará solo con cada publicación nueva. Mientras tanto se ve el mosaico de marcador de arriba.</p>
+        <p style="font-size:12.5px; color:var(--graphite); margin-top:16px; font-family:'Roboto', sans-serif;">⚑ PENDIENTE: SnapWidget es de pago, no gratuito. Decidir si se contrata un plan o se usa una alternativa antes de activar el widget; luego poner el ID en <code>sitio/.env</code> como <code>PUBLIC_SNAPWIDGET_ID</code>. Mientras tanto se ve el mosaico de marcador de arriba.</p>
       )}
     </div>
   </section>
