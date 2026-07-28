@@ -73,11 +73,16 @@ const categorias = [
     </div>
   </section>
 
-  <section>
+  <section style="padding-bottom:0;">
     <div class="wrap">
       <div class="eyebrow-sm">Catálogo por categoría</div>
       <h2>Encuentra tu categoría</h2>
       <p class="section-sub">Trabajamos con primeras marcas. Si no lo tenemos en tienda, te decimos cuándo puede estar disponible. <a href={withBase('/proveedores/')} style="color:var(--green-dark); font-weight:600; text-decoration:underline;">Ver todos los proveedores →</a></p>
+    </div>
+  </section>
+
+  <section style="background:var(--sand);">
+    <div class="wrap">
       <div class="grid" style="gap:24px;">
         {categorias.map((cat) => (
           <div class="card" id={cat.id} style="padding:34px 32px;">
@@ -103,7 +108,7 @@ const categorias = [
     </div>
   </section>
 
-  <section style="background:var(--sand);">
+  <section>
     <div class="wrap">
       <div class="cta-band" style="background:var(--ink);">
         <h3>¿No encuentras lo que buscas? Pregúntanos directamente: conocemos el catálogo mejor que cualquier buscador.</h3>
