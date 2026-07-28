@@ -1,6 +1,5 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import SignatureMark from '../components/SignatureMark.astro';
 import { withBase } from '../lib/url';
 
 const categorias = [
@@ -64,9 +63,9 @@ const categorias = [
   headerVariant="solid"
   active="productos"
 >
-  <section class="page-banner page-banner--photo" style={`--banner-photo:url(${withBase('/images/almacen2.webp')})`}>
-    <SignatureMark class="icon-wm" />
+  <section class="page-banner page-banner--photo">
     <div class="wrap">
+      <img class="page-banner-photo" src={withBase('/images/almacen2.webp')} alt="Palés de material en el almacén de Construdepot by Quiles" loading="eager" />
       <div class="breadcrumb"><a href={withBase('/')}>Inicio</a> · Productos</div>
       <h1>Todo lo que necesitas, por categorías. Sin vueltas.</h1>
       <p>Cinco categorías, un mismo asesoramiento honesto en cada una.</p>

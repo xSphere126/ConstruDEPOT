@@ -1,6 +1,5 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import SignatureMark from '../components/SignatureMark.astro';
 import { withBase } from '../lib/url';
 ---
 
@@ -10,9 +9,9 @@ import { withBase } from '../lib/url';
   headerVariant="solid"
   active="sobre-nosotros"
 >
-  <section class="page-banner page-banner--photo" style={`--banner-photo:url(${withBase('/images/entrada2.webp')})`}>
-    <SignatureMark class="icon-wm" />
+  <section class="page-banner page-banner--photo">
     <div class="wrap">
+      <img class="page-banner-photo" src={withBase('/images/entrada2.webp')} alt="Cartel de entrada de Construdepot by Quiles con horario" loading="eager" />
       <div class="breadcrumb"><a href={withBase('/')}>Inicio</a> · Sobre nosotros</div>
       <h1>Detrás de Construdepot hay un equipo, no solo un almacén</h1>
       <p>Materiales de construcción con nombre y cara conocida en Elche.</p>
