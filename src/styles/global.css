@@ -179,25 +179,28 @@ h1 em{ font-style:normal; color:var(--green); }
    ========================================================================= */
 .page-banner{ position:relative; overflow:hidden; padding:64px 0 56px; background:linear-gradient(135deg, #234012 0%, #1B2A12 55%, #20211D 100%); color:#fff; }
 .page-banner .icon-wm{ position:absolute; right:-4%; top:-18%; width:360px; opacity:.10; display:block; }
-/* Variante con foto real: en vez de estirar la foto a todo el ancho del
-   banner (las fotos disponibles son de 680x510, pensadas para la galería
-   pequeña de Sobre nosotros — a pantalla completa quedan visiblemente
-   borrosas por el escalado), se muestra en un recuadro acotado a la derecha,
-   cerca de su tamaño real, con esquinas redondeadas a juego con las tarjetas
-   del sitio. Así se ve nítida y con sus colores reales, sin necesitar un
-   tinte verde por encima para disimular el desenfoque. Las páginas con foto
-   no llevan <SignatureMark> (era la marca de agua "Q" de fondo): con la foto
-   real ya presente no aportaba nada y recargaba la cabecera. Se mantiene solo
-   en Aviso legal / Privacidad / Cookies, que siguen sin foto. */
-.page-banner .wrap{ position:relative; }
-.page-banner-photo{
-  position:absolute; top:50%; right:0; transform:translateY(-50%);
-  width:400px; max-width:36%; height:200px;
-  object-fit:cover; border-radius:20px 44px 20px 20px;
-  box-shadow:0 16px 36px rgba(0,0,0,.35);
-  z-index:1;
+/* Variante con foto real, tratamiento dúotono: las fotos disponibles son de
+   680x510 (pensadas para la galería pequeña de Sobre nosotros), demasiado
+   pequeñas para un fondo a pantalla completa sin verse borrosas. En vez de
+   reducirlas a una tarjeta pequeña (quedaba pobre y rompía el lenguaje "a
+   pantalla completa" del hero de Inicio) o disimular el desenfoque con un
+   tinte oscuro plano, se recolorea la foto con el verde de marca vía
+   mix-blend-mode:color — conserva la luminosidad real de la foto (sus luces
+   y sombras) pero sustituye su color. Sin el detalle de color/textura fina,
+   el ojo deja de esperar nitidez fotográfica y lo lee como una decisión de
+   diseño, no como un error de escalado; de paso queda unificada con el verde
+   de marca en las 4 páginas. Las páginas con foto no llevan <SignatureMark>
+   (marca de agua "Q"): con la textura de la foto ya presente no aportaba
+   nada. Se mantiene solo en Aviso legal / Privacidad / Cookies, sin foto. */
+.page-banner--photo{
+  background-image:
+    linear-gradient(100deg, rgba(8,14,5,.82) 0%, rgba(8,14,5,.42) 55%, rgba(8,14,5,.12) 100%),
+    linear-gradient(#2E5416, #2E5416),
+    var(--banner-photo);
+  background-blend-mode: normal, color, normal;
+  background-size: cover;
+  background-position: center;
 }
-.page-banner--photo h1{ max-width:660px; }
 .breadcrumb{ font-family:'Roboto', sans-serif; font-size:12px; letter-spacing:.06em; color:#BFEFA0; margin-bottom:14px; position:relative; z-index:2; }
 .breadcrumb a{ color:#BFEFA0; opacity:.8; }
 .breadcrumb a:hover{ opacity:1; text-decoration:underline; }
@@ -530,7 +533,6 @@ footer a:hover{ color:#fff; }
   /* Page banner (interiores) */
   .page-banner{ padding:44px 0 40px; }
   .page-banner h1{ font-size:30px; }
-  .page-banner-photo{ display:none; }
 
   /* Contenido legal */
   .legal-content{ padding:28px 22px; border-radius:16px; }

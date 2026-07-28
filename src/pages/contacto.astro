@@ -22,9 +22,8 @@ const showProfesionalesSection = false;
   headerVariant="solid"
   active="contacto"
 >
-  <section class="page-banner page-banner--photo">
+  <section class="page-banner page-banner--photo" style={`--banner-photo:url(${withBase('/images/oficinas.webp')})`}>
     <div class="wrap">
-      <img class="page-banner-photo" src={withBase('/images/oficinas.webp')} alt="Fachada de las oficinas de Construdepot by Quiles" loading="eager" />
       <div class="breadcrumb"><a href={withBase('/')}>Inicio</a> · Contacto</div>
       <h1>Estamos aquí para ayudarte</h1>
       <p id="banner-sub">Elige cómo prefieres hablar con nosotros.</p>
