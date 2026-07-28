@@ -1,6 +1,5 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import SignatureMark from '../components/SignatureMark.astro';
 import PerondaLogo from '../components/PerondaLogo.astro';
 import { grupos } from '../data/marcas';
 import { withBase } from '../lib/url';
@@ -11,9 +10,9 @@ import { withBase } from '../lib/url';
   description="Las marcas con las que trabajamos en Construdepot by Quiles: azulejo y pavimento, baños, Pladur y mucho más."
   headerVariant="solid"
 >
-  <section class="page-banner page-banner--photo" style={`--banner-photo:url(${withBase('/images/almacen.webp')})`}>
-    <SignatureMark class="icon-wm" />
+  <section class="page-banner page-banner--photo">
     <div class="wrap">
+      <img class="page-banner-photo" src={withBase('/images/almacen.webp')} alt="Pasillo de exposición con paneles de muestra de varias marcas" loading="eager" />
       <div class="breadcrumb"><a href={withBase('/')}>Inicio</a> · <a href={withBase('/productos/')}>Productos</a> · Proveedores</div>
       <h1>Las marcas con las que trabajamos</h1>
       <p>Trabajamos con fabricantes de referencia en cada categoría. Si buscas una marca concreta, pregúntanos.</p>
