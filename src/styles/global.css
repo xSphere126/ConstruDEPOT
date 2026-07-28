@@ -180,16 +180,21 @@ h1 em{ font-style:normal; color:var(--green); }
 .page-banner{ position:relative; overflow:hidden; padding:64px 0 56px; background:linear-gradient(135deg, #234012 0%, #1B2A12 55%, #20211D 100%); color:#fff; }
 .page-banner .icon-wm{ position:absolute; right:-4%; top:-18%; width:360px; opacity:.10; display:block; }
 /* Variante con foto real de fondo: la propia imagen se pasa por la custom
-   property --banner-photo (style inline en la página) y se dibuja debajo de
-   un degradado de marca que hace de scrim para que el texto blanco siga
-   siendo legible. Sin --banner-photo esta clase no tiene efecto. */
+   property --banner-photo (style inline en la página). El scrim es un
+   degradado direccional (oscuro donde va el texto, a la izquierda; más claro
+   hacia la derecha) en vez de un tinte plano, para que la foto se vea de
+   verdad y no quede reducida a una mancha oscura apenas perceptible. Sin
+   --banner-photo esta clase no tiene efecto. La marca de agua (.icon-wm) se
+   oculta aquí: dos elementos decorativos de fondo compitiendo (foto + marca
+   de agua) recargaban la cabecera sin aportar nada.*/
 .page-banner--photo{
   background-image:
-    linear-gradient(135deg, rgba(35,64,18,.90) 0%, rgba(27,42,18,.92) 55%, rgba(32,33,29,.95) 100%),
+    linear-gradient(100deg, rgba(18,28,11,.86) 0%, rgba(18,28,11,.68) 45%, rgba(18,28,11,.42) 75%, rgba(18,28,11,.30) 100%),
     var(--banner-photo);
   background-size: cover;
   background-position: center;
 }
+.page-banner--photo .icon-wm{ display:none; }
 .breadcrumb{ font-family:'Roboto', sans-serif; font-size:12px; letter-spacing:.06em; color:#BFEFA0; margin-bottom:14px; position:relative; z-index:2; }
 .breadcrumb a{ color:#BFEFA0; opacity:.8; }
 .breadcrumb a:hover{ opacity:1; text-decoration:underline; }
