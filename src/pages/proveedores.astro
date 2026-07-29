@@ -22,7 +22,7 @@ import { withBase } from '../lib/url';
     <div class="wrap">
       {grupos.map((grupo) => (
         <div class="brand-group">
-          <div class="eyebrow-sm">{grupo.nombre}</div>
+          <h2 class="eyebrow-sm">{grupo.nombre}</h2>
           <div class="brand-grid">
             {grupo.marcas.map((marca) => (
               <a href={marca.url} target={marca.url !== '#' ? '_blank' : undefined} rel={marca.url !== '#' ? 'noopener' : undefined} class="brand-chip brand-tile" aria-label={marca.nombre}>

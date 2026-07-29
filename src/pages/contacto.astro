@@ -64,7 +64,7 @@ const showProfesionalesSection = false;
               <textarea id="f-mensaje" name="mensaje" placeholder="Cuéntanos qué necesitas" rows="4" style="width:100%; margin-top:6px; padding:14px 16px; border-radius:10px; border:1px solid var(--line); font-family:inherit; font-size:14.5px; resize:vertical;"></textarea>
             </div>
             <button type="submit" class="btn-primary" style="justify-content:center;">Enviar consulta →</button>
-            <p id="form-status" role="status" style="font-size:12.5px; color:#6b6c64;">Respondemos en el mismo día laborable. Para consultas urgentes, WhatsApp es más rápido que el formulario.</p>
+            <p id="form-status" role="status" style="font-size:12.5px; color:var(--graphite);">Respondemos en el mismo día laborable. Para consultas urgentes, WhatsApp es más rápido que el formulario.</p>
             {!formspreeId && (
               <div class="pending">Falta crear una cuenta en formspree.io y poner el ID del formulario en <code>sitio/.env</code> como <code>PUBLIC_FORMSPREE_ID</code>. Mientras tanto, los envíos no llegan a ningún sitio.</div>
             )}
