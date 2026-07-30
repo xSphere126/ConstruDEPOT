@@ -1,6 +1,8 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 
+import sitemap from '@astrojs/sitemap';
+
 // Despliegue temporal en GitHub Pages (repo ConstruDEPOT) mientras no hay dominio
 // propio. Un repo de proyecto se sirve bajo una subruta (usuario.github.io/ConstruDEPOT/),
 // así que base/site solo se activan cuando el workflow de despliegue pone
@@ -11,11 +13,14 @@ const isGithubPages = process.env.GITHUB_PAGES === 'true';
 // https://astro.build/config
 export default defineConfig({
   trailingSlash: 'always',
+
+  // Esto activa canonical/OG absolutos en BaseLayout.astro apuntando al
+  // dominio real. Si más adelante se sirve también bajo www.construdepot.es,
+  // configurar la redirección 301 en IONOS hacia el dominio sin "www" (el
+  // que está aquí), para que no haya dos versiones indexables por Google.
   ...(isGithubPages
     ? { site: 'https://xsphere126.github.io', base: '/ConstruDEPOT' }
-    : {}),
-  // Cuando se elija el dominio definitivo, descomentar y ajustar:
-  // site: 'https://www.construdepot-real-domain.es',
-  // Esto activa automáticamente canonical/OG absolutos en BaseLayout.astro.
-  // Añadir también la integración de sitemap: npx astro add sitemap
+    : { site: 'https://construdepot.es' }),
+
+  integrations: [sitemap()]
 });
