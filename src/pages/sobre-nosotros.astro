@@ -234,10 +234,17 @@ const showTeamSection = true;
   // Carruseles de "Nuestro espacio": foto activa centrada a tamaño completo,
   // con la anterior/siguiente asomando a los lados (scroll-snap nativo).
   // Avanza sola cada 4s (bucle infinito, misma idea que .brand-marquee) y se
-  // detiene al poner el cursor encima. Los botones también funcionan y
-  // reinician el temporizador para no pelear con el avance automático.
+  // detiene al poner el cursor encima, al enfocar algo dentro con teclado, o
+  // mientras el lightbox está abierto encima. Los botones también funcionan
+  // y reinician el temporizador para no pelear con el avance automático.
   const AUTO_ADVANCE_MS = 4000;
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const tracks = document.querySelectorAll<HTMLElement>('[data-carousel]');
+  const autoplayControls: { stop: () => void; start: () => void }[] = [];
+  // Mientras el lightbox está abierto, ningún carrusel de fondo debe
+  // rearrancar su auto-avance — ni siquiera cuando el ratón lo abandona
+  // camino de los controles del lightbox (dispara mouseleave igualmente).
+  let lightboxIsOpen = false;
 
   tracks.forEach((track) => {
     const wrap = track.closest('.carousel-wrap');
@@ -267,22 +274,32 @@ const showTeamSection = true;
 
     const show = (i: number) => {
       index = (i + slides.length) % slides.length;
-      slides[index].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+      slides[index].scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth', inline: 'center', block: 'nearest' });
     };
     const step = (dir: number) => show(index + dir);
 
     const start = () => {
       stop();
+      // Ni el ratón ni el teclado deben reactivar el avance automático
+      // mientras el lightbox tapa el carrusel.
+      if (prefersReducedMotion || lightboxIsOpen) return;
       timer = setInterval(() => step(1), AUTO_ADVANCE_MS);
     };
     const stop = () => {
       if (timer) clearInterval(timer);
     };
+    autoplayControls.push({ stop, start });
 
     prevBtn?.addEventListener('click', () => { step(-1); start(); });
     nextBtn?.addEventListener('click', () => { step(1); start(); });
     wrap?.addEventListener('mouseenter', stop);
     wrap?.addEventListener('mouseleave', start);
+    // Un usuario de teclado que tabula hasta una flecha o una foto no debe
+    // ver cómo el carrusel avanza solo debajo de su foco.
+    wrap?.addEventListener('focusin', stop);
+    wrap?.addEventListener('focusout', (e) => {
+      if (!wrap.contains((e as FocusEvent).relatedTarget as Node)) start();
+    });
     track.addEventListener('scroll', () => {
       if (scrollRaf) cancelAnimationFrame(scrollRaf);
       scrollRaf = requestAnimationFrame(markActive);
@@ -311,17 +328,38 @@ const showTeamSection = true;
     showImage(currentImages.indexOf(img));
     lightbox?.removeAttribute('hidden');
     document.body.style.overflow = 'hidden';
+    // Con el lightbox encima, los carruseles de fondo no deben seguir
+    // avanzando solos: al volver, la foto tiene que seguir donde estaba.
+    // El flag evita que un mouseleave/focusout disparado por el propio
+    // clic (el cursor sale del carrusel camino de los controles del
+    // lightbox) los reactive por debajo mientras siguen tapados.
+    lightboxIsOpen = true;
+    autoplayControls.forEach((c) => c.stop());
   };
 
   const closeLightbox = () => {
     lightbox?.setAttribute('hidden', '');
     document.body.style.overflow = '';
+    lightboxIsOpen = false;
+    autoplayControls.forEach((c) => c.start());
   };
 
   tracks.forEach((track) => {
     track.querySelectorAll<HTMLImageElement>('img').forEach((img) => {
       img.style.cursor = 'zoom-in';
+      // Foco y activación por teclado (Enter/Espacio), no solo clic de
+      // ratón: si no, quien navega con teclado no puede ver las fotos
+      // en grande.
+      img.tabIndex = 0;
+      img.setAttribute('role', 'button');
+      img.setAttribute('aria-label', `Ver foto en grande: ${img.alt}`);
       img.addEventListener('click', () => openLightbox(track, img));
+      img.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          openLightbox(track, img);
+        }
+      });
     });
   });
 
