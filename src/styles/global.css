@@ -391,10 +391,11 @@ table.cond td{ padding:16px; border-bottom:1px solid var(--line); font-size:14.5
    se nota menos que una caja de aviso, pero sigue quedando marcado como pendiente. */
 .placeholder-text{ font-style:italic; color:#6b6c64; }
 .placeholder-note{ display:inline-flex; align-items:center; gap:5px; font-family:'Roboto', sans-serif; font-size:10.5px; letter-spacing:.04em; text-transform:uppercase; color:var(--amber); background:rgba(156,82,22,.08); border:1px solid rgba(156,82,22,.28); padding:4px 10px; border-radius:999px; margin-top:10px; }
-/* Avatares genéricos del equipo: cada persona lleva un color e ícono ligeramente
-   distintos para diferenciarse entre sí, sin copiar el aspecto de nadie real —
-   ver conversación sobre privacidad en el equipo. */
-.team-avatar{ width:72px; height:72px; border-radius:50%; display:flex; align-items:center; justify-content:center; margin-bottom:16px; color:#fff; cursor:default; transition:transform .25s ease, box-shadow .25s ease; }
+/* Avatares ilustrados del equipo (uno por persona real, ver comentario en
+   sobre-nosotros.astro). overflow:hidden es necesario: el <svg> interno es
+   cuadrado y, sin recortarlo, sus esquinas transparentes pueden asomar por
+   fuera del círculo durante la animación de flotación. */
+.team-avatar{ width:92px; height:92px; border-radius:50%; display:flex; align-items:center; justify-content:center; margin-bottom:16px; color:#fff; cursor:default; overflow:hidden; transition:transform .25s ease, box-shadow .25s ease; }
 .team-avatar--1{ background:var(--green-dark); }
 .team-avatar--2{ background:var(--amber); }
 .team-avatar--3{ background:var(--ink); }
@@ -412,7 +413,14 @@ table.cond td{ padding:16px; border-bottom:1px solid var(--line); font-size:14.5
   50%{ transform:translateY(-3px) rotate(-1.5deg); }
 }
 
-.avatar-eyes{ transform-box:fill-box; transform-origin:center; animation:team-avatar-blink 5.5s ease-in-out infinite; }
+/* transform-origin en coordenadas absolutas del viewBox (no fill-box): en
+   algunos navegadores (Safari/iOS incluido) fill-box sobre un <g> dentro de
+   un <mask> no calcula bien su propia caja, y el parpadeo escalaba desde el
+   centro de todo el avatar en vez del centro de los ojos — los ojos parecían
+   flotar fuera de la cara. Con el origen fijo en 132,112 (centro real de los
+   dos ojos dentro del viewBox 0 0 280 280) el parpadeo queda anclado siempre
+   en el sitio correcto, sin depender de ese cálculo. */
+.avatar-eyes{ transform-origin:132px 112px; animation:team-avatar-blink 5.5s ease-in-out infinite; }
 .team-avatar--2 .avatar-eyes{ animation-delay:1.6s; }
 .team-avatar--3 .avatar-eyes{ animation-delay:3.2s; }
 @keyframes team-avatar-blink{
