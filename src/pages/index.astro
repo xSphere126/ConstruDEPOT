@@ -107,7 +107,7 @@ const testimonios = [
     </div>
   </section>
 
-  <section class="home-section" style="padding-top:52px; padding-bottom:52px;">
+  <section class="home-section" style="background:var(--sand); padding-top:52px; padding-bottom:52px;">
     <div class="wrap">
       <div class="eyebrow-sm">Testimonios</div>
       <h2>Lo que dicen nuestros clientes</h2>
@@ -262,6 +262,11 @@ const testimonios = [
     </section>
   )}
 
+  {/* Se mantiene en crema a propósito, aunque con Instagram oculto queda
+      pegada a "Marcas con las que trabajamos" (también crema): el mapa usa
+      GatedEmbed, cuyo degradado de marcador ya es tono arena — ponerle
+      fondo arena a la sección le quitaría contraste al marcador (mismo
+      motivo por el que la sección del Mapa en Contacto se dejó en crema). */}
   <section class="home-section">
     <div class="wrap">
       <div class="eyebrow-sm">Cómo llegar</div>
@@ -276,7 +281,7 @@ const testimonios = [
     </div>
   </section>
 
-  <section class="home-section" style="padding-top:0;">
+  <section class="home-section" style="padding-top:0; background:var(--sand);">
     <div class="final-cta">
       <h2>¿Tienes un proyecto entre manos? Hablemos hoy mismo.</h2>
       <div class="cta-buttons">
