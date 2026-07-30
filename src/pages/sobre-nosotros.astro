@@ -43,26 +43,48 @@ const showTeamSection = true;
       <div class="photo-group">
         <h3 style="font-size:16px; margin:28px 0 4px;">Exposición</h3>
         <p style="font-size:13.5px; color:#6b6c64; margin-bottom:0;">Una amplia exposición para poder reformar tu vivienda, baño, cocina…</p>
-        <div class="photo-grid">
-          <img src={withBase('/images/intbaño4.jpg')} alt="Exposición de baños con mueble de madera, sanitarios y espejo redondo iluminado" loading="lazy" />
-          <img src={withBase('/images/cocina.jpg')} alt="Exposición de cocina con isla de madera y grifería Gessi" loading="lazy" />
-          <img src={withBase('/images/intazulejos.jpg')} alt="Pared de muestras de azulejo y pavimento de varias marcas" loading="lazy" />
+        <div class="carousel-wrap">
+          <button type="button" class="carousel-btn carousel-btn--prev" data-carousel-prev aria-label="Ver fotos anteriores de la exposición">‹</button>
+          <div class="carousel" data-carousel>
+            <img src={withBase('/images/intbaño4.jpg')} alt="Exposición de baños con mueble de madera, sanitarios y espejo redondo iluminado" loading="lazy" />
+            <img src={withBase('/images/cocina.jpg')} alt="Exposición de cocina con isla de madera y grifería Gessi" loading="lazy" />
+            <img src={withBase('/images/intazulejos.jpg')} alt="Pared de muestras de azulejo y pavimento de varias marcas" loading="lazy" />
+            <img src={withBase('/images/mamparas.jpg')} alt="Exposición de mamparas de ducha de varios acabados" loading="lazy" />
+            <img src={withBase('/images/intbaño2.jpg')} alt="Baño de exposición con pared de piedra oscura y ducha con mampara" loading="lazy" />
+            <img src={withBase('/images/grifos.jpg')} alt="Expositor de griferías y muestras de azulejo Keraben" loading="lazy" />
+            <img src={withBase('/images/intbaño5.jpg')} alt="Baño de exposición con mueble en tonos madera y grifería dorada" loading="lazy" />
+            <img src={withBase('/images/matint.jpg')} alt="Exposición de baños con doble lavabo en mármol y espejos ovalados" loading="lazy" />
+          </div>
+          <button type="button" class="carousel-btn carousel-btn--next" data-carousel-next aria-label="Ver más fotos de la exposición">›</button>
         </div>
       </div>
 
       <div class="photo-group">
         <h3 style="font-size:16px; margin:28px 0 4px;">Almacén</h3>
         <p style="font-size:13.5px; color:#6b6c64; margin-bottom:0;">Disponemos de un patio de 10.000 m² donde almacenamos todo tipo de producto para que puedas cargar palets completos de cualquier producto que puedas imaginar: vallas, fachadas, zócalos, jardines, cerramientos, etc.</p>
-        <div class="photo-grid">
-          <img src={withBase('/images/matexterior.jpg')} alt="Patio exterior de 10.000 m² con palets de ladrillo y bloque listos para cargar" loading="lazy" />
-          <img src={withBase('/images/matalmacen8.jpg')} alt="Nave de almacén con stock de placas de Pladur y Escayescos" loading="lazy" />
-          <img src={withBase('/images/exteriorcargarapida.jpg')} alt="Fachada de Construdepot con zona de carga y descarga rápida" loading="lazy" />
+        <div class="carousel-wrap">
+          <button type="button" class="carousel-btn carousel-btn--prev" data-carousel-prev aria-label="Ver fotos anteriores del almacén">‹</button>
+          <div class="carousel" data-carousel>
+            <img src={withBase('/images/matexterior.jpg')} alt="Patio exterior de 10.000 m² con palets de ladrillo y bloque listos para cargar" loading="lazy" />
+            <img src={withBase('/images/matalmacen8.jpg')} alt="Nave de almacén con stock de placas de Pladur y Escayescos" loading="lazy" />
+            <img src={withBase('/images/exteriorcargarapida.jpg')} alt="Fachada de Construdepot con zona de carga y descarga rápida" loading="lazy" />
+            <img src={withBase('/images/matalmacen3.jpg')} alt="Nave de almacén con sacos de cemento y mortero apilados por color" loading="lazy" />
+            <img src={withBase('/images/matalmacen5.jpg')} alt="Nave de almacén con palés de ladrillo cerámico bajo cartel de Ladrillos" loading="lazy" />
+            <img src={withBase('/images/matexterior4.jpg')} alt="Patio exterior con bloques de hormigón apilados y palmera al fondo" loading="lazy" />
+            <img src={withBase('/images/matalmacen2.jpg')} alt="Nave de almacén con perfilería y placas de Pladur en estanterías" loading="lazy" />
+            <img src={withBase('/images/matalmacen9.jpg')} alt="Nave de almacén con estanterías de picking y pasillo central" loading="lazy" />
+          </div>
+          <button type="button" class="carousel-btn carousel-btn--next" data-carousel-next aria-label="Ver más fotos del almacén">›</button>
         </div>
       </div>
     </div>
   </section>
 
-  <section>
+  {/* Arena a propósito: "Nuestro espacio" (justo antes) también es arena.
+      No hay forma de alternar perfectamente crema/arena aquí sin romper
+      "El equipo" (crema, fijado así a petición expresa) — se absorbe el
+      corte de la alternancia aquí en vez de ahí. */}
+  <section style="background:var(--sand);">
     <div class="wrap">
       <div class="eyebrow-sm">Lo que nos define</div>
       <h2>Nuestros valores</h2>
@@ -171,7 +193,7 @@ const showTeamSection = true;
   </section>
   )}
 
-  <section>
+  <section style="background:var(--sand);">
     <div class="wrap">
       <div class="cta-band">
         <h3>¿Tienes un proyecto entre manos? Ven a vernos o escríbenos, te asesoramos sin compromiso.</h3>
@@ -180,3 +202,21 @@ const showTeamSection = true;
     </div>
   </section>
 </BaseLayout>
+
+<script>
+  // Carruseles de "Nuestro espacio": los botones avanzan/retroceden un ancho
+  // de imagen; el scroll-snap nativo hace el resto (incluido swipe táctil,
+  // que no necesita JS en absoluto).
+  document.querySelectorAll<HTMLElement>('[data-carousel]').forEach((track) => {
+    const wrap = track.closest('.carousel-wrap');
+    const prevBtn = wrap?.querySelector<HTMLButtonElement>('[data-carousel-prev]');
+    const nextBtn = wrap?.querySelector<HTMLButtonElement>('[data-carousel-next]');
+    const scrollByStep = (dir: number) => {
+      const img = track.querySelector('img');
+      const step = (img?.clientWidth ?? 300) + 16;
+      track.scrollBy({ left: step * dir, behavior: 'smooth' });
+    };
+    prevBtn?.addEventListener('click', () => scrollByStep(-1));
+    nextBtn?.addEventListener('click', () => scrollByStep(1));
+  });
+</script>
