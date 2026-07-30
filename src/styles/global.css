@@ -399,6 +399,8 @@ table.cond td{ padding:16px; border-bottom:1px solid var(--line); font-size:14.5
 .team-avatar--1{ background:var(--green-dark); }
 .team-avatar--2{ background:var(--amber); }
 .team-avatar--3{ background:var(--ink); }
+.team-avatar--4{ background:var(--green-deep); }
+.team-avatar--5{ background:var(--graphite); }
 .team-avatar:hover{ transform:scale(1.08); box-shadow:0 10px 22px rgba(0,0,0,.22); }
 
 /* Toque de vida en los avatares del equipo: flotan suavemente y parpadean de vez
@@ -408,21 +410,28 @@ table.cond td{ padding:16px; border-bottom:1px solid var(--line); font-size:14.5
 .team-avatar-float{ display:flex; animation:team-avatar-bob 3.6s ease-in-out infinite; }
 .team-avatar--2 .team-avatar-float{ animation-delay:.5s; animation-duration:4s; }
 .team-avatar--3 .team-avatar-float{ animation-delay:1s; animation-duration:3.3s; }
+.team-avatar--4 .team-avatar-float{ animation-delay:1.5s; animation-duration:3.8s; }
+.team-avatar--5 .team-avatar-float{ animation-delay:2s; animation-duration:3.5s; }
 @keyframes team-avatar-bob{
   0%, 100%{ transform:translateY(0) rotate(0deg); }
   50%{ transform:translateY(-3px) rotate(-1.5deg); }
 }
 
-/* transform-origin en coordenadas absolutas del viewBox (no fill-box): en
-   algunos navegadores (Safari/iOS incluido) fill-box sobre un <g> dentro de
-   un <mask> no calcula bien su propia caja, y el parpadeo escalaba desde el
-   centro de todo el avatar en vez del centro de los ojos — los ojos parecían
-   flotar fuera de la cara. Con el origen fijo en 132,112 (centro real de los
-   dos ojos dentro del viewBox 0 0 280 280) el parpadeo queda anclado siempre
-   en el sitio correcto, sin depender de ese cálculo. */
-.avatar-eyes{ transform-origin:132px 112px; animation:team-avatar-blink 5.5s ease-in-out infinite; }
+/* El intento anterior (transform-origin en px absolutos + transform-box
+   por defecto) seguía fallando: con transform-box:view-box, un desplazamiento
+   en px se interpreta como offset desde el borde de la "reference box", que
+   cambió cuando se recortó el viewBox para acercar la cara (ver el <svg> más
+   abajo) — así que el origen ya no coincidía con el centro real de los ojos
+   y volvían a "flotar" en el parpadeo. Para que sea robusto de verdad en
+   cualquier navegador, el propio path de los ojos está desplazado (ver el
+   svg) para que su centro caiga en el (0,0) local del grupo — así
+   transform-origin:0 0 es siempre correcto, sin depender de cómo cada
+   motor calcule la reference box. */
+.avatar-eyes{ transform-origin:0 0; animation:team-avatar-blink 5.5s ease-in-out infinite; }
 .team-avatar--2 .avatar-eyes{ animation-delay:1.6s; }
 .team-avatar--3 .avatar-eyes{ animation-delay:3.2s; }
+.team-avatar--4 .avatar-eyes{ animation-delay:2.4s; }
+.team-avatar--5 .avatar-eyes{ animation-delay:4.5s; }
 @keyframes team-avatar-blink{
   0%, 92%, 100%{ transform:scaleY(1); }
   95%{ transform:scaleY(.1); }
