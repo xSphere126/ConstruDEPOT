@@ -95,11 +95,11 @@ const showTeamSection = true;
         </div>
         <div class="card">
           <h3>Asesoramiento honesto</h3>
-          <p>Te decimos lo que necesitas, no lo que nos interesa vender más. Si un material no encaja con tu proyecto, te lo decimos.</p>
+          <p>Te decimos lo que necesitas, no lo que nos interesa vender más. Si un material no es el adecuado para tu proyecto, te asesoramos para encontrarlo.</p>
         </div>
         <div class="card">
           <h3>Compromiso con Elche</h3>
-          <p>Somos de aquí. Conocemos las obras del barrio y lo que necesita cada tipo de reforma en la zona.</p>
+          <p>Somos de aquí. Conocemos las obras de la zona y lo que necesita cada tipo de reforma.</p>
         </div>
       </div>
     </div>
@@ -201,22 +201,89 @@ const showTeamSection = true;
       </div>
     </div>
   </section>
+
+  <div class="lightbox" data-lightbox hidden>
+    <button type="button" class="lightbox-close" data-lightbox-close aria-label="Cerrar">✕</button>
+    <button type="button" class="lightbox-nav lightbox-nav--prev" data-lightbox-prev aria-label="Foto anterior">‹</button>
+    <img data-lightbox-img alt="" />
+    <button type="button" class="lightbox-nav lightbox-nav--next" data-lightbox-next aria-label="Foto siguiente">›</button>
+  </div>
 </BaseLayout>
 
 <script>
   // Carruseles de "Nuestro espacio": los botones avanzan/retroceden un ancho
-  // de imagen; el scroll-snap nativo hace el resto (incluido swipe táctil,
-  // que no necesita JS en absoluto).
-  document.querySelectorAll<HTMLElement>('[data-carousel]').forEach((track) => {
+  // de imagen. Bucle infinito: al llegar al final, "next" vuelve a saltar al
+  // principio (y "prev" desde el principio salta al final) — el scroll-snap
+  // nativo sigue haciendo el resto (incluido swipe táctil sin JS).
+  const tracks = document.querySelectorAll<HTMLElement>('[data-carousel]');
+
+  tracks.forEach((track) => {
     const wrap = track.closest('.carousel-wrap');
     const prevBtn = wrap?.querySelector<HTMLButtonElement>('[data-carousel-prev]');
     const nextBtn = wrap?.querySelector<HTMLButtonElement>('[data-carousel-next]');
-    const scrollByStep = (dir: number) => {
+
+    const atEnd = () => track.scrollLeft + track.clientWidth >= track.scrollWidth - 4;
+    const atStart = () => track.scrollLeft <= 4;
+
+    const step = (dir: number) => {
       const img = track.querySelector('img');
-      const step = (img?.clientWidth ?? 300) + 16;
-      track.scrollBy({ left: step * dir, behavior: 'smooth' });
+      const width = (img?.clientWidth ?? 300) + 16;
+      if (dir > 0 && atEnd()) {
+        track.scrollTo({ left: 0, behavior: 'smooth' });
+      } else if (dir < 0 && atStart()) {
+        track.scrollTo({ left: track.scrollWidth, behavior: 'smooth' });
+      } else {
+        track.scrollBy({ left: width * dir, behavior: 'smooth' });
+      }
     };
-    prevBtn?.addEventListener('click', () => scrollByStep(-1));
-    nextBtn?.addEventListener('click', () => scrollByStep(1));
+    prevBtn?.addEventListener('click', () => step(-1));
+    nextBtn?.addEventListener('click', () => step(1));
+  });
+
+  // Lightbox: clic en cualquier foto de un carrusel la abre a tamaño grande,
+  // con flechas para pasar a la siguiente/anterior sin cerrarla.
+  const lightbox = document.querySelector<HTMLElement>('[data-lightbox]');
+  const lightboxImg = lightbox?.querySelector<HTMLImageElement>('[data-lightbox-img]');
+  let currentImages: HTMLImageElement[] = [];
+  let currentIndex = 0;
+
+  const showImage = (index: number) => {
+    if (!lightboxImg || currentImages.length === 0) return;
+    currentIndex = (index + currentImages.length) % currentImages.length;
+    const src = currentImages[currentIndex].currentSrc || currentImages[currentIndex].src;
+    lightboxImg.src = src;
+    lightboxImg.alt = currentImages[currentIndex].alt;
+  };
+
+  const openLightbox = (track: HTMLElement, img: HTMLImageElement) => {
+    currentImages = Array.from(track.querySelectorAll('img'));
+    showImage(currentImages.indexOf(img));
+    lightbox?.removeAttribute('hidden');
+    document.body.style.overflow = 'hidden';
+  };
+
+  const closeLightbox = () => {
+    lightbox?.setAttribute('hidden', '');
+    document.body.style.overflow = '';
+  };
+
+  tracks.forEach((track) => {
+    track.querySelectorAll<HTMLImageElement>('img').forEach((img) => {
+      img.style.cursor = 'zoom-in';
+      img.addEventListener('click', () => openLightbox(track, img));
+    });
+  });
+
+  lightbox?.querySelector('[data-lightbox-close]')?.addEventListener('click', closeLightbox);
+  lightbox?.querySelector('[data-lightbox-prev]')?.addEventListener('click', () => showImage(currentIndex - 1));
+  lightbox?.querySelector('[data-lightbox-next]')?.addEventListener('click', () => showImage(currentIndex + 1));
+  lightbox?.addEventListener('click', (e) => {
+    if (e.target === lightbox) closeLightbox();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (lightbox?.hasAttribute('hidden')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') showImage(currentIndex - 1);
+    if (e.key === 'ArrowRight') showImage(currentIndex + 1);
   });
 </script>
