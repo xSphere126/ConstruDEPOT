@@ -1,6 +1,5 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import SignatureMark from '../components/SignatureMark.astro';
 import { withBase } from '../lib/url';
 ---
 
@@ -9,8 +8,7 @@ import { withBase } from '../lib/url';
   description="Cómo trata Construdepot by Quiles los datos personales de quienes usan este sitio web, conforme al RGPD y la LOPDGDD."
   headerVariant="solid"
 >
-  <section class="page-banner">
-    <SignatureMark class="icon-wm" />
+  <section class="page-banner page-banner--photo" style={`--banner-photo:url(${withBase('/images/matexterior3.jpg')})`}>
     <div class="wrap">
       <div class="breadcrumb"><a href={withBase('/')}>Inicio</a> · Política de privacidad</div>
       <h1>Política de privacidad</h1>
