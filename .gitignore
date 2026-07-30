@@ -17,6 +17,10 @@ pnpm-debug.log*
 .env
 .env.production
 
+# credenciales SMTP del formulario de contacto — se sube a mano por FTP al
+# servidor, nunca al repositorio (es público). Ver public/config.example.php.
+public/config.local.php
+
 # macOS-specific files
 .DS_Store
 
