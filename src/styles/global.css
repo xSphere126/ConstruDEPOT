@@ -345,16 +345,22 @@ body.home .btn-primary:hover{ background:var(--green-dark); color:#fff; }
 /* Carrusel de fotos (Exposición / Almacén en Sobre nosotros): scroll-snap
    nativo en vez de una librería — funciona con swipe táctil solo, los
    botones son un extra para ratón/teclado. */
-.carousel-wrap{ position:relative; margin-top:16px; }
-.carousel{ display:flex; gap:16px; overflow-x:auto; scroll-snap-type:x mandatory; scroll-behavior:smooth; padding-bottom:4px; scrollbar-width:none; }
-.carousel::-webkit-scrollbar{ display:none; }
-.carousel img{ flex:0 0 auto; width:min(78vw, 340px); height:260px; object-fit:cover; border-radius:20px 44px 20px 20px; display:block; scroll-snap-align:start; }
-.carousel-btn{ position:absolute; top:50%; transform:translateY(-50%); width:44px; height:44px; border-radius:50%; border:1px solid var(--line); background:var(--cream-card); color:var(--ink); display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 6px 16px rgba(0,0,0,.12); transition:background .15s ease; }
+/* Carrusel de una foto grande y centrada, con avance automático (se detiene
+   al pasar el cursor por encima — misma lógica que .brand-marquee) en vez
+   del scroll-strip de miniaturas de antes. */
+.carousel-wrap{ position:relative; margin-top:16px; max-width:760px; }
+.carousel{ position:relative; height:440px; border-radius:20px 44px 20px 20px; overflow:hidden; background:var(--cream-card); }
+.carousel img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0; pointer-events:none; transition:opacity .6s ease; display:block; }
+.carousel img.is-active{ opacity:1; pointer-events:auto; }
+.carousel-btn{ position:absolute; top:50%; transform:translateY(-50%); width:44px; height:44px; border-radius:50%; border:1px solid var(--line); background:var(--cream-card); color:var(--ink); display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 6px 16px rgba(0,0,0,.12); transition:background .15s ease; z-index:2; }
 .carousel-btn:hover{ background:var(--cream); }
 .carousel-btn--prev{ left:-18px; }
 .carousel-btn--next{ right:-18px; }
 @media (max-width: 640px){
-  .carousel-btn{ display:none; }
+  .carousel{ height:280px; }
+  .carousel-btn{ width:36px; height:36px; }
+  .carousel-btn--prev{ left:8px; }
+  .carousel-btn--next{ right:8px; }
 }
 
 /* Lightbox: overlay simple, sin dependencias externas. */
