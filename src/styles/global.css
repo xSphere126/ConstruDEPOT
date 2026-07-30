@@ -407,7 +407,12 @@ table.cond td{ padding:16px; border-bottom:1px solid var(--line); font-size:14.5
    en cuando, cada uno con su propio ritmo para que no se muevan a la vez. La
    flotación vive en un envoltorio interno (no en .team-avatar) para no pelear
    con el transform:scale() del hover en el mismo elemento. */
-.team-avatar-float{ display:flex; animation:team-avatar-bob 3.6s ease-in-out infinite; }
+/* width/height:100% son necesarios aquí: sin un tamaño explícito en este
+   envoltorio, el <img> de los avatares con foto (que pide 100%/100% de su
+   contenedor) no tenía contra qué resolver ese porcentaje y quedaba algo
+   más pequeño que el círculo de 92px — dejaba asomar el color de fondo de
+   .team-avatar en el borde, mucho más visible al escalar en el hover. */
+.team-avatar-float{ display:flex; width:100%; height:100%; animation:team-avatar-bob 3.6s ease-in-out infinite; }
 .team-avatar--2 .team-avatar-float{ animation-delay:.5s; animation-duration:4s; }
 .team-avatar--3 .team-avatar-float{ animation-delay:1s; animation-duration:3.3s; }
 .team-avatar--4 .team-avatar-float{ animation-delay:1.5s; animation-duration:3.8s; }
