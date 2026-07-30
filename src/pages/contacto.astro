@@ -3,7 +3,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import GatedEmbed from '../components/GatedEmbed.astro';
 import { withBase } from '../lib/url';
 
-const formspreeId = import.meta.env.PUBLIC_FORMSPREE_ID || '';
 // Sección "Para profesionales" oculta a petición del cliente: la tabla de
 // condiciones (plazos, facturación, zona de reparto, contacto directo) sigue
 // sin datos reales y las 4 filas en "A concretar con el equipo" transmitían
@@ -37,7 +36,7 @@ const showProfesionalesSection = false;
         <div>
           <div class="eyebrow-sm">Formulario</div>
           <h2>Cuéntanos qué necesitas</h2>
-          <form id="contactForm" data-formspree-id={formspreeId} style="display:flex; flex-direction:column; gap:16px; margin-top:20px;">
+          <form id="contactForm" data-action={withBase('/enviar-contacto.php')} style="display:flex; flex-direction:column; gap:16px; margin-top:20px;">
             <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute; left:-9999px;" />
             <div>
               <span class="field-label">¿Quién eres?</span>
@@ -65,9 +64,6 @@ const showProfesionalesSection = false;
             </div>
             <button type="submit" class="btn-primary" style="justify-content:center;">Enviar consulta →</button>
             <p id="form-status" role="status" style="font-size:12.5px; color:var(--graphite);">Respondemos en el mismo día laborable. Para consultas urgentes, WhatsApp es más rápido que el formulario.</p>
-            {!formspreeId && (
-              <div class="pending">Falta crear una cuenta en formspree.io y poner el ID del formulario en <code>sitio/.env</code> como <code>PUBLIC_FORMSPREE_ID</code>. Mientras tanto, los envíos no llegan a ningún sitio.</div>
-            )}
           </form>
         </div>
 
@@ -186,32 +182,31 @@ const showProfesionalesSection = false;
     }
   })();
 
-  // Envío del formulario a Formspree (ver PUBLIC_FORMSPREE_ID en sitio/.env)
+  // Envío del formulario a enviar-contacto.php (script propio, ver
+  // public/config.example.php para las credenciales SMTP del buzón dedicado).
   const form = document.getElementById('contactForm') as HTMLFormElement | null;
   const statusEl = document.getElementById('form-status');
 
   form?.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const formspreeId = form.dataset.formspreeId;
     if (!statusEl) return;
 
-    if (!formspreeId) {
-      statusEl.textContent = 'El formulario todavía no está conectado. Escríbenos por WhatsApp mientras tanto: 607 224 454.';
-      return;
-    }
+    const action = form.dataset.action;
+    if (!action) return;
 
     const submitBtn = form.querySelector<HTMLButtonElement>('button[type="submit"]');
     if (submitBtn) submitBtn.disabled = true;
     statusEl.textContent = 'Enviando…';
 
     try {
-      const res = await fetch(`https://formspree.io/f/${formspreeId}`, {
+      const res = await fetch(action, {
         method: 'POST',
         body: new FormData(form),
         headers: { Accept: 'application/json' },
       });
+      const data = await res.json().catch(() => null);
 
-      if (res.ok) {
+      if (res.ok && data?.ok) {
         form.reset();
         form.hidden = true;
         statusEl.textContent = 'Gracias, hemos recibido tu consulta. Te contactamos en breve. Si es urgente, escríbenos directamente por WhatsApp.';
