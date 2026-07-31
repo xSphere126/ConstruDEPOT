@@ -27,6 +27,9 @@ export const grupos: { nombre: string; marcas: Marca[] }[] = [
       { nombre: 'Benesol', url: 'https://benesol.es/es/', logo: '/brands/benesol.jpg' },
       { nombre: 'Massima Surfaces', url: 'https://www.massimagroup.com/', logo: '/brands/massima.png', white: true },
       { nombre: 'Magnifica', url: 'https://magnificacollection.com/', logo: '/brands/magnifica.svg' },
+      { nombre: 'Cerámica Ribesalbes', url: 'https://www.ceramicaribesalbes.com/' },
+      { nombre: 'Harmony', url: 'https://harmonyinspire.com/es' },
+      { nombre: 'Belossa', url: 'https://belossa.com/' },
     ],
   },
   {
@@ -40,6 +43,7 @@ export const grupos: { nombre: string; marcas: Marca[] }[] = [
       { nombre: 'Profiltek', url: 'https://www.profiltek.com/', logo: '/brands/profiltek.svg' },
       { nombre: 'Visobath', url: 'https://visobath.com/', logo: '/brands/visobath.svg' },
       { nombre: 'Coycama', url: 'https://coycama.com/', logo: '/brands/coycama.png' },
+      { nombre: 'Kassandra', url: 'https://kassandra.net/' },
     ],
   },
   {
@@ -52,6 +56,10 @@ export const grupos: { nombre: string; marcas: Marca[] }[] = [
       { nombre: 'Chemical Building Project', url: 'https://chemicalbuildingproject.com/', logo: '/brands/chemicalbuildingproject.png' },
       { nombre: 'Hormigones Cava', url: 'https://www.hormigonescava.es/', logo: '/brands/hormigones-cava.png', white: true },
       { nombre: 'La Escandella', url: 'https://www.laescandella.com/es/', logo: '/brands/laescandella.png' },
+      { nombre: 'SAS Prefabricados de Hormigón', url: 'https://sas1900.com/' },
+      { nombre: 'Baublock', url: 'https://baublock.com/' },
+      { nombre: 'Chova', url: 'https://chova.com/' },
+      { nombre: 'Cerámica Monserrat', url: 'https://ceramicamonserrat.com/' },
     ],
   },
   {
