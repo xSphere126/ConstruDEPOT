@@ -1,15 +1,14 @@
 <?php
 /**
- * Recibe el formulario de contacto y lo envía por email vía SMTP
- * autenticado (buzón dedicado, ver config-local.example.php), sin depender de
- * ningún servicio de terceros. Sustituye a Formspree.
+ * Recibe el formulario de contacto y lo envía por email a través de
+ * Microsoft Graph API (OAuth2, client credentials) usando el buzón
+ * dedicado — ver config-local.example.php. No usa SMTP con usuario y
+ * contraseña: el tenant de Microsoft 365 tiene activados los "Security
+ * Defaults", que bloquean la autenticación básica de SMTP aunque el
+ * interruptor de "SMTP AUTH" del buzón individual esté activado. OAuth2
+ * vía Graph funciona igual con Security Defaults puesto, sin tener que
+ * bajar la seguridad de toda la organización para este formulario.
  */
-
-// Los "use" de importación de namespace tienen que ir antes que cualquier
-// otra instrucción de nivel superior del archivo (fuera de comentarios),
-// así que van aquí arriba aunque las clases no se usen hasta más abajo.
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception as PHPMailerException;
 
 header('Content-Type: application/json; charset=utf-8');
 
@@ -34,9 +33,6 @@ if (!file_exists($configFile)) {
     respond(false, 'El formulario todavía no está conectado.');
 }
 require_once $configFile;
-require_once __DIR__ . '/_lib/phpmailer/Exception.php';
-require_once __DIR__ . '/_lib/phpmailer/PHPMailer.php';
-require_once __DIR__ . '/_lib/phpmailer/SMTP.php';
 
 // Campo trampa: invisible para personas, los bots que autorrellenan
 // formularios suelen completarlo. Si llega relleno, se descarta en
@@ -67,40 +63,75 @@ if ($email !== '' && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
     respond(false, 'El email no es válido.');
 }
 
-$mail = new PHPMailer(true);
+$bodyText = implode("\n", [
+    'Perfil: ' . ($perfil !== '' ? $perfil : 'no indicado'),
+    'Nombre: ' . $nombre,
+    'Teléfono: ' . $telefono,
+    'Email: ' . ($email !== '' ? $email : 'no indicado'),
+    '',
+    'Mensaje:',
+    $mensaje !== '' ? $mensaje : '(sin mensaje)',
+]);
 
-try {
-    $mail->isSMTP();
-    $mail->Host = SMTP_HOST;
-    $mail->SMTPAuth = true;
-    $mail->Username = SMTP_USER;
-    $mail->Password = SMTP_PASS;
-    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-    $mail->Port = SMTP_PORT;
-    $mail->CharSet = 'UTF-8';
-
-    // El remitente siempre es el buzón propio autenticado (evita fallos de
-    // SPF/DKIM y suplantación); el email del cliente va en Reply-To, así
-    // que "Responder" en el correo va directo a él.
-    $mail->setFrom(SMTP_USER, 'Formulario web · Construdepot by Quiles');
-    $mail->addAddress(MAIL_TO, MAIL_TO_NAME);
-    if ($email !== '') {
-        $mail->addReplyTo($email, $nombre);
-    }
-
-    $mail->Subject = 'Nueva consulta desde la web — ' . $nombre;
-    $mail->Body = implode("\n", [
-        'Perfil: ' . ($perfil !== '' ? $perfil : 'no indicado'),
-        'Nombre: ' . $nombre,
-        'Teléfono: ' . $telefono,
-        'Email: ' . ($email !== '' ? $email : 'no indicado'),
-        '',
-        'Mensaje:',
-        $mensaje !== '' ? $mensaje : '(sin mensaje)',
+// Paso 1: conseguir un token de acceso (OAuth2, client credentials) de la
+// aplicación de Azure registrada para este formulario.
+function graphToken(): array
+{
+    $ch = curl_init('https://login.microsoftonline.com/' . GRAPH_TENANT_ID . '/oauth2/v2.0/token');
+    curl_setopt_array($ch, [
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_POST => true,
+        CURLOPT_POSTFIELDS => http_build_query([
+            'client_id' => GRAPH_CLIENT_ID,
+            'client_secret' => GRAPH_CLIENT_SECRET,
+            'scope' => 'https://graph.microsoft.com/.default',
+            'grant_type' => 'client_credentials',
+        ]),
+        CURLOPT_TIMEOUT => 15,
     ]);
-
-    $mail->send();
-    respond(true, 'Gracias, hemos recibido tu consulta.');
-} catch (PHPMailerException $e) {
-    respond(false, 'No se ha podido enviar el mensaje.');
+    $raw = curl_exec($ch);
+    $curlError = curl_error($ch);
+    curl_close($ch);
+    $data = $raw !== false ? json_decode($raw, true) : null;
+    return ['token' => $data['access_token'] ?? null, 'raw' => $raw, 'curlError' => $curlError];
 }
+
+$tokenResult = graphToken();
+if (!$tokenResult['token']) {
+    // DEBUG TEMPORAL: se expone la respuesta real de Microsoft para
+    // diagnosticar el primer intento en producción. Quitar en cuanto
+    // quede confirmado que el correo llega bien.
+    respond(false, 'No se ha podido enviar el mensaje. DEBUG token: ' . ($tokenResult['curlError'] ?: $tokenResult['raw']));
+}
+
+// Paso 2: enviar el correo de verdad, como el buzón GRAPH_SENDER, vía Graph.
+$payload = [
+    'message' => [
+        'subject' => 'Nueva consulta desde la web — ' . $nombre,
+        'body' => ['contentType' => 'Text', 'content' => $bodyText],
+        'toRecipients' => [['emailAddress' => ['address' => MAIL_TO, 'name' => MAIL_TO_NAME]]],
+    ],
+    'saveToSentItems' => true,
+];
+if ($email !== '') {
+    $payload['message']['replyTo'] = [['emailAddress' => ['address' => $email, 'name' => $nombre]]];
+}
+
+$ch = curl_init('https://graph.microsoft.com/v1.0/users/' . rawurlencode(GRAPH_SENDER) . '/sendMail');
+curl_setopt_array($ch, [
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_POST => true,
+    CURLOPT_HTTPHEADER => ['Authorization: Bearer ' . $tokenResult['token'], 'Content-Type: application/json'],
+    CURLOPT_POSTFIELDS => json_encode($payload),
+    CURLOPT_TIMEOUT => 15,
+]);
+$sendRaw = curl_exec($ch);
+$status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+curl_close($ch);
+
+if ($status === 202) {
+    respond(true, 'Gracias, hemos recibido tu consulta.');
+}
+
+// DEBUG TEMPORAL: igual que arriba, se quita en cuanto se confirme el envío.
+respond(false, 'No se ha podido enviar el mensaje. DEBUG envío (' . $status . '): ' . $sendRaw);

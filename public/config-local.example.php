@@ -10,20 +10,34 @@
 // existir en el servidor de IONOS, subido a mano por FTP junto al resto
 // de la web.
 
-// Buzón dedicado a enviar (no a leer) los mensajes del formulario:
-// web@construdepot.es, alojado en Microsoft 365 / Outlook (NO en IONOS),
-// por eso el host SMTP es de Microsoft y no smtp.ionos.es.
+// El correo se envía a través de Microsoft Graph API (OAuth2, client
+// credentials), como el buzón dedicado web@construdepot.es en Microsoft
+// 365 — NO por SMTP con usuario y contraseña: el tenant tiene activados
+// los "Security Defaults", que bloquean la autenticación básica de SMTP
+// sin importar el interruptor de "SMTP AUTH" del buzón individual.
 //
-// Aviso importante: muchos tenants de Microsoft 365 tienen la autenticación
-// SMTP (SMTP AUTH) desactivada por defecto para buzones nuevos, y si el
-// buzón tiene verificación en dos pasos activada, la contraseña normal NO
-// sirve para esto — hace falta una "contraseña de aplicación" específica.
-// Si el envío falla con error de autenticación, revisar ambas cosas en
-// admin.microsoft.com (Usuarios > el buzón > Correo > Administrar SMTP AUTH).
-define('SMTP_HOST', 'smtp.office365.com');
-define('SMTP_PORT', 587);
-define('SMTP_USER', 'web@construdepot.es');
-define('SMTP_PASS', 'CAMBIA-ESTO-por-la-contraseña-real-del-buzón (o contraseña de aplicación)');
+// Para conseguir estos 4 valores hace falta registrar una aplicación en
+// portal.azure.com (con permisos de administrador de Microsoft 365):
+//
+// 1. Entra ID > Registros de aplicaciones > Nuevo registro. Cualquier
+//    nombre (p. ej. "Formulario web Construdepot"), tipos de cuenta
+//    "solo este directorio".
+// 2. En la página de la app recién creada: "Id. de aplicación (cliente)"
+//    → GRAPH_CLIENT_ID. "Id. de directorio (inquilino)" → GRAPH_TENANT_ID.
+// 3. Certificados y secretos > Nuevo secreto de cliente. El VALOR (no el
+//    "Id. de secreto") se copia justo al crearlo, no se puede volver a
+//    ver después → GRAPH_CLIENT_SECRET.
+// 4. Permisos de API > Agregar un permiso > Microsoft Graph > Permisos de
+//    aplicación > buscar "Mail.Send" > agregarlo. Luego el botón
+//    "Conceder consentimiento de administrador" (imprescindible, si no
+//    se queda en "no concedido" y el envío falla).
+define('GRAPH_TENANT_ID', 'CAMBIA-ESTO-por-el-Id-de-directorio-tenant');
+define('GRAPH_CLIENT_ID', 'CAMBIA-ESTO-por-el-Id-de-aplicacion-cliente');
+define('GRAPH_CLIENT_SECRET', 'CAMBIA-ESTO-por-el-valor-del-secreto-de-cliente');
+
+// Buzón dedicado desde el que se envía (no a leer) los mensajes del
+// formulario, alojado en Microsoft 365 / Outlook (NO en IONOS).
+define('GRAPH_SENDER', 'web@construdepot.es');
 
 // Dirección donde deben llegar las consultas del formulario.
 define('MAIL_TO', 'info@construdepot.es');
