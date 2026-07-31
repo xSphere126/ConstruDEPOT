@@ -183,7 +183,7 @@ const showProfesionalesSection = false;
   })();
 
   // Envío del formulario a enviar-contacto.php (script propio, ver
-  // public/config.example.php para las credenciales SMTP del buzón dedicado).
+  // public/config-local.example.php para las credenciales SMTP del buzón dedicado).
   const form = document.getElementById('contactForm') as HTMLFormElement | null;
   const statusEl = document.getElementById('form-status');
 
@@ -211,7 +211,12 @@ const showProfesionalesSection = false;
         form.hidden = true;
         statusEl.textContent = 'Gracias, hemos recibido tu consulta. Te contactamos en breve. Si es urgente, escríbenos directamente por WhatsApp.';
       } else {
-        statusEl.textContent = 'No hemos podido enviar tu consulta. Prueba de nuevo o escríbenos por WhatsApp: 607 224 454.';
+        // Antes se mostraba siempre el mismo texto genérico y se
+        // descartaba el motivo concreto que ya calcula el PHP (campo
+        // obligatorio, email inválido, fallo de envío...) — costaba
+        // diagnosticar por qué fallaba sin mirar la respuesta a mano.
+        const motivo = data?.message || 'No hemos podido enviar tu consulta.';
+        statusEl.textContent = `${motivo} Si el problema continúa, escríbenos por WhatsApp: 607 224 454.`;
       }
     } catch {
       statusEl.textContent = 'No hemos podido enviar tu consulta. Prueba de nuevo o escríbenos por WhatsApp: 607 224 454.';
