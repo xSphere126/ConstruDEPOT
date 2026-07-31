@@ -390,9 +390,10 @@ const showHistoriaSection = false;
       track.scrollTo({ left: target, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
     };
 
-    // Sin bucle infinito: si ya no hay foto en esa dirección, no hace
-    // nada (las flechas ya están deshabilitadas en ese extremo, pero el
-    // auto-avance también pasa por aquí, así que hace falta el corte).
+    // Navegación manual (flechas/teclado/clic en una foto lateral): acotada
+    // de verdad. Si ya no hay foto en esa dirección, no hace nada — las
+    // flechas ya están deshabilitadas en ese extremo, así que en la
+    // práctica esto solo protege el uso por teclado.
     const step = (dir: number) => {
       const next = (dir > 0 ? current.nextElementSibling : current.previousElementSibling) as HTMLImageElement | null;
       if (!next) return;
@@ -400,15 +401,33 @@ const showHistoriaSection = false;
       centerOn(next);
     };
 
+    // El auto-avance es un pase de diapositivas de fondo: tiene que seguir
+    // vivo aunque lleguen visitas después de que ya haya recorrido las 8
+    // fotos, si no, se queda una flecha apagada y una foto quieta para
+    // siempre, como si algo se hubiera roto. Al llegar a la última foto no
+    // se apaga: vuelve a la primera con un corte breve (fundido), nunca
+    // arrastrando el scroll hacia atrás por las 7 fotos de por medio (eso
+    // sí que se vería raro, como un rebobinado). La navegación manual, en
+    // cambio, sigue estrictamente acotada — solo el auto-avance da la
+    // vuelta, nunca un clic del usuario.
+    const AUTOPLAY_LOOP_FADE_MS = 220;
+    const loopAutoplayToStart = () => {
+      track.classList.add('is-looping');
+      window.setTimeout(() => {
+        track.scrollLeft = slides[0].offsetLeft - (track.clientWidth - slides[0].offsetWidth) / 2;
+        setActive(slides[0]);
+        track.classList.remove('is-looping');
+      }, AUTOPLAY_LOOP_FADE_MS);
+    };
+
     const start = () => {
       stop();
       // Ni el ratón ni el teclado deben reactivar el avance automático
-      // mientras el lightbox tapa el carrusel. Al llegar a la última foto
-      // tampoco tiene sentido seguir intentándolo cada 4s: se para sola.
-      if (prefersReducedMotion || lightboxIsOpen || !current.nextElementSibling) return;
+      // mientras el lightbox tapa el carrusel.
+      if (prefersReducedMotion || lightboxIsOpen) return;
       timer = setInterval(() => {
-        if (!current.nextElementSibling) { stop(); return; }
-        step(1);
+        if (current.nextElementSibling) step(1);
+        else loopAutoplayToStart();
       }, AUTO_ADVANCE_MS);
     };
     const stop = () => {
