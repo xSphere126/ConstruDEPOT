@@ -358,13 +358,18 @@ body.home .btn-primary:hover{ background:var(--green-dark); color:#fff; }
 .carousel-wrap{ position:relative; margin:16px auto 0; max-width:860px; }
 .carousel{ position:relative; height:440px; overflow-x:auto; overflow-y:hidden; display:flex; align-items:center; gap:16px; scroll-snap-type:x mandatory; scroll-behavior:smooth; -webkit-overflow-scrolling:touch; scrollbar-width:none; padding:0 18%; box-sizing:border-box; }
 .carousel::-webkit-scrollbar{ display:none; }
-.carousel img{ flex:0 0 64%; width:64%; height:76%; object-fit:cover; border-radius:16px; scroll-snap-align:center; opacity:.5; box-shadow:0 10px 26px rgba(0,0,0,.16); transition:opacity .4s ease, height .4s cubic-bezier(.22,.61,.36,1), box-shadow .4s ease; cursor:zoom-in; display:block; }
+/* opacity alta a propósito: la foto anterior/siguiente es una vista previa
+   real, no una insinuación — debe leerse con claridad en todo momento, la
+   diferencia con la activa la marca el tamaño (height) y la sombra, no un
+   atenuado que la haga casi invisible. */
+.carousel img{ flex:0 0 64%; width:64%; height:76%; object-fit:cover; border-radius:16px; scroll-snap-align:center; opacity:.9; box-shadow:0 10px 26px rgba(0,0,0,.16); transition:opacity .4s ease, height .4s cubic-bezier(.22,.61,.36,1), box-shadow .4s ease; display:block; }
 .carousel img.is-active{ height:100%; opacity:1; box-shadow:0 20px 46px rgba(0,0,0,.3); }
 .carousel-btn{ position:absolute; top:50%; transform:translateY(-50%); width:44px; height:44px; border-radius:50%; border:none; background:var(--ink); color:#fff; display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 6px 16px rgba(0,0,0,.28); transition:background .15s ease, transform .15s ease; z-index:3; }
 .carousel-btn:hover{ background:var(--green-dark); }
 .carousel-btn:active{ transform:translateY(-50%) scale(.92); }
 .carousel-btn--prev{ left:8px; }
 .carousel-btn--next{ right:8px; }
+.carousel-counter{ margin:10px 0 0; text-align:center; font-size:12.5px; color:#8a8b7e; letter-spacing:.02em; }
 @media (max-width: 640px){
   .carousel{ height:280px; padding:0 12%; gap:10px; }
   .carousel img{ flex-basis:76%; width:76%; height:80%; border-radius:12px; }

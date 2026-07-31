@@ -43,7 +43,7 @@ const showTeamSection = true;
       <div class="photo-group">
         <h3 style="font-size:16px; margin:28px 0 4px;">Exposición</h3>
         <p style="font-size:13.5px; color:#6b6c64; margin-bottom:0;">Una amplia exposición para poder reformar tu vivienda, baño, cocina…</p>
-        <div class="carousel-wrap">
+        <div class="carousel-wrap" role="region" aria-roledescription="carrusel" aria-label="Fotos de la exposición">
           <button type="button" class="carousel-btn carousel-btn--prev" data-carousel-prev aria-label="Ver fotos anteriores de la exposición">‹</button>
           <div class="carousel" data-carousel>
             <img src={withBase('/images/intbaño4.jpg')} alt="Exposición de baños con mueble de madera, sanitarios y espejo redondo iluminado" loading="lazy" class="is-active" />
@@ -56,13 +56,14 @@ const showTeamSection = true;
             <img src={withBase('/images/matint.jpg')} alt="Exposición de baños con doble lavabo en mármol y espejos ovalados" loading="lazy" />
           </div>
           <button type="button" class="carousel-btn carousel-btn--next" data-carousel-next aria-label="Ver más fotos de la exposición">›</button>
+          <p class="carousel-counter" aria-live="polite" data-carousel-counter></p>
         </div>
       </div>
 
       <div class="photo-group">
         <h3 style="font-size:16px; margin:28px 0 4px;">Almacén</h3>
         <p style="font-size:13.5px; color:#6b6c64; margin-bottom:0;">Disponemos de un patio de 10.000 m² donde almacenamos todo tipo de producto para que puedas cargar palets completos de cualquier producto que puedas imaginar: vallas, fachadas, zócalos, jardines, cerramientos, etc.</p>
-        <div class="carousel-wrap">
+        <div class="carousel-wrap" role="region" aria-roledescription="carrusel" aria-label="Fotos del almacén">
           <button type="button" class="carousel-btn carousel-btn--prev" data-carousel-prev aria-label="Ver fotos anteriores del almacén">‹</button>
           <div class="carousel" data-carousel>
             <img src={withBase('/images/matexterior.jpg')} alt="Patio exterior de 10.000 m² con palets de ladrillo y bloque listos para cargar" loading="lazy" class="is-active" />
@@ -75,6 +76,7 @@ const showTeamSection = true;
             <img src={withBase('/images/matalmacen9.jpg')} alt="Nave de almacén con estanterías de picking y pasillo central" loading="lazy" />
           </div>
           <button type="button" class="carousel-btn carousel-btn--next" data-carousel-next aria-label="Ver más fotos del almacén">›</button>
+          <p class="carousel-counter" aria-live="polite" data-carousel-counter></p>
         </div>
       </div>
     </div>
@@ -246,19 +248,83 @@ const showTeamSection = true;
   // camino de los controles del lightbox (dispara mouseleave igualmente).
   let lightboxIsOpen = false;
 
+  // Lightbox: clic en la foto activa de un carrusel la abre a tamaño
+  // grande, con flechas para pasar a la siguiente/anterior sin cerrarla.
+  // Declarado antes del bucle de carruseles porque cada uno necesita poder
+  // abrirlo al hacer clic en su foto activa.
+  const lightbox = document.querySelector<HTMLElement>('[data-lightbox]');
+  const lightboxImg = lightbox?.querySelector<HTMLImageElement>('[data-lightbox-img]');
+  let currentImages: HTMLImageElement[] = [];
+  let currentIndex = 0;
+
+  const showImage = (index: number) => {
+    if (!lightboxImg || currentImages.length === 0) return;
+    currentIndex = (index + currentImages.length) % currentImages.length;
+    const src = currentImages[currentIndex].currentSrc || currentImages[currentIndex].src;
+    lightboxImg.src = src;
+    lightboxImg.alt = currentImages[currentIndex].alt;
+  };
+
+  const openLightbox = (track: HTMLElement, img: HTMLImageElement) => {
+    currentImages = Array.from(track.querySelectorAll('img'));
+    showImage(currentImages.indexOf(img));
+    lightbox?.removeAttribute('hidden');
+    document.body.style.overflow = 'hidden';
+    // Con el lightbox encima, los carruseles de fondo no deben seguir
+    // avanzando solos: al volver, la foto tiene que seguir donde estaba.
+    // El flag evita que un mouseleave/focusout disparado por el propio
+    // clic (el cursor sale del carrusel camino de los controles del
+    // lightbox) los reactive por debajo mientras siguen tapados.
+    lightboxIsOpen = true;
+    autoplayControls.forEach((c) => c.stop());
+  };
+
+  const closeLightbox = () => {
+    lightbox?.setAttribute('hidden', '');
+    document.body.style.overflow = '';
+    lightboxIsOpen = false;
+    autoplayControls.forEach((c) => c.start());
+  };
+
   tracks.forEach((track) => {
     const wrap = track.closest('.carousel-wrap');
     const prevBtn = wrap?.querySelector<HTMLButtonElement>('[data-carousel-prev]');
     const nextBtn = wrap?.querySelector<HTMLButtonElement>('[data-carousel-next]');
+    const counterEl = wrap?.querySelector<HTMLElement>('[data-carousel-counter]');
     const slides = Array.from(track.querySelectorAll<HTMLImageElement>('img'));
+    // Número de foto estable ("3 / 8"): se fija una vez al cargar, según el
+    // orden original — el bucle infinito reordena el DOM por debajo, pero
+    // esta referencia no debe rotar con él o el contador dejaría de tener
+    // sentido.
+    slides.forEach((img, n) => { img.dataset.slideIndex = String(n + 1); });
     let current = slides.find((img) => img.classList.contains('is-active')) ?? slides[0];
     let timer: ReturnType<typeof setInterval> | undefined;
     let scrollRaf: number | undefined;
 
+    // Solo la foto activa es alcanzable por teclado y visible para lectores
+    // de pantalla; las laterales son una previsualización, no un control
+    // independiente (así lo recomiendan las guías de accesibilidad de
+    // carruseles) — de paso, tabular hasta esta sección ya no obliga a
+    // pasar por las 8 fotos, solo por la que está centrada en cada momento.
     const setActive = (el: HTMLImageElement) => {
       current = el;
-      slides.forEach((img) => img.classList.toggle('is-active', img === el));
+      slides.forEach((img) => {
+        const isActive = img === el;
+        img.classList.toggle('is-active', isActive);
+        // aria-hidden en un elemento que todavía tiene el foco es un
+        // anti-patrón (el lector de pantalla se queda "hablando" de algo
+        // que se acaba de ocultar) — no debería ser alcanzable en el uso
+        // normal, ya que solo la activa es tabulable, pero se cubre por si
+        // un clic de ratón llega a enfocar momentáneamente una lateral.
+        if (!isActive && document.activeElement === img) img.blur();
+        img.tabIndex = isActive ? 0 : -1;
+        img.setAttribute('aria-hidden', isActive ? 'false' : 'true');
+        img.setAttribute('aria-label', isActive ? `Ver foto en grande: ${img.alt}` : `Ir a esta foto: ${img.alt}`);
+        img.style.cursor = isActive ? 'zoom-in' : 'pointer';
+      });
+      if (counterEl) counterEl.textContent = `${el.dataset.slideIndex} / ${slides.length}`;
     };
+    setActive(current);
 
     const findClosest = () => {
       const trackRect = track.getBoundingClientRect();
@@ -367,62 +433,28 @@ const showTeamSection = true;
     }, { passive: true });
     track.addEventListener('scrollend', syncCurrentOnSettle, { passive: true });
 
-    start();
-  });
-
-  // Lightbox: clic en cualquier foto de un carrusel la abre a tamaño grande,
-  // con flechas para pasar a la siguiente/anterior sin cerrarla.
-  const lightbox = document.querySelector<HTMLElement>('[data-lightbox]');
-  const lightboxImg = lightbox?.querySelector<HTMLImageElement>('[data-lightbox-img]');
-  let currentImages: HTMLImageElement[] = [];
-  let currentIndex = 0;
-
-  const showImage = (index: number) => {
-    if (!lightboxImg || currentImages.length === 0) return;
-    currentIndex = (index + currentImages.length) % currentImages.length;
-    const src = currentImages[currentIndex].currentSrc || currentImages[currentIndex].src;
-    lightboxImg.src = src;
-    lightboxImg.alt = currentImages[currentIndex].alt;
-  };
-
-  const openLightbox = (track: HTMLElement, img: HTMLImageElement) => {
-    currentImages = Array.from(track.querySelectorAll('img'));
-    showImage(currentImages.indexOf(img));
-    lightbox?.removeAttribute('hidden');
-    document.body.style.overflow = 'hidden';
-    // Con el lightbox encima, los carruseles de fondo no deben seguir
-    // avanzando solos: al volver, la foto tiene que seguir donde estaba.
-    // El flag evita que un mouseleave/focusout disparado por el propio
-    // clic (el cursor sale del carrusel camino de los controles del
-    // lightbox) los reactive por debajo mientras siguen tapados.
-    lightboxIsOpen = true;
-    autoplayControls.forEach((c) => c.stop());
-  };
-
-  const closeLightbox = () => {
-    lightbox?.setAttribute('hidden', '');
-    document.body.style.overflow = '';
-    lightboxIsOpen = false;
-    autoplayControls.forEach((c) => c.start());
-  };
-
-  tracks.forEach((track) => {
-    track.querySelectorAll<HTMLImageElement>('img').forEach((img) => {
-      img.style.cursor = 'zoom-in';
-      // Foco y activación por teclado (Enter/Espacio), no solo clic de
-      // ratón: si no, quien navega con teclado no puede ver las fotos
-      // en grande.
-      img.tabIndex = 0;
+    // Clic/Enter en la foto activa: la abre en grande. Clic en una
+    // previsualización lateral: la trae al centro (un paso de step(), en la
+    // dirección en la que ya está) en vez de abrirla directamente — no es
+    // un control independiente, es "quiero ver esta", no "ábrela ya".
+    slides.forEach((img) => {
       img.setAttribute('role', 'button');
-      img.setAttribute('aria-label', `Ver foto en grande: ${img.alt}`);
-      img.addEventListener('click', () => openLightbox(track, img));
+      img.addEventListener('click', () => {
+        if (img === current) { openLightbox(track, img); return; }
+        if (img === current.nextElementSibling) step(1);
+        else if (img === current.previousElementSibling) step(-1);
+      });
       img.addEventListener('keydown', (e) => {
+        // Solo la activa es alcanzable con Tab (tabIndex 0), así que en la
+        // práctica esto solo se dispara para ella — abre el lightbox.
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
-          openLightbox(track, img);
+          if (img === current) openLightbox(track, img);
         }
       });
     });
+
+    start();
   });
 
   lightbox?.querySelector('[data-lightbox-close]')?.addEventListener('click', closeLightbox);
