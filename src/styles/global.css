@@ -349,9 +349,10 @@ body.home .btn-primary:hover{ background:var(--green-dark); color:#fff; }
    las fotos anterior/siguiente asoman parcialmente a los lados, justo debajo
    de las flechas, para que se note que hay más fotos sin tener que navegar.
    El padding lateral del contenedor es igual a (100% - ancho de la foto) / 2
-   a propósito: dan sitio para que siempre quepa un vecino asomando a cada
-   lado (el JS coloca la foto activa centrada desde el primer render, con
-   vecino a los dos lados desde el principio — ver sobre-nosotros.astro).
+   a propósito: así la foto activa queda centrada en scrollLeft:0 sin JS
+   (en la primera foto solo asoma la siguiente, sin vecino a la izquierda
+   — no hay bucle infinito, es el final real de la cinta, igual que en la
+   última no asoma nada a la derecha).
    Importante: la diferencia de tamaño activa/inactiva se hace con height
    real (no transform:scale) — un scale() dentro de una caja que no encoge
    deja un marco en blanco alrededor de la foto, que es justo el efecto
@@ -369,6 +370,10 @@ body.home .btn-primary:hover{ background:var(--green-dark); color:#fff; }
 .carousel-btn{ position:absolute; top:50%; transform:translateY(-50%); width:44px; height:44px; border-radius:50%; border:none; background:var(--ink); color:#fff; display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 6px 16px rgba(0,0,0,.28); transition:background .15s ease, transform .15s ease; z-index:3; }
 .carousel-btn:hover{ background:var(--green-dark); }
 .carousel-btn:active{ transform:translateY(-50%) scale(.92); }
+/* Sin bucle infinito: al llegar a la primera/última foto la flecha
+   correspondiente se apaga en vez de dar la vuelta. */
+.carousel-btn:disabled{ opacity:.35; cursor:not-allowed; box-shadow:none; }
+.carousel-btn:disabled:hover{ background:var(--ink); }
 .carousel-btn--prev{ left:8px; }
 .carousel-btn--next{ right:8px; }
 .carousel-counter{ margin:10px 0 0; text-align:center; font-size:12.5px; color:#8a8b7e; letter-spacing:.02em; }
