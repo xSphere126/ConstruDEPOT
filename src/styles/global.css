@@ -359,8 +359,11 @@ body.home .btn-primary:hover{ background:var(--green-dark); color:#fff; }
    "cutre" que se intenta evitar. El ancho nunca cambia entre estados para
    no desestabilizar los puntos de scroll-snap mientras se anima. */
 .carousel-wrap{ position:relative; margin:16px auto 0; max-width:860px; }
-.carousel{ position:relative; height:440px; overflow-x:auto; overflow-y:hidden; display:flex; align-items:center; gap:16px; scroll-snap-type:x mandatory; scroll-behavior:smooth; -webkit-overflow-scrolling:touch; scrollbar-width:none; padding:0 18%; box-sizing:border-box; }
+.carousel{ position:relative; height:440px; overflow-x:auto; overflow-y:hidden; display:flex; align-items:center; gap:16px; scroll-snap-type:x mandatory; scroll-behavior:smooth; -webkit-overflow-scrolling:touch; scrollbar-width:none; padding:0 18%; box-sizing:border-box; transition:opacity .2s ease; }
 .carousel::-webkit-scrollbar{ display:none; }
+/* Corte breve cuando el auto-avance vuelve a la primera foto tras llegar a
+   la última — un fundido, nunca un rebobinado visual hacia atrás. */
+.carousel.is-looping{ opacity:0; }
 /* opacity alta a propósito: la foto anterior/siguiente es una vista previa
    real, no una insinuación — debe leerse con claridad en todo momento, la
    diferencia con la activa la marca el tamaño (height) y la sombra, no un
