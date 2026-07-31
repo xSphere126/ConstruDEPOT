@@ -1,7 +1,7 @@
 <?php
 /**
  * Recibe el formulario de contacto y lo envía por email vía SMTP
- * autenticado (buzón dedicado, ver config.example.php), sin depender de
+ * autenticado (buzón dedicado, ver config-local.example.php), sin depender de
  * ningún servicio de terceros. Sustituye a Formspree.
  */
 
@@ -24,9 +24,13 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     respond(false, 'Método no permitido.');
 }
 
-$configFile = __DIR__ . '/config.local.php';
+// IONOS renombra "config.local.php" a "config-local.php" al subirlo (se
+// comprobó con el gestor de archivos y con curl: pedir la versión con
+// punto responde con un 301 a la de guion) — el nombre real en el
+// servidor lleva guion, así que el código busca ese, no el del punto.
+$configFile = __DIR__ . '/config-local.php';
 if (!file_exists($configFile)) {
-    // Buzón todavía no creado / configurado — ver config.example.php.
+    // Buzón todavía no creado / configurado — ver config-local.example.php.
     respond(false, 'El formulario todavía no está conectado.');
 }
 require_once $configFile;

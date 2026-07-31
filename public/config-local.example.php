@@ -1,10 +1,14 @@
 <?php
 // Plantilla de configuración del formulario de contacto.
 //
-// Copia este archivo a "config.local.php" (mismo directorio) y rellena los
-// valores reales. config.local.php NUNCA se sube a git (está en .gitignore)
-// porque el repositorio de GitHub es público — solo debe existir en el
-// servidor de IONOS, subido a mano por FTP junto al resto de la web.
+// Copia este archivo a "config-local.php" (mismo directorio, con GUION no
+// punto: IONOS renombra "config.local.php" a "config-local.php" al
+// subirlo — comprobado con el gestor de archivos y con curl, pedir la
+// versión con punto responde con un 301 a la de guion) y rellena los
+// valores reales. config-local.php NUNCA se sube a git (está en
+// .gitignore) porque el repositorio de GitHub es público — solo debe
+// existir en el servidor de IONOS, subido a mano por FTP junto al resto
+// de la web.
 
 // Buzón dedicado a enviar (no a leer) los mensajes del formulario:
 // web@construdepot.es, alojado en Microsoft 365 / Outlook (NO en IONOS),
