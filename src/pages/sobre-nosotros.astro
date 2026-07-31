@@ -54,8 +54,8 @@ const showHistoriaSection = false;
         <div class="carousel-wrap" role="region" aria-roledescription="carrusel" aria-label="Fotos de la exposición">
           <button type="button" class="carousel-btn carousel-btn--prev" data-carousel-prev aria-label="Ver fotos anteriores de la exposición">‹</button>
           <div class="carousel" data-carousel>
-            <img src={withBase('/images/intbaño4.jpg')} alt="Exposición de baños con mueble de madera, sanitarios y espejo redondo iluminado" loading="lazy" class="is-active" />
-            <img src={withBase('/images/cocina.jpg')} alt="Exposición de cocina con isla de madera y grifería Gessi" loading="lazy" />
+            <img src={withBase('/images/intbaño4.jpg')} alt="Exposición de baños con mueble de madera, sanitarios y espejo redondo iluminado" loading="lazy" />
+            <img src={withBase('/images/cocina.jpg')} alt="Exposición de cocina con isla de madera y grifería Gessi" loading="lazy" class="is-active" />
             <img src={withBase('/images/intazulejos.jpg')} alt="Pared de muestras de azulejo y pavimento de varias marcas" loading="lazy" />
             <img src={withBase('/images/mamparas.jpg')} alt="Exposición de mamparas de ducha de varios acabados" loading="lazy" />
             <img src={withBase('/images/intbaño2.jpg')} alt="Baño de exposición con pared de piedra oscura y ducha con mampara" loading="lazy" />
@@ -74,8 +74,8 @@ const showHistoriaSection = false;
         <div class="carousel-wrap" role="region" aria-roledescription="carrusel" aria-label="Fotos del almacén">
           <button type="button" class="carousel-btn carousel-btn--prev" data-carousel-prev aria-label="Ver fotos anteriores del almacén">‹</button>
           <div class="carousel" data-carousel>
-            <img src={withBase('/images/matexterior.jpg')} alt="Patio exterior de 10.000 m² con palets de ladrillo y bloque listos para cargar" loading="lazy" class="is-active" />
-            <img src={withBase('/images/matalmacen8.jpg')} alt="Nave de almacén con stock de placas de Pladur y Escayescos" loading="lazy" />
+            <img src={withBase('/images/matexterior.jpg')} alt="Patio exterior de 10.000 m² con palets de ladrillo y bloque listos para cargar" loading="lazy" />
+            <img src={withBase('/images/matalmacen8.jpg')} alt="Nave de almacén con stock de placas de Pladur y Escayescos" loading="lazy" class="is-active" />
             <img src={withBase('/images/exteriorcargarapida.jpg')} alt="Fachada de Construdepot con zona de carga y descarga rápida" loading="lazy" />
             <img src={withBase('/images/matalmacen3.jpg')} alt="Nave de almacén con sacos de cemento y mortero apilados por color" loading="lazy" />
             <img src={withBase('/images/matalmacen5.jpg')} alt="Nave de almacén con palés de ladrillo cerámico bajo cartel de Ladrillos" loading="lazy" />
@@ -303,10 +303,7 @@ const showHistoriaSection = false;
     const nextBtn = wrap?.querySelector<HTMLButtonElement>('[data-carousel-next]');
     const counterEl = wrap?.querySelector<HTMLElement>('[data-carousel-counter]');
     const slides = Array.from(track.querySelectorAll<HTMLImageElement>('img'));
-    // Número de foto estable ("3 / 8"): se fija una vez al cargar, según el
-    // orden original — el bucle infinito reordena el DOM por debajo, pero
-    // esta referencia no debe rotar con él o el contador dejaría de tener
-    // sentido.
+    // Número de foto ("3 / 8"), fijo según el orden en el que están en el HTML.
     slides.forEach((img, n) => { img.dataset.slideIndex = String(n + 1); });
     let current = slides.find((img) => img.classList.contains('is-active')) ?? slides[0];
     let timer: ReturnType<typeof setInterval> | undefined;
@@ -340,6 +337,13 @@ const showHistoriaSection = false;
       if (nextBtn) nextBtn.disabled = !el.nextElementSibling;
     };
     setActive(current);
+    // Empieza en la segunda foto (no en la primera) a propósito: así se ve
+    // completo desde el principio, con foto anterior Y siguiente asomando a
+    // los dos lados, en vez de solo la siguiente. El centrado por CSS
+    // (scrollLeft:0) solo funciona para la primera foto, así que si la
+    // activa inicial es otra hace falta colocar el scroll a mano, al
+    // instante y sin animación, antes de que se vea nada.
+    track.scrollLeft = current.offsetLeft - (track.clientWidth - current.offsetWidth) / 2;
 
     const findClosest = () => {
       const trackRect = track.getBoundingClientRect();
