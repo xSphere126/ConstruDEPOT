@@ -326,6 +326,22 @@ const showTeamSection = true;
     };
     setActive(current);
 
+    // Un carrusel infinito de verdad muestra vecino a los dos lados desde
+    // el primerísimo render, no solo después de tocar una flecha — si no,
+    // el bucle se nota a medias, justo lo que se reportó aquí. Es un
+    // problema documentado incluso en Swiper, la librería de carruseles
+    // más usada (github.com/nolimits4web/swiper/issues/7088, "prev/next
+    // slide no visible al iniciar en modo loop"): sin material de sobra
+    // colocado de antemano a los dos lados, el primer render se queda
+    // corto. Se adelanta una rotación antes de que se pinte nada: la
+    // última foto pasa a colocarse justo delante de la que empieza
+    // activa, y se recoloca el scroll al instante (sin animación) para
+    // que ese reordenamiento no se note.
+    if (!current.previousElementSibling) {
+      track.insertBefore(track.lastElementChild as HTMLImageElement, track.firstElementChild);
+      track.scrollLeft = current.offsetLeft - (track.clientWidth - current.offsetWidth) / 2;
+    }
+
     const findClosest = () => {
       const trackRect = track.getBoundingClientRect();
       const center = trackRect.left + trackRect.width / 2;
