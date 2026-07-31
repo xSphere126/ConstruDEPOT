@@ -98,10 +98,11 @@ function graphToken(): array
 
 $tokenResult = graphToken();
 if (!$tokenResult['token']) {
-    // DEBUG TEMPORAL: se expone la respuesta real de Microsoft para
-    // diagnosticar el primer intento en producción. Quitar en cuanto
-    // quede confirmado que el correo llega bien.
-    respond(false, 'No se ha podido enviar el mensaje. DEBUG token: ' . ($tokenResult['curlError'] ?: $tokenResult['raw']));
+    // El detalle real del fallo va al log del servidor, no a quien rellena
+    // el formulario — no tiene por qué ver el motivo interno de un fallo
+    // de autenticación de Microsoft.
+    error_log('Formulario contacto: fallo al pedir token de Graph — ' . ($tokenResult['curlError'] ?: $tokenResult['raw']));
+    respond(false, 'No se ha podido enviar el mensaje.');
 }
 
 // Paso 2: enviar el correo de verdad, como el buzón GRAPH_SENDER, vía Graph.
@@ -133,5 +134,5 @@ if ($status === 202) {
     respond(true, 'Gracias, hemos recibido tu consulta.');
 }
 
-// DEBUG TEMPORAL: igual que arriba, se quita en cuanto se confirme el envío.
-respond(false, 'No se ha podido enviar el mensaje. DEBUG envío (' . $status . '): ' . $sendRaw);
+error_log('Formulario contacto: fallo al enviar por Graph (' . $status . ') — ' . $sendRaw);
+respond(false, 'No se ha podido enviar el mensaje.');
