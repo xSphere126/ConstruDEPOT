@@ -7,13 +7,12 @@ import { todasLasMarcas } from '../data/marcas';
 import { withBase } from '../lib/url';
 
 const snapwidgetId = import.meta.env.PUBLIC_SNAPWIDGET_ID || 'WIDGET_ID_PENDIENTE';
-// Sección "Síguenos en Instagram" desactivada a petición del cliente: SnapWidget
-// (el widget que se iba a usar) resultó ser de pago, no gratuito como se creía,
-// y todavía no ha decidido si paga el plan, usa la API oficial de Instagram
-// (gratis pero con mantenimiento técnico recurrente) o prescinde del feed
-// embebido. Se deja el bloque completo en el código, solo oculto, para
-// reactivarlo en cuanto haya una decisión — ver [[construdepot-positioning]].
-const showInstagramSection = false;
+// Sección "Síguenos en Instagram": decidido contratar SnapWidget (plan Lite,
+// widget 1128145, grid 4x2 en escritorio / 2x3 en móvil, configurado desde su
+// panel — ver [[construdepot-positioning]]). El ID real va en sitio/.env como
+// PUBLIC_SNAPWIDGET_ID (no es secreto, pero así no hace falta tocar código
+// para cambiarlo). Sin ese valor, se sigue viendo el mosaico de marcador.
+const showInstagramSection = true;
 
 const testimonios = [
   {
@@ -231,17 +230,21 @@ const testimonios = [
           </div>
         </div>
         <div class="insta-embed-wrap">
-          <!-- Feed en directo vía SnapWidget (de pago, no gratuito — confirmado por el
-               cliente; sin necesidad de API de Instagram).
-               Pasos para activarlo una vez decidido el plan:
-               1. Entrar en https://snapwidget.com y "Create a Widget" > Instagram Feed
-               2. Conectar la cuenta @construdepot_by_quiles
-               3. Elegir el estilo "Grid", 4 columnas
-               4. Copiar el ID del widget y ponerlo en sitio/.env como PUBLIC_SNAPWIDGET_ID=abc123
-               El feed no carga hasta que el visitante acepta cookies de terceros (ver CookieConsent.astro) —
-               hasta entonces, o mientras no haya ID configurado, se ve el mosaico de marcador. -->
+          <!-- Feed en directo vía SnapWidget (plan Lite, de pago — decisión ya
+               tomada por el cliente, ver [[construdepot-positioning]]). Grid
+               configurado en su panel a 4x2 en escritorio y 2x3 en móvil — como
+               el número de filas cambia según el tamaño de pantalla, no hay una
+               altura fija en px que valga para los dos a la vez. En vez de
+               adivinar un número, se usa el propio script de SnapWidget
+               (cargado más abajo) que redimensiona el iframe a su altura real
+               una vez cargado el contenido — .insta-embed solo pone una altura
+               mínima de partida para que no haya un salto brusco mientras carga.
+               El feed no carga hasta que el visitante acepta cookies de terceros
+               (ver CookieConsent.astro) — hasta entonces, o mientras no haya ID
+               configurado en sitio/.env como PUBLIC_SNAPWIDGET_ID, se ve el
+               mosaico de marcador. -->
           {snapwidgetId !== 'WIDGET_ID_PENDIENTE' ? (
-            <GatedEmbed category="social" src={`https://snapwidget.com/embed/${snapwidgetId}`} title="Feed de Instagram @construdepot_by_quiles" label="el feed de Instagram" style="height:400px;" />
+            <GatedEmbed category="social" src={`https://snapwidget.com/embed/${snapwidgetId}`} title="Feed de Instagram @construdepot_by_quiles" label="el feed de Instagram" class="insta-embed" />
           ) : (
             <div class="insta-fallback">
               <div class="insta-grid">
@@ -258,6 +261,7 @@ const testimonios = [
       </div>
     </section>
   )}
+
 
   {/* Se mantiene en crema a propósito, aunque con Instagram oculto queda
       pegada a "Marcas con las que trabajamos" (también crema): el mapa usa

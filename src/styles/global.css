@@ -577,6 +577,21 @@ footer a:hover{ color:#fff; }
 .gated-embed-placeholder p{ font-size:13.5px; color:var(--graphite); max-width:320px; line-height:1.5; }
 .gated-embed-placeholder .ic{ color:var(--graphite); opacity:.6; }
 
+/* El grid de SnapWidget tiene una altura distinta en escritorio (4x2, ~600px)
+   que en móvil (2x3, ~160px) — en vez de fijar un height que solo acertaría
+   en uno de los dos, se deja crecer con su contenido: es el propio script de
+   SnapWidget (inyectado en CookieConsent.astro junto con el iframe) el que
+   ajusta la altura real una vez carga, poniéndosela directamente al iframe
+   por JS. Nada de min-height aquí — se probó con 280px de suelo y en móvil
+   (contenido real ~163px) dejaba una franja vacía por debajo de las fotos
+   dentro del propio iframe, ya que un min-height fuerza el alto mínimo del
+   iframe aunque su contenido real sea más bajo. Antes de que el script
+   termine de medir, el iframe simplemente usa su alto por defecto del
+   navegador (~150px) un instante — un parpadeo breve es preferible a un
+   hueco vacío permanente. */
+.gated-embed.insta-embed{ height:auto; }
+.gated-embed.insta-embed iframe{ height:auto; }
+
 @media (max-width:700px){
   .cookie-banner{ padding:22px 20px; max-height:88vh; overflow-y:auto; }
   .cookie-banner-inner{ flex-direction:column; align-items:flex-start; gap:16px; }
