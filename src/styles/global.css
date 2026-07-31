@@ -333,8 +333,19 @@ body.home .btn-primary:hover{ background:var(--green-dark); color:#fff; }
 
 /* Chip de texto para proveedores cuyo logo real todavía no se ha conseguido de su
    web oficial — nunca se sustituye por un logo inventado, se queda así hasta que
-   haya un archivo real que enlazar. */
-.brand-chip-text{ font-size:13.5px; font-weight:600; color:var(--ink); text-align:center; }
+   haya un archivo real que enlazar. Tamaño pensado para pesar visualmente como
+   un logo de verdad junto al resto (los logos miden 32px de alto vía
+   .brand-logo): sin esto, el texto se queda en la altura natural de una línea
+   (16px) y se ve mucho más débil que las marcas con logo, sobre todo en el
+   carrusel de la Home donde no hay una tarjeta con fondo que iguale el peso. */
+.brand-chip-text{ font-size:15.5px; font-weight:700; color:var(--ink); text-align:center; min-height:32px; display:flex; align-items:center; justify-content:center; }
+/* white-space:nowrap solo en el carrusel de la Home: ahí cada chip tiene
+   ancho libre y una marca partida en dos líneas rompería la altura uniforme
+   de la fila. En la cuadrícula de /proveedores/ cada tarjeta tiene ancho fijo
+   (columnas de grid) y nombres largos como "SAS Prefabricados de Hormigón"
+   necesitan poder partirse en dos líneas — forzar una sola línea ahí hacía
+   que el texto se saliera de la tarjeta. */
+.brand-marquee-item .brand-chip-text{ white-space:nowrap; }
 
 /* Galería "Nuestro espacio" (Sobre nosotros): fotos reales de exposición y
    almacén, no de catálogo. */
