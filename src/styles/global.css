@@ -355,7 +355,7 @@ body.home .btn-primary:hover{ background:var(--green-dark); color:#fff; }
    deja un marco en blanco alrededor de la foto, que es justo el efecto
    "cutre" que se intenta evitar. El ancho nunca cambia entre estados para
    no desestabilizar los puntos de scroll-snap mientras se anima. */
-.carousel-wrap{ position:relative; margin-top:16px; max-width:860px; }
+.carousel-wrap{ position:relative; margin:16px auto 0; max-width:860px; }
 .carousel{ position:relative; height:440px; overflow-x:auto; overflow-y:hidden; display:flex; align-items:center; gap:16px; scroll-snap-type:x mandatory; scroll-behavior:smooth; -webkit-overflow-scrolling:touch; scrollbar-width:none; padding:0 18%; box-sizing:border-box; }
 .carousel::-webkit-scrollbar{ display:none; }
 .carousel img{ flex:0 0 64%; width:64%; height:76%; object-fit:cover; border-radius:16px; scroll-snap-align:center; opacity:.5; box-shadow:0 10px 26px rgba(0,0,0,.16); transition:opacity .4s ease, height .4s cubic-bezier(.22,.61,.36,1), box-shadow .4s ease; cursor:zoom-in; display:block; }
