@@ -69,6 +69,7 @@ const showProfesionalesSection = false;
                viviera dentro, se ocultaría con él y el envío parecería no
                haber hecho nada, que es justo lo que pasaba antes. -->
           <p id="form-status" role="status" style="font-size:12.5px; color:var(--graphite); margin-top:16px;">Respondemos en el mismo día laborable. Para consultas urgentes, WhatsApp es más rápido que el formulario.</p>
+          <button type="button" id="form-again" hidden style="background:none; border:none; padding:0; margin-top:10px; color:var(--green-dark); font-weight:600; font-size:13px; cursor:pointer; text-decoration:underline;">¿Necesitas enviarnos otra cosa? Rellenar de nuevo</button>
         </div>
 
         <div>
@@ -190,6 +191,20 @@ const showProfesionalesSection = false;
   // public/config-local.example.php para las credenciales SMTP del buzón dedicado).
   const form = document.getElementById('contactForm') as HTMLFormElement | null;
   const statusEl = document.getElementById('form-status');
+  const againBtn = document.getElementById('form-again') as HTMLButtonElement | null;
+  const DEFAULT_STATUS = 'Respondemos en el mismo día laborable. Para consultas urgentes, WhatsApp es más rápido que el formulario.';
+
+  // Tras un envío con éxito el formulario se oculta (evita reenvíos
+  // accidentales con doble clic) y aparece este botón — sin él, para
+  // mandar una segunda consulta (p. ej. primero como particular y luego
+  // como profesional) no quedaba más remedio que recargar la página.
+  againBtn?.addEventListener('click', () => {
+    if (!form || !statusEl) return;
+    form.hidden = false;
+    againBtn.hidden = true;
+    statusEl.textContent = DEFAULT_STATUS;
+    form.querySelector<HTMLInputElement>('#f-nombre')?.focus();
+  });
 
   form?.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -214,6 +229,7 @@ const showProfesionalesSection = false;
         form.reset();
         form.hidden = true;
         statusEl.textContent = 'Gracias, hemos recibido tu consulta. Te contactamos en breve. Si es urgente, escríbenos directamente por WhatsApp.';
+        if (againBtn) againBtn.hidden = false;
       } else {
         // Antes se mostraba siempre el mismo texto genérico y se
         // descartaba el motivo concreto que ya calcula el PHP (campo
