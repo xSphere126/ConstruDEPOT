@@ -7,6 +7,12 @@ import { withBase } from '../lib/url';
 // reactiva ya con esta primera entrada real; se irá ampliando según lleguen
 // más fotos del resto del equipo.
 const showTeamSection = true;
+
+// Sección "Nuestra historia": todavía es texto de ejemplo (ver
+// placeholder-text más abajo), pendiente de la historia real del cliente.
+// Oculta de cara al despliegue para no publicar contenido de relleno;
+// basta con volver a poner esto en `true` en cuanto llegue el texto real.
+const showHistoriaSection = false;
 ---
 
 <BaseLayout
@@ -23,6 +29,7 @@ const showTeamSection = true;
     </div>
   </section>
 
+  {showHistoriaSection && (
   <section>
     <div class="wrap">
       <div class="eyebrow-sm">Nuestra historia</div>
@@ -33,6 +40,7 @@ const showTeamSection = true;
       <span class="placeholder-note">✎ Texto de ejemplo, pendiente de historia real</span>
     </div>
   </section>
+  )}
 
   <section style="background:var(--sand);">
     <div class="wrap">
@@ -235,10 +243,13 @@ const showTeamSection = true;
 <script>
   // Carruseles de "Nuestro espacio": foto activa centrada a tamaño completo,
   // con la anterior/siguiente asomando a los lados (scroll-snap nativo).
-  // Avanza sola cada 4s (bucle infinito, misma idea que .brand-marquee) y se
-  // detiene al poner el cursor encima, al enfocar algo dentro con teclado, o
-  // mientras el lightbox está abierto encima. Los botones también funcionan
-  // y reinician el temporizador para no pelear con el avance automático.
+  // Navegación acotada, sin bucle infinito: las flechas se deshabilitan al
+  // llegar a la primera/última foto, en vez de dar la vuelta. Avanza sola
+  // cada 4s y se para sola al llegar al final (no da la vuelta); se
+  // detiene también al poner el cursor encima, al enfocar algo dentro con
+  // teclado, o mientras el lightbox está abierto encima. Los botones
+  // también funcionan y reinician el temporizador para no pelear con el
+  // avance automático.
   const AUTO_ADVANCE_MS = 4000;
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const tracks = document.querySelectorAll<HTMLElement>('[data-carousel]');
@@ -323,24 +334,12 @@ const showTeamSection = true;
         img.style.cursor = isActive ? 'zoom-in' : 'pointer';
       });
       if (counterEl) counterEl.textContent = `${el.dataset.slideIndex} / ${slides.length}`;
+      // Sin bucle infinito: al llegar a la primera/última foto, la flecha
+      // correspondiente se desactiva en vez de dar la vuelta.
+      if (prevBtn) prevBtn.disabled = !el.previousElementSibling;
+      if (nextBtn) nextBtn.disabled = !el.nextElementSibling;
     };
     setActive(current);
-
-    // Un carrusel infinito de verdad muestra vecino a los dos lados desde
-    // el primerísimo render, no solo después de tocar una flecha — si no,
-    // el bucle se nota a medias, justo lo que se reportó aquí. Es un
-    // problema documentado incluso en Swiper, la librería de carruseles
-    // más usada (github.com/nolimits4web/swiper/issues/7088, "prev/next
-    // slide no visible al iniciar en modo loop"): sin material de sobra
-    // colocado de antemano a los dos lados, el primer render se queda
-    // corto. Se adelanta una rotación antes de que se pinte nada: la
-    // última foto pasa a colocarse justo delante de la que empieza
-    // activa, y se recoloca el scroll al instante (sin animación) para
-    // que ese reordenamiento no se note.
-    if (!current.previousElementSibling) {
-      track.insertBefore(track.lastElementChild as HTMLImageElement, track.firstElementChild);
-      track.scrollLeft = current.offsetLeft - (track.clientWidth - current.offsetWidth) / 2;
-    }
 
     const findClosest = () => {
       const trackRect = track.getBoundingClientRect();
@@ -368,35 +367,14 @@ const showTeamSection = true;
     };
 
     // `current` (la referencia que usa step() para calcular la siguiente
-    // foto) solo se resincroniza con la geometría cuando el scroll se ha
-    // asentado del todo (evento nativo scrollend) — así un arrastre o
-    // swipe manual queda reflejado para el próximo clic, pero ninguna
-    // animación en marcha puede pisarlo a mitad de camino.
-    const syncCurrentOnSettle = () => { current = findClosest(); };
-
-    const gapPx = () => parseFloat(getComputedStyle(track).columnGap || getComputedStyle(track).gap || '0') || 0;
-
-    // Bucle infinito de verdad: en vez de calcular el índice con módulo
-    // (lo que al llegar al final manda de vuelta al principio con un salto
-    // visible hacia atrás, como si se hubiera "acabado la cinta"), la foto
-    // que queda más atrás se reordena en el DOM hacia el otro extremo justo
-    // antes de hacer falta, así siempre hay una foto "siguiente" a la que
-    // seguir avanzando. El scrollLeft se compensa en el mismo instante (sin
-    // animación) para que ese reordenamiento no se note.
-    const rotateForward = () => {
-      const first = track.firstElementChild as HTMLImageElement;
-      const shift = first.getBoundingClientRect().width + gapPx();
-      const sl = track.scrollLeft;
-      track.appendChild(first);
-      track.scrollLeft = sl - shift;
-    };
-    const rotateBackward = () => {
-      const last = track.lastElementChild as HTMLImageElement;
-      const shift = last.getBoundingClientRect().width + gapPx();
-      const sl = track.scrollLeft;
-      track.insertBefore(last, track.firstElementChild);
-      track.scrollLeft = sl + shift;
-    };
+    // foto, y que decide qué flecha se desactiva) solo se resincroniza con
+    // la geometría cuando el scroll se ha asentado del todo (evento nativo
+    // scrollend) — así un arrastre o swipe manual queda reflejado para el
+    // próximo clic, pero ninguna animación en marcha puede pisarlo a mitad
+    // de camino. Reutiliza setActive completo (no solo la variable) para
+    // que también se actualicen los botones si el swipe termina en un
+    // extremo.
+    const syncCurrentOnSettle = () => { setActive(findClosest()); };
 
     // scrollIntoView({block:'nearest'}) puede mover igualmente el scroll
     // vertical de la página si la foto no está del todo visible (p. ej. al
@@ -408,15 +386,12 @@ const showTeamSection = true;
       track.scrollTo({ left: target, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
     };
 
+    // Sin bucle infinito: si ya no hay foto en esa dirección, no hace
+    // nada (las flechas ya están deshabilitadas en ese extremo, pero el
+    // auto-avance también pasa por aquí, así que hace falta el corte).
     const step = (dir: number) => {
-      let next: HTMLImageElement | null;
-      if (dir > 0) {
-        if (!current.nextElementSibling) rotateForward();
-        next = current.nextElementSibling as HTMLImageElement;
-      } else {
-        if (!current.previousElementSibling) rotateBackward();
-        next = current.previousElementSibling as HTMLImageElement;
-      }
+      const next = (dir > 0 ? current.nextElementSibling : current.previousElementSibling) as HTMLImageElement | null;
+      if (!next) return;
       setActive(next);
       centerOn(next);
     };
@@ -424,9 +399,13 @@ const showTeamSection = true;
     const start = () => {
       stop();
       // Ni el ratón ni el teclado deben reactivar el avance automático
-      // mientras el lightbox tapa el carrusel.
-      if (prefersReducedMotion || lightboxIsOpen) return;
-      timer = setInterval(() => step(1), AUTO_ADVANCE_MS);
+      // mientras el lightbox tapa el carrusel. Al llegar a la última foto
+      // tampoco tiene sentido seguir intentándolo cada 4s: se para sola.
+      if (prefersReducedMotion || lightboxIsOpen || !current.nextElementSibling) return;
+      timer = setInterval(() => {
+        if (!current.nextElementSibling) { stop(); return; }
+        step(1);
+      }, AUTO_ADVANCE_MS);
     };
     const stop = () => {
       if (timer) clearInterval(timer);
