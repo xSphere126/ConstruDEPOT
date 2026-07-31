@@ -251,25 +251,69 @@ const showTeamSection = true;
     const prevBtn = wrap?.querySelector<HTMLButtonElement>('[data-carousel-prev]');
     const nextBtn = wrap?.querySelector<HTMLButtonElement>('[data-carousel-next]');
     const slides = Array.from(track.querySelectorAll<HTMLImageElement>('img'));
-    let index = Math.max(0, slides.findIndex((img) => img.classList.contains('is-active')));
+    let current = slides.find((img) => img.classList.contains('is-active')) ?? slides[0];
     let timer: ReturnType<typeof setInterval> | undefined;
     let scrollRaf: number | undefined;
 
-    // La foto "activa" (escala 1, opacidad 1) es la que está más cerca del
-    // centro del carrusel en cada momento, tanto en reposo como a mitad de
-    // un scroll — así las laterales se atenúan/agrandan de forma gradual.
-    const markActive = () => {
+    const setActive = (el: HTMLImageElement) => {
+      current = el;
+      slides.forEach((img) => img.classList.toggle('is-active', img === el));
+    };
+
+    const findClosest = () => {
       const trackRect = track.getBoundingClientRect();
       const center = trackRect.left + trackRect.width / 2;
-      let closest = 0;
+      let closest = slides[0];
       let closestDist = Infinity;
-      slides.forEach((img, n) => {
+      slides.forEach((img) => {
         const r = img.getBoundingClientRect();
         const dist = Math.abs((r.left + r.width / 2) - center);
-        if (dist < closestDist) { closestDist = dist; closest = n; }
+        if (dist < closestDist) { closestDist = dist; closest = img; }
       });
-      index = closest;
-      slides.forEach((img, n) => img.classList.toggle('is-active', n === closest));
+      return closest;
+    };
+
+    // Solo pinta la clase visual (opacidad/tamaño) en cada frame de scroll,
+    // sin tocar `current`: si además reasignara `current` aquí, un clic
+    // rápido en la flecha mientras la animación anterior todavía está en
+    // marcha se encontraría con que este cálculo geométrico (a mitad de
+    // camino, aún cerca de la foto vieja) le "pisa" el valor que step() ya
+    // había avanzado, y el clic se perdía — pasaba justo eso al probar con
+    // muchos clics seguidos.
+    const paintActive = () => {
+      const closest = findClosest();
+      slides.forEach((img) => img.classList.toggle('is-active', img === closest));
+    };
+
+    // `current` (la referencia que usa step() para calcular la siguiente
+    // foto) solo se resincroniza con la geometría cuando el scroll se ha
+    // asentado del todo (evento nativo scrollend) — así un arrastre o
+    // swipe manual queda reflejado para el próximo clic, pero ninguna
+    // animación en marcha puede pisarlo a mitad de camino.
+    const syncCurrentOnSettle = () => { current = findClosest(); };
+
+    const gapPx = () => parseFloat(getComputedStyle(track).columnGap || getComputedStyle(track).gap || '0') || 0;
+
+    // Bucle infinito de verdad: en vez de calcular el índice con módulo
+    // (lo que al llegar al final manda de vuelta al principio con un salto
+    // visible hacia atrás, como si se hubiera "acabado la cinta"), la foto
+    // que queda más atrás se reordena en el DOM hacia el otro extremo justo
+    // antes de hacer falta, así siempre hay una foto "siguiente" a la que
+    // seguir avanzando. El scrollLeft se compensa en el mismo instante (sin
+    // animación) para que ese reordenamiento no se note.
+    const rotateForward = () => {
+      const first = track.firstElementChild as HTMLImageElement;
+      const shift = first.getBoundingClientRect().width + gapPx();
+      const sl = track.scrollLeft;
+      track.appendChild(first);
+      track.scrollLeft = sl - shift;
+    };
+    const rotateBackward = () => {
+      const last = track.lastElementChild as HTMLImageElement;
+      const shift = last.getBoundingClientRect().width + gapPx();
+      const sl = track.scrollLeft;
+      track.insertBefore(last, track.firstElementChild);
+      track.scrollLeft = sl + shift;
     };
 
     // scrollIntoView({block:'nearest'}) puede mover igualmente el scroll
@@ -277,13 +321,23 @@ const showTeamSection = true;
     // avanzar sola mientras el usuario está leyendo más abajo) — por eso se
     // calcula el scrollLeft a mano y solo se mueve el carrusel, nunca la
     // página.
-    const show = (i: number) => {
-      index = (i + slides.length) % slides.length;
-      const slide = slides[index];
-      const target = slide.offsetLeft - (track.clientWidth - slide.offsetWidth) / 2;
+    const centerOn = (el: HTMLImageElement) => {
+      const target = el.offsetLeft - (track.clientWidth - el.offsetWidth) / 2;
       track.scrollTo({ left: target, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
     };
-    const step = (dir: number) => show(index + dir);
+
+    const step = (dir: number) => {
+      let next: HTMLImageElement | null;
+      if (dir > 0) {
+        if (!current.nextElementSibling) rotateForward();
+        next = current.nextElementSibling as HTMLImageElement;
+      } else {
+        if (!current.previousElementSibling) rotateBackward();
+        next = current.previousElementSibling as HTMLImageElement;
+      }
+      setActive(next);
+      centerOn(next);
+    };
 
     const start = () => {
       stop();
@@ -309,8 +363,9 @@ const showTeamSection = true;
     });
     track.addEventListener('scroll', () => {
       if (scrollRaf) cancelAnimationFrame(scrollRaf);
-      scrollRaf = requestAnimationFrame(markActive);
+      scrollRaf = requestAnimationFrame(paintActive);
     }, { passive: true });
+    track.addEventListener('scrollend', syncCurrentOnSettle, { passive: true });
 
     start();
   });

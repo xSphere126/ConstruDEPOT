@@ -369,9 +369,9 @@ body.home .btn-primary:hover{ background:var(--green-dark); color:#fff; }
   .carousel{ height:280px; padding:0 12%; gap:10px; }
   .carousel img{ flex-basis:76%; width:76%; height:80%; border-radius:12px; }
   .carousel img.is-active{ height:100%; }
-  .carousel-btn{ width:36px; height:36px; }
-  .carousel-btn--prev{ left:4px; }
-  .carousel-btn--next{ right:4px; }
+  .carousel-btn{ width:40px; height:40px; }
+  .carousel-btn--prev{ left:6px; }
+  .carousel-btn--next{ right:6px; }
 }
 @media (prefers-reduced-motion: reduce){
   .carousel{ scroll-behavior:auto; }
