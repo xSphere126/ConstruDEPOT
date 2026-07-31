@@ -272,9 +272,16 @@ const showTeamSection = true;
       slides.forEach((img, n) => img.classList.toggle('is-active', n === closest));
     };
 
+    // scrollIntoView({block:'nearest'}) puede mover igualmente el scroll
+    // vertical de la página si la foto no está del todo visible (p. ej. al
+    // avanzar sola mientras el usuario está leyendo más abajo) — por eso se
+    // calcula el scrollLeft a mano y solo se mueve el carrusel, nunca la
+    // página.
     const show = (i: number) => {
       index = (i + slides.length) % slides.length;
-      slides[index].scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth', inline: 'center', block: 'nearest' });
+      const slide = slides[index];
+      const target = slide.offsetLeft - (track.clientWidth - slide.offsetWidth) / 2;
+      track.scrollTo({ left: target, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
     };
     const step = (dir: number) => show(index + dir);
 
