@@ -8,15 +8,31 @@ const hayVacantes = vacantes.length > 0;
 
 <BaseLayout
   title="Empleo"
-  description="Vacantes abiertas en Construdepot by Quiles: atención en exposición, conductor de carretilla elevadora y mozo de almacén. Consulta el detalle y envía tu candidatura."
+  description="Trabaja con nosotros en Construdepot by Quiles: vacantes abiertas en Elche y candidatura espontánea para futuras oportunidades."
   headerVariant="solid"
   active="empleo"
 >
   <section class="page-banner page-banner--photo" style={`--banner-photo:url(${withBase('/images/matalmacen4.jpg')})`}>
     <div class="wrap">
       <div class="breadcrumb"><a href={withBase('/')}>Inicio</a> · Empleo</div>
-      <h1>Buscamos gente para el almacén y la exposición</h1>
-      <p>{hayVacantes ? 'Estas son las posiciones abiertas ahora mismo en Elche. Escríbenos y hablamos directamente, sin departamentos de por medio.' : 'Ahora mismo no hay posiciones abiertas. Si quieres formar parte del equipo, escríbenos y te tenemos en cuenta.'}</p>
+      <h1>Construimos nuestro equipo contigo</h1>
+      <p>En ConstruDepot seguimos creciendo y queremos contar con personas que quieran crecer con nosotros.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="eyebrow-sm">Trabaja con nosotros</div>
+      <h2>Buscamos profesionales para estas áreas</h2>
+      <p class="section-sub">Buscamos profesionales para incorporarse a las diferentes áreas de nuestra empresa:</p>
+      <div class="product-chips" style="margin-bottom:28px;">
+        <span class="product-chip">Almacén y logística</span>
+        <span class="product-chip">Tienda y exposición</span>
+        <span class="product-chip">Ventas y atención al cliente</span>
+        <span class="product-chip">Administración</span>
+        <span class="product-chip">Otros departamentos</span>
+      </div>
+      <p class="section-sub" style="margin-bottom:0;">Si eres una persona responsable, trabajadora y con ganas de formar parte de un equipo dinámico, queremos conocerte.</p>
     </div>
   </section>
 
@@ -31,10 +47,7 @@ const hayVacantes = vacantes.length > 0;
           <div class="job-row">
             <button type="button" class="job-row-head" data-job-toggle aria-expanded="false" aria-controls={`panel-${v.id}`}>
               <span class="job-row-title">{v.titulo}</span>
-              <span class="job-row-tags">
-                {v.ubicacion} · {v.jornada}
-                {v.placeholder && <span class="placeholder-note">✎ Ejemplo, pendiente de confirmar</span>}
-              </span>
+              <span class="job-row-tags">{v.ubicacion}</span>
               <span class="job-row-chevron" aria-hidden="true">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
               </span>
@@ -53,26 +66,20 @@ const hayVacantes = vacantes.length > 0;
             </div>
           </div>
         ))}
-
-        <div class="job-row job-row--espontanea">
-          <button type="button" class="job-row-head" data-job-toggle aria-expanded="false" aria-controls="panel-espontanea">
-            <span class="job-row-title">¿No ves tu puesto? Candidatura espontánea</span>
-            <span class="job-row-tags">Guardamos tu perfil para cuando surja algo</span>
-            <span class="job-row-chevron" aria-hidden="true">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
-            </span>
-          </button>
-          <div class="job-row-panel" id="panel-espontanea" data-job-panel hidden>
-            <p>Cuéntanos qué sabes hacer y qué buscas. Si encaja con algo, te contactamos.</p>
-            <button type="button" class="btn-primary" data-aplicar-vacante="Candidatura espontánea" data-aplicar-target="panel-espontanea">
-              Enviar candidatura espontánea →
-            </button>
-            <div class="job-form-slot" data-form-slot></div>
-          </div>
-        </div>
       </div>
 
-      <p class="section-sub" style="margin-top:32px; margin-bottom:0;">¿Prefieres hablarlo antes de escribir? Llámanos o escríbenos por <a href="https://wa.me/34607224454" style="color:var(--green-dark); font-weight:600;">WhatsApp</a> al 607&nbsp;224&nbsp;454, o a <a href="mailto:info@construdepot.es" style="color:var(--green-dark); font-weight:600;">info@construdepot.es</a>.</p>
+      <div class="cta-band" style="margin-top:32px;" id="cta-espontanea">
+        <div>
+          <h3>¿Quieres formar parte de ConstruDepot?</h3>
+          <p style="color:rgba(255,255,255,.8); font-size:14.5px; margin-top:10px; max-width:520px;">Aunque ahora mismo no haya ninguna vacante publicada que encaje con tu perfil, puedes enviarnos igualmente tu currículum. Valoraremos tu candidatura para futuras oportunidades dentro de la empresa.</p>
+        </div>
+        <button type="button" class="btn-primary" data-aplicar-vacante="Candidatura espontánea" data-aplicar-target="cta-espontanea">
+          Enviar currículum →
+        </button>
+        <div class="job-form-slot" data-form-slot style="flex-basis:100%;"></div>
+      </div>
+
+      <p class="section-sub" style="margin-top:24px; margin-bottom:0;">¿Prefieres hablarlo antes de escribir? Llámanos o escríbenos por <a href="https://wa.me/34607224454" style="color:var(--green-dark); font-weight:600;">WhatsApp</a> al 607&nbsp;224&nbsp;454, o a <a href="mailto:info@construdepot.es" style="color:var(--green-dark); font-weight:600;">info@construdepot.es</a>.</p>
 
       <div id="formHome" hidden>
         <div id="applicationBlock">
@@ -122,7 +129,6 @@ const hayVacantes = vacantes.length > 0;
 <style>
   .job-list{ display:flex; flex-direction:column; gap:14px; }
   .job-row{ background:var(--cream-card); border:1px solid var(--line); border-radius:16px; overflow:hidden; }
-  .job-row--espontanea{ border-style:dashed; }
   /* Fila en columna a propósito: título y metadatos apilados verticalmente,
      con el chevron anclado en la esquina en vez de repartir el contenido en
      una barra horizontal (icono | texto | flecha). Con 3+ vacantes en fila
@@ -139,6 +145,12 @@ const hayVacantes = vacantes.length > 0;
   .job-requisitos li{ font-size:13.5px; color:#4b4c46; padding-left:22px; position:relative; }
   .job-requisitos li::before{ content:'✓'; position:absolute; left:0; color:var(--green-dark); font-weight:700; }
   .job-form-slot:not(:empty){ margin-top:24px; padding-top:24px; border-top:1px solid var(--line); }
+
+  /* El bloque de candidatura está pensado para fondos claros (etiquetas y
+     texto de consentimiento en tonos grafito) — dentro del cta-band, de
+     fondo oscuro, necesita su propia "isla" clara en vez de heredar el
+     fondo oscuro directamente, o el texto quedaría ilegible. */
+  #cta-espontanea .job-form-slot:not(:empty){ margin-top:24px; padding:26px 24px; border-top:none; background:var(--cream-card); border-radius:16px; }
 </style>
 
 <script>
