@@ -52,7 +52,7 @@ $puesto = cleanField($_POST['puesto'] ?? '');
 $mensaje = trim($_POST['mensaje'] ?? '');
 $consentimiento = !empty($_POST['consentimiento']);
 
-if ($nombre === '' || $telefono === '' || $email === '') {
+if ($nombre === '' || $telefono === '' || $email === '' || $mensaje === '') {
     respond(false, 'Faltan campos obligatorios.');
 }
 
