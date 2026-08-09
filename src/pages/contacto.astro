@@ -9,9 +9,9 @@ import { withBase } from '../lib/url';
 // poco terminado. Se guarda el bloque completo, solo oculto, para
 // reactivarlo en cuanto haya condiciones reales que mostrar — igual que se
 // hizo con la sección de Instagram en index.astro. Si se reactiva, revertir
-// también el enlace de "Ver condiciones de suministro" en index.astro y el
-// destino de la redirección en profesionales.astro, que ahora mismo apuntan
-// a /contacto/ en vez de /contacto/#profesionales.
+// también el enlace de "Ver condiciones de suministro" en index.astro y
+// apuntar esta sección con su propia URL, ya que /profesionales/ ahora
+// redirige a /empleo/ (reconvertida en página de empleo) en vez de aquí.
 const showProfesionalesSection = false;
 ---
 
