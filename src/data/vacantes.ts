@@ -18,18 +18,29 @@
 // carnet de conducir a Almacén), conservando los que aplican a ambas
 // (entusiasmo, manejo del ordenador, trabajo en equipo, disponibilidad
 // horaria — el cliente confirmó que Almacén también necesita ordenador).
+//
+// La entrada "practicas" es distinta a una vacante remunerada normal: el
+// cliente confirmó que se refiere a alumnado en prácticas a través del
+// convenio de su propio centro educativo (FP/universidad), no a un
+// contrato en prácticas remunerado — así que no lleva promesas de salario
+// ni requisitos de titulación concretos que no se han confirmado, solo la
+// condición real (que el centro pueda formalizar el convenio). El área no
+// se fija de antemano, a propósito, ya que el cliente prefiere valorarla
+// según el perfil que llegue. El campo `etiqueta` la distingue visualmente
+// de las vacantes normales en el listado.
 export interface Vacante {
   id: string;
   titulo: string;
   ubicacion: string;
   descripcion: string;
   requisitos?: string[];
+  etiqueta?: string;
 }
 
 export const vacantes: Vacante[] = [
   {
     id: 'atencion-exposicion',
-    titulo: 'Atención al cliente — Exposición',
+    titulo: 'Atención al cliente',
     ubicacion: 'Elche',
     descripcion: 'Atiendes a quienes visitan la exposición: dudas de producto, presupuestos y seguimiento de pedidos.',
     requisitos: [
@@ -43,7 +54,7 @@ export const vacantes: Vacante[] = [
   },
   {
     id: 'mozo-almacen',
-    titulo: 'Mozo/a de almacén',
+    titulo: 'Mozo de almacén',
     ubicacion: 'Elche',
     descripcion: 'Recepción y ubicación de mercancía, preparación de pedidos y apoyo en carga y descarga.',
     requisitos: [
@@ -54,6 +65,18 @@ export const vacantes: Vacante[] = [
       'Disponibilidad horaria',
       'Carnet de conducir tipo B',
       'Valorable carnet C1/C para conducción de camiones',
+    ],
+  },
+  {
+    id: 'practicas',
+    titulo: 'Prácticas de formación',
+    ubicacion: 'Elche',
+    etiqueta: 'Prácticas',
+    descripcion: 'Formamos a estudiantes en prácticas dentro del equipo, en el área que mejor encaje con tu perfil: almacén y logística, exposición y atención al cliente, o administración. Es una colaboración a través del convenio de tu centro educativo, no un contrato laboral.',
+    requisitos: [
+      'Estar cursando FP o un grado universitario relacionado con alguna de estas áreas',
+      'Que tu centro educativo pueda formalizar el convenio de prácticas',
+      'Ganas de aprender y actitud proactiva',
     ],
   },
 ];
