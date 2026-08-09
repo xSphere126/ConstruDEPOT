@@ -6,7 +6,6 @@
 export interface Vacante {
   id: string;
   titulo: string;
-  categoria: 'exposicion' | 'almacen';
   ubicacion: string;
   jornada: string;
   descripcion: string;
@@ -25,30 +24,27 @@ export const vacantes: Vacante[] = [
   {
     id: 'atencion-exposicion',
     titulo: 'Atención al cliente — Exposición',
-    categoria: 'exposicion',
     ubicacion: 'Elche',
     jornada: 'Jornada completa',
-    descripcion: 'Recibes y asesoras a quienes visitan la exposición: dudas de producto, presupuestos y seguimiento de pedidos, en coordinación con el resto del equipo.',
+    descripcion: 'Atiendes a quienes visitan la exposición: dudas de producto, presupuestos y seguimiento de pedidos.',
     requisitos: ['Atención al cliente cara a cara', 'Manejo de ofimática básica', 'Valorable experiencia en construcción, reforma o decoración'],
     placeholder: true,
   },
   {
     id: 'conductor-torito',
     titulo: 'Conductor/a de carretilla elevadora (torito)',
-    categoria: 'almacen',
     ubicacion: 'Elche',
     jornada: 'Jornada completa',
-    descripcion: 'Carga y descarga de palets, organización del patio y del almacén, y apoyo en la preparación de pedidos para reparto.',
+    descripcion: 'Carga y descarga de palets, organización del patio y apoyo en la preparación de pedidos.',
     requisitos: ['Carnet de carretillero en vigor', 'Experiencia previa manejando carretilla elevadora', 'Carnet de conducir B valorable'],
     placeholder: true,
   },
   {
     id: 'mozo-almacen',
     titulo: 'Mozo/a de almacén',
-    categoria: 'almacen',
     ubicacion: 'Elche',
     jornada: 'Jornada completa',
-    descripcion: 'Recepción y ubicación de mercancía, preparación de pedidos y apoyo en carga y descarga junto al resto del equipo de almacén.',
+    descripcion: 'Recepción y ubicación de mercancía, preparación de pedidos y apoyo en carga y descarga.',
     requisitos: ['Buena condición física', 'Ganas de aprender el oficio', 'Valorable experiencia en almacén o construcción'],
     placeholder: true,
   },
