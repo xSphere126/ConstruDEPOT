@@ -16,7 +16,8 @@
 // ha repartido entre las dos vacantes según a cuál encaja cada uno (p. ej.
 // "dotes comerciales" e idiomas a Exposición, "manejo de carretilla" y
 // carnet de conducir a Almacén), conservando los que aplican a ambas
-// (entusiasmo, trabajo en equipo, disponibilidad horaria).
+// (entusiasmo, manejo del ordenador, trabajo en equipo, disponibilidad
+// horaria — el cliente confirmó que Almacén también necesita ordenador).
 export interface Vacante {
   id: string;
   titulo: string;
@@ -47,6 +48,7 @@ export const vacantes: Vacante[] = [
     descripcion: 'Recepción y ubicación de mercancía, preparación de pedidos y apoyo en carga y descarga.',
     requisitos: [
       'Entusiasmo y ganas de trabajar',
+      'Buen manejo del ordenador',
       'Manejo de carretilla',
       'Capacidad para trabajar en equipo',
       'Disponibilidad horaria',
