@@ -72,7 +72,7 @@ export const vacantes: Vacante[] = [
     titulo: 'Prácticas de formación',
     ubicacion: 'Elche',
     etiqueta: 'Prácticas',
-    descripcion: 'Formamos a estudiantes en prácticas dentro del equipo, en el área que mejor encaje con tu perfil: almacén y logística, exposición y atención al cliente, o administración. Es una colaboración a través del convenio de tu centro educativo, no un contrato laboral.',
+    descripcion: 'Formamos a estudiantes en prácticas. El área no está cerrada: puede ser almacén, exposición o administración según tu perfil. Es una colaboración con tu centro educativo a través de su convenio y no un contrato laboral.',
     requisitos: [
       'Estar cursando FP o un grado universitario relacionado con alguna de estas áreas',
       'Que tu centro educativo pueda formalizar el convenio de prácticas',
