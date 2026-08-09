@@ -32,6 +32,15 @@ if (!file_exists($configFile)) {
 }
 require_once $configFile;
 
+// Campo trampa: invisible para personas, los bots que autorrellenan
+// formularios suelen completarlo. Se comprueba ANTES que Turnstile a
+// propósito: si un bot tan simple pica en esto, se le responde con el
+// engaño silencioso de siempre (cree que ha funcionado) sin gastar ni
+// siquiera una llamada a Cloudflare para confirmarlo.
+if (!empty($_POST['_gotcha'])) {
+    respond(true, 'Gracias, hemos recibido tu consulta.');
+}
+
 // Verificación anti-bot de Cloudflare Turnstile — ver lib/turnstile.php.
 // Solo se exige si TURNSTILE_SECRET_KEY está configurada; mientras no lo
 // esté, el formulario sigue funcionando igual que antes.
@@ -40,13 +49,6 @@ if (turnstileConfigured()) {
     if (!verifyTurnstile($turnstileToken, $_SERVER['REMOTE_ADDR'] ?? '')) {
         respond(false, 'No hemos podido verificar que eres una persona. Recarga la página e inténtalo de nuevo.');
     }
-}
-
-// Campo trampa: invisible para personas, los bots que autorrellenan
-// formularios suelen completarlo. Si llega relleno, se descarta en
-// silencio (sin decirle al bot que ha sido detectado).
-if (!empty($_POST['_gotcha'])) {
-    respond(true, 'Gracias, hemos recibido tu consulta.');
 }
 
 // Saneado: se elimina cualquier salto de línea de los campos de una sola
