@@ -140,10 +140,10 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
               <input type="checkbox" name="consentimiento" value="1" required style="margin-top:3px;">
               <span>He leído y acepto la <a href={withBase('/politica-privacidad/')} style="color:var(--green-dark); font-weight:600;">política de privacidad</a>, y autorizo el tratamiento de mis datos para este proceso de selección.</span>
             </label>
-            {turnstileSiteKey && <div class="cf-turnstile" data-sitekey={turnstileSiteKey}></div>}
+            {turnstileSiteKey && <div id="turnstileWidget" data-sitekey={turnstileSiteKey}></div>}
             <button type="submit" class="btn-primary" style="justify-content:center;">Enviar candidatura →</button>
           </form>
-          {turnstileSiteKey && <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>}
+          {turnstileSiteKey && <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" defer></script>}
           <!-- Fuera del <form> a propósito, igual que en contacto.astro: al
                enviar con éxito se oculta todo el formulario y este mensaje
                necesita seguir visible para mostrar la confirmación. -->
@@ -222,6 +222,34 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
   const statusEl = document.getElementById('form-status');
   const DEFAULT_STATUS = 'Revisamos las candidaturas y contactamos si encaja con alguna vacante.';
 
+  // El widget de Turnstile se pinta a propósito con render "explicit" (no
+  // automático) y solo cuando se pulsa "Aplicar", no al cargar la página:
+  // el formulario (y el widget dentro) empieza oculto dentro de #formHome,
+  // y Cloudflare no inicializa bien un widget que todavía está oculto en
+  // ese momento — de ahí que en Contacto (formulario siempre visible)
+  // funcionara a la primera y aquí no. Se reintenta unas cuantas veces por
+  // si el script de Cloudflare (con `defer`) aún no ha terminado de cargar
+  // en el primer click.
+  declare global {
+    interface Window {
+      turnstile?: {
+        render: (container: string | HTMLElement, options: { sitekey: string }) => string;
+      };
+    }
+  }
+  let turnstileWidgetId: string | null = null;
+  function ensureTurnstileRendered(retries = 20) {
+    const container = document.getElementById('turnstileWidget');
+    if (!container || turnstileWidgetId !== null) return;
+    if (!window.turnstile) {
+      if (retries > 0) setTimeout(() => ensureTurnstileRendered(retries - 1), 150);
+      return;
+    }
+    const sitekey = container.dataset.sitekey;
+    if (!sitekey) return;
+    turnstileWidgetId = window.turnstile.render(container, { sitekey });
+  }
+
   // Botón "Aplicar a este puesto"/"Enviar currículum": mueve el bloque de
   // candidatura (formulario + mensaje de estado, como una sola unidad) al
   // hueco de la vacante pulsada, y precarga el campo oculto "puesto" — así
@@ -241,6 +269,7 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
       slot.appendChild(applicationBlock);
       form.hidden = false;
       statusEl.textContent = DEFAULT_STATUS;
+      ensureTurnstileRendered();
       applicationBlock.scrollIntoView({ behavior: 'smooth', block: 'center' });
       document.getElementById('f-nombre')?.focus();
     });
