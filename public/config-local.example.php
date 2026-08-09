@@ -42,3 +42,18 @@ define('GRAPH_SENDER', 'web@construdepot.es');
 // Dirección donde deben llegar las consultas del formulario.
 define('MAIL_TO', 'info@construdepot.es');
 define('MAIL_TO_NAME', 'Construdepot by Quiles');
+
+// Cloudflare Turnstile — verificación anti-bot de los formularios de
+// contacto y empleo (ver public/lib/turnstile.php). Opcional: mientras
+// esta línea no esté descomentada con un valor real, los formularios
+// siguen funcionando sin exigir verificación, igual que hasta ahora.
+//
+// Para conseguir la clave secreta:
+// 1. Cuenta gratuita en dash.cloudflare.com (no hace falta tener el
+//    dominio en Cloudflare, Turnstile funciona igual con cualquier DNS).
+// 2. Turnstile > Add site. Dominio: construdepot.es (añadir también
+//    localhost si quieres probar en local). Modo "Managed".
+// 3. Copiar la "Site Key" (pública) → va en sitio/.env como
+//    PUBLIC_TURNSTILE_SITE_KEY, NUNCA aquí.
+// 4. Copiar la "Secret Key" (privada) → esta sí va aquí abajo.
+// define('TURNSTILE_SECRET_KEY', 'CAMBIA-ESTO-por-la-secret-key-de-Turnstile');
