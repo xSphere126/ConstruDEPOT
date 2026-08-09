@@ -57,6 +57,7 @@ export const grupos: { nombre: string; marcas: Marca[] }[] = [
       { nombre: 'Hormigones Cava', url: 'https://www.hormigonescava.es/', logo: '/brands/hormigones-cava.png', white: true },
       { nombre: 'La Escandella', url: 'https://www.laescandella.com/es/', logo: '/brands/laescandella.png' },
       { nombre: 'SAS Prefabricados de Hormigón', url: 'https://sas1900.com/' },
+      { nombre: 'Verniprens', url: 'https://verniprens.com/' },
       { nombre: 'Baublock', url: 'https://baublock.com/' },
       { nombre: 'Chova', url: 'https://chova.com/' },
       { nombre: 'Cerámica Monserrat', url: 'https://ceramicamonserrat.com/' },
