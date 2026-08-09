@@ -6,10 +6,6 @@ RewriteCond %{HTTPS} off [OR]
 RewriteCond %{HTTP_HOST} ^www\. [NC]
 RewriteRule ^ https://construdepot.es%{REQUEST_URI} [L,R=301]
 
-# /profesionales/ se unió a /contacto/ — redirección real (301) en vez de
-# depender solo del meta-refresh de la página, mejor para SEO.
-RewriteRule ^profesionales/?$ /contacto/ [L,R=301]
-
 # Cabeceras de seguridad básicas, sin afectar a la funcionalidad del sitio.
 # Envueltas en <IfModule> para que no rompan nada si mod_headers no estuviera
 # disponible en el hosting.
