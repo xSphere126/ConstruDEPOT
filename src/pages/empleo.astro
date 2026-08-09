@@ -16,12 +16,7 @@ const hayVacantes = vacantes.length > 0;
     <div class="wrap">
       <div class="breadcrumb"><a href={withBase('/')}>Inicio</a> · Empleo</div>
       <h1>Buscamos gente para el almacén y la exposición</h1>
-      <p>{hayVacantes ? 'Estas son las posiciones abiertas ahora mismo en Elche. Sin procesos eternos: nos escribes, hablamos, y si encaja, empiezas.' : 'Ahora mismo no hay posiciones abiertas, pero si quieres formar parte del equipo, cuéntanos y te tenemos en cuenta.'}</p>
-      <div class="hero-facts">
-        <span class="hero-fact">Elche, Alicante</span>
-        <span class="hero-fact">Trato directo, sin RRHH de por medio</span>
-        <span class="hero-fact">Respuesta rápida a tu candidatura</span>
-      </div>
+      <p>{hayVacantes ? 'Estas son las posiciones abiertas ahora mismo en Elche. Escríbenos y hablamos directamente, sin departamentos de por medio.' : 'Ahora mismo no hay posiciones abiertas. Si quieres formar parte del equipo, escríbenos y te tenemos en cuenta.'}</p>
     </div>
   </section>
 
@@ -35,16 +30,10 @@ const hayVacantes = vacantes.length > 0;
         {vacantes.map((v) => (
           <div class="job-row">
             <button type="button" class="job-row-head" data-job-toggle aria-expanded="false" aria-controls={`panel-${v.id}`}>
-              <span class="job-row-icon" aria-hidden="true">
-                {v.categoria === 'exposicion' ? (
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>
-                ) : (
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="12" rx="1"/><path d="M4 8l8-4 8 4"/><path d="M12 4v16"/></svg>
-                )}
-              </span>
-              <span class="job-row-main">
-                <span class="job-row-title">{v.titulo}</span>
-                <span class="job-row-tags">{v.ubicacion} · {v.jornada}{v.placeholder && <span class="placeholder-note" style="margin-left:8px; vertical-align:middle;">✎ Ejemplo, pendiente de confirmar</span>}</span>
+              <span class="job-row-title">{v.titulo}</span>
+              <span class="job-row-tags">
+                {v.ubicacion} · {v.jornada}
+                {v.placeholder && <span class="placeholder-note">✎ Ejemplo, pendiente de confirmar</span>}
               </span>
               <span class="job-row-chevron" aria-hidden="true">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
@@ -67,13 +56,8 @@ const hayVacantes = vacantes.length > 0;
 
         <div class="job-row job-row--espontanea">
           <button type="button" class="job-row-head" data-job-toggle aria-expanded="false" aria-controls="panel-espontanea">
-            <span class="job-row-icon" aria-hidden="true">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
-            </span>
-            <span class="job-row-main">
-              <span class="job-row-title">¿No ves tu puesto? Candidatura espontánea</span>
-              <span class="job-row-tags">Guardamos tu perfil para cuando surja algo</span>
-            </span>
+            <span class="job-row-title">¿No ves tu puesto? Candidatura espontánea</span>
+            <span class="job-row-tags">Guardamos tu perfil para cuando surja algo</span>
             <span class="job-row-chevron" aria-hidden="true">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
             </span>
@@ -136,18 +120,18 @@ const hayVacantes = vacantes.length > 0;
 </BaseLayout>
 
 <style>
-  .hero-facts{ display:flex; flex-wrap:wrap; gap:10px; margin-top:22px; position:relative; z-index:2; }
-  .hero-fact{ font-family:'Roboto', sans-serif; font-size:12px; letter-spacing:.02em; color:#fff; background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.28); padding:7px 14px; border-radius:999px; }
-
   .job-list{ display:flex; flex-direction:column; gap:14px; }
   .job-row{ background:var(--cream-card); border:1px solid var(--line); border-radius:16px; overflow:hidden; }
   .job-row--espontanea{ border-style:dashed; }
-  .job-row-head{ width:100%; display:flex; align-items:center; gap:16px; padding:20px 22px; background:none; border:none; cursor:pointer; text-align:left; font-family:inherit; }
-  .job-row-icon{ flex:0 0 auto; width:40px; height:40px; border-radius:50%; background:rgba(65,183,24,.1); color:var(--green-dark); display:flex; align-items:center; justify-content:center; }
-  .job-row-main{ flex:1 1 auto; display:flex; flex-direction:column; gap:3px; min-width:0; }
+  /* Fila en columna a propósito: título y metadatos apilados verticalmente,
+     con el chevron anclado en la esquina en vez de repartir el contenido en
+     una barra horizontal (icono | texto | flecha). Con 3+ vacantes en fila
+     esa barra horizontal se sentía más como una tabla que como un listado
+     de ofertas. */
+  .job-row-head{ width:100%; display:flex; flex-direction:column; align-items:flex-start; gap:5px; padding:20px 46px 20px 22px; background:none; border:none; cursor:pointer; text-align:left; font-family:inherit; position:relative; }
   .job-row-title{ font-family:'Roboto', sans-serif; font-weight:600; font-size:16.5px; color:var(--ink); }
-  .job-row-tags{ font-size:13px; color:#6b6c64; }
-  .job-row-chevron{ flex:0 0 auto; color:#6b6c64; transition:transform .2s ease; display:flex; }
+  .job-row-tags{ font-size:13px; color:#6b6c64; display:flex; align-items:center; flex-wrap:wrap; gap:8px; }
+  .job-row-chevron{ position:absolute; top:22px; right:22px; color:#6b6c64; transition:transform .2s ease; display:flex; }
   .job-row-head[aria-expanded="true"] .job-row-chevron{ transform:rotate(180deg); }
   .job-row-panel{ padding:0 22px 26px; }
   .job-row-panel p{ font-size:14.5px; color:#5a5b54; line-height:1.6; margin-bottom:14px; max-width:640px; }
