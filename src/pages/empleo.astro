@@ -72,7 +72,7 @@ const hayVacantes = vacantes.length > 0;
         </div>
       </div>
 
-      <p class="section-sub" style="margin-top:32px; margin-bottom:0;">¿Prefieres hablarlo antes de escribir? Llámanos o escríbenos por <a href="https://wa.me/34607224454" style="color:var(--green-dark); font-weight:600;">WhatsApp</a> al 607 224 454, o a <a href="mailto:info@construdepot.es" style="color:var(--green-dark); font-weight:600;">info@construdepot.es</a>.</p>
+      <p class="section-sub" style="margin-top:32px; margin-bottom:0;">¿Prefieres hablarlo antes de escribir? Llámanos o escríbenos por <a href="https://wa.me/34607224454" style="color:var(--green-dark); font-weight:600;">WhatsApp</a> al 607&nbsp;224&nbsp;454, o a <a href="mailto:info@construdepot.es" style="color:var(--green-dark); font-weight:600;">info@construdepot.es</a>.</p>
 
       <div id="formHome" hidden>
         <div id="applicationBlock">
@@ -246,10 +246,10 @@ const hayVacantes = vacantes.length > 0;
         if (againBtn) againBtn.hidden = false;
       } else {
         const motivo = data?.message || 'No hemos podido enviar tu candidatura.';
-        statusEl.textContent = `${motivo} Si el problema continúa, escríbenos por WhatsApp: 607 224 454.`;
+        statusEl.textContent = `${motivo} Si el problema continúa, escríbenos por WhatsApp: 607 224 454.`;
       }
     } catch {
-      statusEl.textContent = 'No hemos podido enviar tu candidatura. Prueba de nuevo o escríbenos por WhatsApp: 607 224 454.';
+      statusEl.textContent = 'No hemos podido enviar tu candidatura. Prueba de nuevo o escríbenos por WhatsApp: 607 224 454.';
     } finally {
       if (submitBtn) submitBtn.disabled = false;
     }
