@@ -141,7 +141,6 @@ const hayVacantes = vacantes.length > 0;
                enviar con éxito se oculta todo el formulario y este mensaje
                necesita seguir visible para mostrar la confirmación. -->
           <p id="form-status" role="status" style="font-size:12.5px; color:var(--graphite); margin-top:16px;">Revisamos las candidaturas y contactamos si encaja con alguna vacante.</p>
-          <button type="button" id="form-again" hidden style="background:none; border:none; padding:0; margin-top:10px; color:var(--green-dark); font-weight:600; font-size:13px; cursor:pointer; text-decoration:underline;">¿Quieres enviar otra candidatura? Rellenar de nuevo</button>
         </div>
       </div>
     </div>
@@ -208,39 +207,36 @@ const hayVacantes = vacantes.length > 0;
     });
   });
 
-  // Botón "Aplicar a este puesto": mueve el bloque de candidatura (formulario
-  // + mensaje de estado, como una sola unidad) al hueco de la vacante
-  // pulsada, y precarga el campo oculto "puesto" — así hay un único
-  // formulario en toda la página, no uno por vacante.
-  document.querySelectorAll<HTMLButtonElement>('[data-aplicar-vacante]').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const targetPanel = document.getElementById(btn.dataset.aplicarTarget ?? '');
-      const slot = targetPanel?.querySelector<HTMLElement>('[data-form-slot]');
-      const puestoField = document.getElementById('f-puesto') as HTMLInputElement | null;
-      if (!applicationBlock || !slot) return;
-
-      if (puestoField) puestoField.value = btn.dataset.aplicarVacante ?? '';
-      slot.appendChild(applicationBlock);
-      applicationBlock.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      document.getElementById('f-nombre')?.focus();
-    });
-  });
-
   // Envío del formulario a enviar-empleo.php (mismo backend Graph que
   // contacto, con adjunto de CV). Validación de tamaño/tipo de CV también en
   // cliente para dar feedback inmediato, aunque el servidor la repite.
   const MAX_CV_BYTES = 2 * 1024 * 1024;
   const form = document.getElementById('empleoForm') as HTMLFormElement | null;
   const statusEl = document.getElementById('form-status');
-  const againBtn = document.getElementById('form-again') as HTMLButtonElement | null;
   const DEFAULT_STATUS = 'Revisamos las candidaturas y contactamos si encaja con alguna vacante.';
 
-  againBtn?.addEventListener('click', () => {
-    if (!form || !statusEl) return;
-    form.hidden = false;
-    againBtn.hidden = true;
-    statusEl.textContent = DEFAULT_STATUS;
-    form.querySelector<HTMLInputElement>('#f-nombre')?.focus();
+  // Botón "Aplicar a este puesto"/"Enviar currículum": mueve el bloque de
+  // candidatura (formulario + mensaje de estado, como una sola unidad) al
+  // hueco de la vacante pulsada, y precarga el campo oculto "puesto" — así
+  // hay un único formulario en toda la página, no uno por vacante. También
+  // fuerza form.hidden = false y restaura el mensaje por defecto: sin esto,
+  // si alguien ya había enviado una candidatura y pulsaba "Aplicar" en OTRA
+  // vacante distinta, el formulario se movía ahí pero seguía oculto (el
+  // envío anterior lo había dejado así) y no se veía nada.
+  document.querySelectorAll<HTMLButtonElement>('[data-aplicar-vacante]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const targetPanel = document.getElementById(btn.dataset.aplicarTarget ?? '');
+      const slot = targetPanel?.querySelector<HTMLElement>('[data-form-slot]');
+      const puestoField = document.getElementById('f-puesto') as HTMLInputElement | null;
+      if (!applicationBlock || !slot || !form || !statusEl) return;
+
+      if (puestoField) puestoField.value = btn.dataset.aplicarVacante ?? '';
+      slot.appendChild(applicationBlock);
+      form.hidden = false;
+      statusEl.textContent = DEFAULT_STATUS;
+      applicationBlock.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      document.getElementById('f-nombre')?.focus();
+    });
   });
 
   form?.addEventListener('submit', async (e) => {
@@ -279,7 +275,6 @@ const hayVacantes = vacantes.length > 0;
         form.reset();
         form.hidden = true;
         statusEl.textContent = 'Gracias, hemos recibido tu candidatura. Te contactamos si encaja con alguna vacante.';
-        if (againBtn) againBtn.hidden = false;
       } else {
         const motivo = data?.message || 'No hemos podido enviar tu candidatura.';
         statusEl.textContent = `${motivo} Si el problema continúa, escríbenos por WhatsApp: 607 224 454.`;

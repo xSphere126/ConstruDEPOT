@@ -64,6 +64,21 @@ if (!$consentimiento) {
     respond(false, 'Debes aceptar la política de privacidad para enviar tu candidatura.');
 }
 
+// Evita que la misma persona (misma IP) mande dos candidaturas seguidas a
+// la MISMA vacante en menos de 2 minutos — reenviar la vacante que ya
+// acabas de enviar no aporta nada (a diferencia del formulario de
+// contacto, donde tiene sentido mandar una consulta como particular y
+// luego otra como profesional). No bloquea aplicar a una vacante distinta,
+// solo repetir la misma. Con el archivo de bloqueo en el directorio
+// temporal del servidor, fuera de la carpeta pública, para que no sea
+// descargable.
+$throttleKey = sha1(($_SERVER['REMOTE_ADDR'] ?? '') . '|' . $puesto);
+$throttleFile = sys_get_temp_dir() . '/construdepot-empleo-' . $throttleKey . '.lock';
+$throttleSeconds = 120;
+if (file_exists($throttleFile) && (time() - filemtime($throttleFile)) < $throttleSeconds) {
+    respond(false, 'Ya hemos recibido una candidatura tuya para este puesto hace un momento. Si necesitas añadir algo, escríbenos por WhatsApp.');
+}
+
 // El CV es opcional: alguien puede preferir dejar solo sus datos y que le
 // contactemos, o contar su experiencia en el mensaje.
 //
@@ -137,6 +152,7 @@ if (count($attachments) > 0) {
 }
 
 if (graphSendMail($message, 'Formulario empleo')) {
+    touch($throttleFile);
     respond(true, 'Gracias, hemos recibido tu candidatura.');
 }
 
