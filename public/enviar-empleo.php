@@ -66,21 +66,35 @@ if (!$consentimiento) {
 
 // El CV es opcional: alguien puede preferir dejar solo sus datos y que le
 // contactemos, o contar su experiencia en el mensaje.
+//
+// Límite de 2 MB, no 5: Graph solo admite adjuntos directos (fileAttachment
+// con contentBytes) de hasta ~3 MB ya codificados en base64 en una sola
+// llamada a sendMail — con codificación base64 (+33% de tamaño), un
+// original de 2 MB ya ocupa ~2,7 MB codificado, dejando margen. Pasarse de
+// ese límite no da un error claro: graphSendMail() simplemente devuelve
+// false y el candidato ve "no se ha podido enviar", sin más explicación.
 $attachments = [];
 $cvError = null;
 if (isset($_FILES['cv']) && $_FILES['cv']['error'] !== UPLOAD_ERR_NO_FILE) {
     $cv = $_FILES['cv'];
 
     if ($cv['error'] === UPLOAD_ERR_INI_SIZE || $cv['error'] === UPLOAD_ERR_FORM_SIZE) {
-        $cvError = 'El CV pesa demasiado (máximo 5 MB).';
+        $cvError = 'El CV pesa demasiado (máximo 2 MB).';
     } elseif ($cv['error'] !== UPLOAD_ERR_OK) {
         $cvError = 'No se ha podido leer el CV adjunto.';
-    } elseif ($cv['size'] > 5 * 1024 * 1024) {
-        $cvError = 'El CV pesa demasiado (máximo 5 MB).';
+    } elseif ($cv['size'] > 2 * 1024 * 1024) {
+        $cvError = 'El CV pesa demasiado (máximo 2 MB).';
     } else {
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
-        $mimeType = finfo_file($finfo, $cv['tmp_name']);
-        finfo_close($finfo);
+        // finfo_open() puede devolver false si la extensión fileinfo no
+        // está disponible en el hosting — sin esta comprobación,
+        // finfo_file(false, ...) lanza un error fatal de PHP (respuesta
+        // vacía, no el JSON que espera el formulario) en vez de un mensaje
+        // controlado.
+        $mimeType = $finfo !== false ? finfo_file($finfo, $cv['tmp_name']) : false;
+        if ($finfo !== false) {
+            finfo_close($finfo);
+        }
         $isPdfName = strtolower(pathinfo($cv['name'], PATHINFO_EXTENSION)) === 'pdf';
 
         if ($mimeType !== 'application/pdf' || !$isPdfName) {
