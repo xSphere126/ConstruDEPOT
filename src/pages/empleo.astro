@@ -234,6 +234,7 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
     interface Window {
       turnstile?: {
         render: (container: string | HTMLElement, options: { sitekey: string }) => string;
+        reset: (widgetId?: string | HTMLElement) => void;
       };
     }
   }
@@ -319,6 +320,12 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
       statusEl.textContent = 'No hemos podido enviar tu candidatura. Prueba de nuevo o escríbenos por WhatsApp: 607 224 454.';
     } finally {
       if (submitBtn) submitBtn.disabled = false;
+      // Los tokens de Turnstile son de un solo uso: sin este reset, aplicar
+      // a una segunda vacante (o reintentar tras un error) reenvía el mismo
+      // token ya gastado y Cloudflare lo rechaza — se vería "no hemos
+      // podido verificar que eres una persona" sin motivo real. Pedimos uno
+      // nuevo tras CADA intento, con éxito o sin él.
+      if (turnstileWidgetId !== null) window.turnstile?.reset(turnstileWidgetId);
     }
   });
 </script>

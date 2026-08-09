@@ -194,6 +194,15 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
     }
   })();
 
+  declare global {
+    interface Window {
+      turnstile?: {
+        render: (container: string | HTMLElement, options: { sitekey: string }) => string;
+        reset: (widgetId?: string | HTMLElement) => void;
+      };
+    }
+  }
+
   // Envío del formulario a enviar-contacto.php (script propio, ver
   // public/config-local.example.php para las credenciales SMTP del buzón dedicado).
   const form = document.getElementById('contactForm') as HTMLFormElement | null;
@@ -249,6 +258,13 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
       statusEl.textContent = 'No hemos podido enviar tu consulta. Prueba de nuevo o escríbenos por WhatsApp: 607 224 454.';
     } finally {
       if (submitBtn) submitBtn.disabled = false;
+      // Los tokens de Turnstile son de un solo uso: sin este reset, un
+      // segundo intento (tras corregir un campo, o al "enviar otra
+      // consulta") reenvía el mismo token ya gastado y Cloudflare lo
+      // rechaza — el visitante ve "no hemos podido verificar que eres una
+      // persona" sin haber hecho nada mal. Pedimos uno nuevo después de
+      // CADA intento, con éxito o sin él.
+      window.turnstile?.reset();
     }
   });
 </script>
