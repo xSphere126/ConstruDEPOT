@@ -22,17 +22,37 @@ const hayVacantes = vacantes.length > 0;
 
   <section>
     <div class="wrap">
-      <div class="eyebrow-sm">Trabaja con nosotros</div>
-      <h2>Buscamos profesionales para estas áreas</h2>
-      <p class="section-sub">Buscamos profesionales para incorporarse a las diferentes áreas de nuestra empresa:</p>
-      <div class="product-chips" style="margin-bottom:28px;">
-        <span class="product-chip">Almacén y logística</span>
-        <span class="product-chip">Tienda y exposición</span>
-        <span class="product-chip">Ventas y atención al cliente</span>
-        <span class="product-chip">Administración</span>
-        <span class="product-chip">Otros departamentos</span>
+      <div class="grid grid-2" style="align-items:center; gap:48px;">
+        <div>
+          <div class="eyebrow-sm">Trabaja con nosotros</div>
+          <h2>Buscamos profesionales para estas áreas</h2>
+          <p class="section-sub">Buscamos profesionales para incorporarse a las diferentes áreas de nuestra empresa:</p>
+          <div class="product-chips" style="margin-bottom:28px;">
+            <span class="product-chip">Almacén y logística</span>
+            <span class="product-chip">Tienda y exposición</span>
+            <span class="product-chip">Ventas y atención al cliente</span>
+            <span class="product-chip">Administración</span>
+            <span class="product-chip">Otros departamentos</span>
+          </div>
+          <p class="section-sub" style="margin-bottom:0;">Si eres una persona responsable, trabajadora y con ganas de formar parte de un equipo dinámico, queremos conocerte.</p>
+        </div>
+        <div class="empleo-team-preview">
+          <!-- Mismos avatares reales (ilustración a partir de foto real, con
+               la camiseta de Construdepot) que ya presenta Sobre Nosotros —
+               no se duplican los 9, solo una muestra que enlaza al equipo
+               completo, para que esta sección no se sienta "vacía" de gente
+               real detrás de las vacantes. -->
+          <div class="empleo-team-avatars">
+            <div class="team-avatar team-avatar--1"><div class="team-avatar-float"><img src={withBase('/images/avatares/tania.jpg')} alt="Tania" loading="lazy" style="width:100%; height:100%; object-fit:cover; border-radius:50%; display:block;" /></div></div>
+            <div class="team-avatar team-avatar--2"><div class="team-avatar-float"><img src={withBase('/images/avatares/juan.jpg')} alt="Juan" loading="lazy" style="width:100%; height:100%; object-fit:cover; border-radius:50%; display:block;" /></div></div>
+            <div class="team-avatar team-avatar--3"><div class="team-avatar-float"><img src={withBase('/images/avatares/julian.jpg')} alt="Julian" loading="lazy" style="width:100%; height:100%; object-fit:cover; border-radius:50%; display:block;" /></div></div>
+            <div class="team-avatar team-avatar--4"><div class="team-avatar-float"><img src={withBase('/images/avatares/alicia.jpg')} alt="Alicia" loading="lazy" style="width:100%; height:100%; object-fit:cover; border-radius:50%; display:block;" /></div></div>
+            <div class="team-avatar team-avatar--5"><div class="team-avatar-float"><img src={withBase('/images/avatares/carlos.jpg')} alt="Carlos" loading="lazy" style="width:100%; height:100%; object-fit:cover; border-radius:50%; display:block;" /></div></div>
+          </div>
+          <p class="section-sub" style="margin-bottom:10px;">Este es el equipo con el que trabajarías: caras y nombres reales, no una franquicia anónima.</p>
+          <a href={withBase('/sobre-nosotros/#quien-te-atiende')} style="color:var(--green-dark); font-weight:600; font-size:14.5px;">Conoce a todo el equipo →</a>
+        </div>
       </div>
-      <p class="section-sub" style="margin-bottom:0;">Si eres una persona responsable, trabajadora y con ganas de formar parte de un equipo dinámico, queremos conocerte.</p>
     </div>
   </section>
 
@@ -79,7 +99,7 @@ const hayVacantes = vacantes.length > 0;
         <div class="job-form-slot" data-form-slot style="flex-basis:100%;"></div>
       </div>
 
-      <p class="section-sub" style="margin-top:24px; margin-bottom:0;">¿Prefieres hablarlo antes de escribir? Llámanos o escríbenos por <a href="https://wa.me/34607224454" style="color:var(--green-dark); font-weight:600;">WhatsApp</a> al 607&nbsp;224&nbsp;454, o a <a href="mailto:info@construdepot.es" style="color:var(--green-dark); font-weight:600;">info@construdepot.es</a>.</p>
+      <p class="section-sub" style="margin-top:24px; margin-bottom:0;">¿Prefieres hablarlo antes de escribir? Llámanos o escríbenos por <a href="https://wa.me/34607224454" style="color:var(--green-dark); font-weight:600;">WhatsApp</a> al 607&nbsp;224&nbsp;454 o a <a href="mailto:info@construdepot.es" style="color:var(--green-dark); font-weight:600;">info@construdepot.es</a>.</p>
 
       <div id="formHome" hidden>
         <div id="applicationBlock">
@@ -127,6 +147,8 @@ const hayVacantes = vacantes.length > 0;
 </BaseLayout>
 
 <style>
+  .empleo-team-avatars{ display:flex; flex-wrap:wrap; gap:14px; margin-bottom:18px; }
+
   .job-list{ display:flex; flex-direction:column; gap:14px; }
   .job-row{ background:var(--cream-card); border:1px solid var(--line); border-radius:16px; overflow:hidden; }
   /* Fila en columna a propósito: título y metadatos apilados verticalmente,
