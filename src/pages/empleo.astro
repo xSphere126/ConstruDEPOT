@@ -66,7 +66,10 @@ const hayVacantes = vacantes.length > 0;
           <div class="job-row">
             <button type="button" class="job-row-head" data-job-toggle aria-expanded="false" aria-controls={`panel-${v.id}`}>
               <span class="job-row-title">{v.titulo}</span>
-              <span class="job-row-tags">{v.ubicacion}</span>
+              <span class="job-row-tags">
+                {v.ubicacion}
+                {v.etiqueta && <span class="tag" style="margin-bottom:0;">{v.etiqueta}</span>}
+              </span>
               <span class="job-row-chevron" aria-hidden="true">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
               </span>
