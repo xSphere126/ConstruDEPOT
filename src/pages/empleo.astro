@@ -4,6 +4,11 @@ import { withBase } from '../lib/url';
 import { vacantes } from '../data/vacantes';
 
 const hayVacantes = vacantes.length > 0;
+
+// Cloudflare Turnstile (anti-bot): opcional a propósito, ver .env.example.
+// Sin site key configurada, el widget simplemente no se muestra y el
+// formulario sigue funcionando como hasta ahora (sin verificación).
+const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
 ---
 
 <BaseLayout
@@ -135,8 +140,10 @@ const hayVacantes = vacantes.length > 0;
               <input type="checkbox" name="consentimiento" value="1" required style="margin-top:3px;">
               <span>He leído y acepto la <a href={withBase('/politica-privacidad/')} style="color:var(--green-dark); font-weight:600;">política de privacidad</a>, y autorizo el tratamiento de mis datos para este proceso de selección.</span>
             </label>
+            {turnstileSiteKey && <div class="cf-turnstile" data-sitekey={turnstileSiteKey}></div>}
             <button type="submit" class="btn-primary" style="justify-content:center;">Enviar candidatura →</button>
           </form>
+          {turnstileSiteKey && <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>}
           <!-- Fuera del <form> a propósito, igual que en contacto.astro: al
                enviar con éxito se oculta todo el formulario y este mensaje
                necesita seguir visible para mostrar la confirmación. -->

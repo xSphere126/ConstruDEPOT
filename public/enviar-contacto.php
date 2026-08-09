@@ -6,6 +6,7 @@
  */
 
 require_once __DIR__ . '/lib/graph-mail.php';
+require_once __DIR__ . '/lib/turnstile.php';
 
 header('Content-Type: application/json; charset=utf-8');
 
@@ -30,6 +31,16 @@ if (!file_exists($configFile)) {
     respond(false, 'El formulario todavía no está conectado.');
 }
 require_once $configFile;
+
+// Verificación anti-bot de Cloudflare Turnstile — ver lib/turnstile.php.
+// Solo se exige si TURNSTILE_SECRET_KEY está configurada; mientras no lo
+// esté, el formulario sigue funcionando igual que antes.
+if (turnstileConfigured()) {
+    $turnstileToken = $_POST['cf-turnstile-response'] ?? '';
+    if (!verifyTurnstile($turnstileToken, $_SERVER['REMOTE_ADDR'] ?? '')) {
+        respond(false, 'No hemos podido verificar que eres una persona. Recarga la página e inténtalo de nuevo.');
+    }
+}
 
 // Campo trampa: invisible para personas, los bots que autorrellenan
 // formularios suelen completarlo. Si llega relleno, se descarta en
