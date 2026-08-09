@@ -1,0 +1,222 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { withBase } from '../lib/url';
+import { vacantes } from '../data/vacantes';
+---
+
+<BaseLayout
+  title="Empleo"
+  description="¿Quieres formar parte del equipo de Construdepot by Quiles? Consulta las vacantes abiertas o envíanos tu candidatura."
+  headerVariant="solid"
+  active="empleo"
+>
+  <section class="page-banner page-banner--photo" style={`--banner-photo:url(${withBase('/images/matalmacen4.jpg')})`}>
+    <div class="wrap">
+      <div class="breadcrumb"><a href={withBase('/')}>Inicio</a> · Empleo</div>
+      <h1>Únete al equipo de Construdepot</h1>
+      <p>Somos un almacén de materiales de construcción de Elche, con trato cercano y equipo pequeño. Si quieres trabajar con nosotros, aquí puedes ver las vacantes abiertas o escribirnos directamente.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="eyebrow-sm">Por qué trabajar aquí</div>
+      <h2>Un equipo pequeño, un trato directo</h2>
+      <p class="section-sub">Esto es lo que te vas a encontrar si entras a formar parte de Construdepot.</p>
+      <div class="grid grid-3">
+        <div class="card">
+          <h3>Negocio de Elche, de toda la vida</h3>
+          <p>Formas parte de un almacén con clientes reales y recorrido en la ciudad, no de una franquicia anónima.</p>
+        </div>
+        <div class="card">
+          <h3>Trato cercano, sin capas de por medio</h3>
+          <p>Aquí se habla directamente con quien decide. Nada de departamentos ni procesos eternos.</p>
+        </div>
+        <div class="card">
+          <h3>Se aprende el oficio</h3>
+          <p>Materiales, proveedores, obra real: el día a día enseña un sector que no se aprende solo en un aula.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="background:var(--sand);">
+    <div class="wrap">
+      <div class="eyebrow-sm">Vacantes abiertas</div>
+      {vacantes.length > 0 ? (
+        <>
+          <h2>Estas son las vacantes abiertas ahora mismo</h2>
+          <p class="section-sub">Elige la que más te interese y aplica directamente desde su tarjeta.</p>
+          <div class="grid grid-3">
+            {vacantes.map((v) => (
+              <div class="card" id={v.id}>
+                <span class="tag">{v.ubicacion} · {v.jornada}</span>
+                <h3>{v.titulo}</h3>
+                <p>{v.descripcion}</p>
+                {v.requisitos && v.requisitos.length > 0 && (
+                  <ul style="margin:12px 0 16px; padding-left:18px; font-size:13.5px; color:#5a5b54; line-height:1.6;">
+                    {v.requisitos.map((r) => <li>{r}</li>)}
+                  </ul>
+                )}
+                <button type="button" class="btn-outline" data-aplicar-vacante={v.titulo} style="margin-top:6px;">
+                  Aplicar a esta vacante →
+                </button>
+              </div>
+            ))}
+          </div>
+        </>
+      ) : (
+        <>
+          <h2>Ahora mismo no hay vacantes publicadas</h2>
+          <p class="section-sub" style="margin-bottom:0;">Aun así, si quieres formar parte del equipo, envíanos tu candidatura más abajo y la guardamos para cuando surja algo.</p>
+        </>
+      )}
+    </div>
+  </section>
+
+  <section id="candidatura">
+    <div class="wrap">
+      <div class="grid grid-2" style="align-items:start; gap:48px;">
+
+        <div>
+          <div class="eyebrow-sm">Candidatura</div>
+          <h2>Envíanos tu candidatura</h2>
+          <form id="empleoForm" data-action={withBase('/enviar-empleo.php')} style="display:flex; flex-direction:column; gap:16px; margin-top:20px;" enctype="multipart/form-data">
+            <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute; left:-9999px;" />
+            <div>
+              <label class="field-label" for="f-nombre">Nombre</label>
+              <input id="f-nombre" name="nombre" type="text" required placeholder="Tu nombre" style="width:100%; margin-top:6px; padding:14px 16px; border-radius:10px; border:1px solid var(--line); font-family:inherit; font-size:14.5px;">
+            </div>
+            <div>
+              <label class="field-label" for="f-telefono">Teléfono</label>
+              <input id="f-telefono" name="telefono" type="tel" required placeholder="Tu teléfono" style="width:100%; margin-top:6px; padding:14px 16px; border-radius:10px; border:1px solid var(--line); font-family:inherit; font-size:14.5px;">
+            </div>
+            <div>
+              <label class="field-label" for="f-email">Email</label>
+              <input id="f-email" name="email" type="email" required placeholder="Tu email" style="width:100%; margin-top:6px; padding:14px 16px; border-radius:10px; border:1px solid var(--line); font-family:inherit; font-size:14.5px;">
+            </div>
+            <div>
+              <label class="field-label" for="f-puesto">Puesto de interés</label>
+              <select id="f-puesto" name="puesto" style="width:100%; margin-top:6px; padding:14px 16px; border-radius:10px; border:1px solid var(--line); font-family:inherit; font-size:14.5px; background:#fff;">
+                <option value="Candidatura espontánea">Candidatura espontánea</option>
+                {vacantes.map((v) => <option value={v.titulo}>{v.titulo}</option>)}
+              </select>
+            </div>
+            <div>
+              <label class="field-label" for="f-mensaje">Cuéntanos tu experiencia</label>
+              <textarea id="f-mensaje" name="mensaje" placeholder="Experiencia, disponibilidad, lo que quieras que sepamos" rows="4" style="width:100%; margin-top:6px; padding:14px 16px; border-radius:10px; border:1px solid var(--line); font-family:inherit; font-size:14.5px; resize:vertical;"></textarea>
+            </div>
+            <div>
+              <label class="field-label" for="f-cv">CV (PDF, opcional)</label>
+              <input id="f-cv" name="cv" type="file" accept=".pdf,application/pdf" style="width:100%; margin-top:6px; padding:12px 14px; border-radius:10px; border:1px solid var(--line); font-family:inherit; font-size:13.5px; background:#fff;">
+              <span style="display:block; font-size:12px; color:#6b6c64; margin-top:6px;">Máximo 5&nbsp;MB. Si no lo tienes a mano, cuéntanos tu experiencia arriba y te contactamos igual.</span>
+            </div>
+            <label style="display:flex; align-items:flex-start; gap:10px; font-size:12.5px; color:var(--graphite); line-height:1.5;">
+              <input type="checkbox" name="consentimiento" value="1" required style="margin-top:3px;">
+              <span>He leído y acepto la <a href={withBase('/politica-privacidad/')} style="color:var(--green-dark); font-weight:600;">política de privacidad</a>, y autorizo el tratamiento de mis datos para este proceso de selección.</span>
+            </label>
+            <button type="submit" class="btn-primary" style="justify-content:center;">Enviar candidatura →</button>
+          </form>
+          <!-- Fuera del <form> a propósito, igual que en contacto.astro: al
+               enviar con éxito se oculta todo el formulario y este mensaje
+               necesita seguir visible para mostrar la confirmación. -->
+          <p id="form-status" role="status" style="font-size:12.5px; color:var(--graphite); margin-top:16px;">Revisamos las candidaturas y contactamos si encaja con alguna vacante. Si quieres hablar antes, WhatsApp es la vía más rápida.</p>
+          <button type="button" id="form-again" hidden style="background:none; border:none; padding:0; margin-top:10px; color:var(--green-dark); font-weight:600; font-size:13px; cursor:pointer; text-decoration:underline;">¿Quieres enviar otra candidatura? Rellenar de nuevo</button>
+        </div>
+
+        <div>
+          <div class="eyebrow-sm">Otras vías</div>
+          <h2>¿Prefieres escribirnos directamente?</h2>
+          <div class="card" style="margin-bottom:16px;">
+            <h3>WhatsApp</h3>
+            <p><a href="https://wa.me/34607224454" style="color:var(--green-dark); font-weight:600;">607 224 454</a>, cuéntanos qué puesto te interesa</p>
+          </div>
+          <div class="card">
+            <h3>Email</h3>
+            <p><a href="mailto:info@construdepot.es?subject=Candidatura" style="color:var(--green-dark); font-weight:600;">info@construdepot.es</a>, adjunta tu CV directamente</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  // Botón "Aplicar a esta vacante": precarga el <select> del formulario con
+  // ese puesto y lleva el scroll hasta él — mismo mecanismo de precarga que
+  // el toggle particular/profesional de contacto.astro.
+  document.querySelectorAll<HTMLButtonElement>('[data-aplicar-vacante]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const puesto = document.getElementById('f-puesto') as HTMLSelectElement | null;
+      if (puesto) puesto.value = btn.dataset.aplicarVacante ?? '';
+      document.getElementById('candidatura')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      document.getElementById('f-nombre')?.focus();
+    });
+  });
+
+  // Envío del formulario a enviar-empleo.php (mismo backend Graph que
+  // contacto, con adjunto de CV). Validación de tamaño/tipo de CV también en
+  // cliente para dar feedback inmediato, aunque el servidor la repite.
+  const MAX_CV_BYTES = 5 * 1024 * 1024;
+  const form = document.getElementById('empleoForm') as HTMLFormElement | null;
+  const statusEl = document.getElementById('form-status');
+  const againBtn = document.getElementById('form-again') as HTMLButtonElement | null;
+  const DEFAULT_STATUS = 'Revisamos las candidaturas y contactamos si encaja con alguna vacante. Si quieres hablar antes, WhatsApp es la vía más rápida.';
+
+  againBtn?.addEventListener('click', () => {
+    if (!form || !statusEl) return;
+    form.hidden = false;
+    againBtn.hidden = true;
+    statusEl.textContent = DEFAULT_STATUS;
+    form.querySelector<HTMLInputElement>('#f-nombre')?.focus();
+  });
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!statusEl) return;
+
+    const action = form.dataset.action;
+    if (!action) return;
+
+    const cvInput = form.querySelector<HTMLInputElement>('#f-cv');
+    const cvFile = cvInput?.files?.[0];
+    if (cvFile) {
+      if (cvFile.type !== 'application/pdf') {
+        statusEl.textContent = 'El CV debe ser un archivo PDF.';
+        return;
+      }
+      if (cvFile.size > MAX_CV_BYTES) {
+        statusEl.textContent = 'El CV pesa demasiado (máximo 5 MB).';
+        return;
+      }
+    }
+
+    const submitBtn = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+    if (submitBtn) submitBtn.disabled = true;
+    statusEl.textContent = 'Enviando…';
+
+    try {
+      const res = await fetch(action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { Accept: 'application/json' },
+      });
+      const data = await res.json().catch(() => null);
+
+      if (res.ok && data?.ok) {
+        form.reset();
+        form.hidden = true;
+        statusEl.textContent = 'Gracias, hemos recibido tu candidatura. Te contactamos si encaja con alguna vacante.';
+        if (againBtn) againBtn.hidden = false;
+      } else {
+        const motivo = data?.message || 'No hemos podido enviar tu candidatura.';
+        statusEl.textContent = `${motivo} Si el problema continúa, escríbenos por WhatsApp: 607 224 454.`;
+      }
+    } catch {
+      statusEl.textContent = 'No hemos podido enviar tu candidatura. Prueba de nuevo o escríbenos por WhatsApp: 607 224 454.';
+    } finally {
+      if (submitBtn) submitBtn.disabled = false;
+    }
+  });
+</script>

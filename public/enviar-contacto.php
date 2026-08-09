@@ -1,14 +1,11 @@
 <?php
 /**
- * Recibe el formulario de contacto y lo envía por email a través de
- * Microsoft Graph API (OAuth2, client credentials) usando el buzón
- * dedicado — ver config-local.example.php. No usa SMTP con usuario y
- * contraseña: el tenant de Microsoft 365 tiene activados los "Security
- * Defaults", que bloquean la autenticación básica de SMTP aunque el
- * interruptor de "SMTP AUTH" del buzón individual esté activado. OAuth2
- * vía Graph funciona igual con Security Defaults puesto, sin tener que
- * bajar la seguridad de toda la organización para este formulario.
+ * Recibe el formulario de contacto y lo envía por email a través del
+ * helper compartido de Microsoft Graph (lib/graph-mail.php) — ver
+ * config-local.example.php para las credenciales del buzón dedicado.
  */
+
+require_once __DIR__ . '/lib/graph-mail.php';
 
 header('Content-Type: application/json; charset=utf-8');
 
@@ -73,66 +70,17 @@ $bodyText = implode("\n", [
     $mensaje !== '' ? $mensaje : '(sin mensaje)',
 ]);
 
-// Paso 1: conseguir un token de acceso (OAuth2, client credentials) de la
-// aplicación de Azure registrada para este formulario.
-function graphToken(): array
-{
-    $ch = curl_init('https://login.microsoftonline.com/' . GRAPH_TENANT_ID . '/oauth2/v2.0/token');
-    curl_setopt_array($ch, [
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_POST => true,
-        CURLOPT_POSTFIELDS => http_build_query([
-            'client_id' => GRAPH_CLIENT_ID,
-            'client_secret' => GRAPH_CLIENT_SECRET,
-            'scope' => 'https://graph.microsoft.com/.default',
-            'grant_type' => 'client_credentials',
-        ]),
-        CURLOPT_TIMEOUT => 15,
-    ]);
-    $raw = curl_exec($ch);
-    $curlError = curl_error($ch);
-    curl_close($ch);
-    $data = $raw !== false ? json_decode($raw, true) : null;
-    return ['token' => $data['access_token'] ?? null, 'raw' => $raw, 'curlError' => $curlError];
-}
-
-$tokenResult = graphToken();
-if (!$tokenResult['token']) {
-    // El detalle real del fallo va al log del servidor, no a quien rellena
-    // el formulario — no tiene por qué ver el motivo interno de un fallo
-    // de autenticación de Microsoft.
-    error_log('Formulario contacto: fallo al pedir token de Graph — ' . ($tokenResult['curlError'] ?: $tokenResult['raw']));
-    respond(false, 'No se ha podido enviar el mensaje.');
-}
-
-// Paso 2: enviar el correo de verdad, como el buzón GRAPH_SENDER, vía Graph.
-$payload = [
-    'message' => [
-        'subject' => 'Nueva consulta desde la web — ' . $nombre,
-        'body' => ['contentType' => 'Text', 'content' => $bodyText],
-        'toRecipients' => [['emailAddress' => ['address' => MAIL_TO, 'name' => MAIL_TO_NAME]]],
-    ],
-    'saveToSentItems' => true,
+$message = [
+    'subject' => 'Nueva consulta desde la web — ' . $nombre,
+    'body' => ['contentType' => 'Text', 'content' => $bodyText],
+    'toRecipients' => [['emailAddress' => ['address' => MAIL_TO, 'name' => MAIL_TO_NAME]]],
 ];
 if ($email !== '') {
-    $payload['message']['replyTo'] = [['emailAddress' => ['address' => $email, 'name' => $nombre]]];
+    $message['replyTo'] = [['emailAddress' => ['address' => $email, 'name' => $nombre]]];
 }
 
-$ch = curl_init('https://graph.microsoft.com/v1.0/users/' . rawurlencode(GRAPH_SENDER) . '/sendMail');
-curl_setopt_array($ch, [
-    CURLOPT_RETURNTRANSFER => true,
-    CURLOPT_POST => true,
-    CURLOPT_HTTPHEADER => ['Authorization: Bearer ' . $tokenResult['token'], 'Content-Type: application/json'],
-    CURLOPT_POSTFIELDS => json_encode($payload),
-    CURLOPT_TIMEOUT => 15,
-]);
-$sendRaw = curl_exec($ch);
-$status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-curl_close($ch);
-
-if ($status === 202) {
+if (graphSendMail($message, 'Formulario contacto')) {
     respond(true, 'Gracias, hemos recibido tu consulta.');
 }
 
-error_log('Formulario contacto: fallo al enviar por Graph (' . $status . ') — ' . $sendRaw);
 respond(false, 'No se ha podido enviar el mensaje.');

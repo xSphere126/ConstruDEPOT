@@ -4,7 +4,7 @@ import { withBase } from '../lib/url';
 
 interface Props {
   variant?: 'transparent' | 'solid';
-  active?: 'inicio' | 'sobre-nosotros' | 'productos' | 'contacto';
+  active?: 'inicio' | 'sobre-nosotros' | 'productos' | 'empleo' | 'contacto';
 }
 
 const { variant = 'solid', active } = Astro.props;
@@ -13,6 +13,7 @@ const navItems = [
   { key: 'inicio', href: '/', label: 'Inicio' },
   { key: 'sobre-nosotros', href: '/sobre-nosotros/', label: 'Sobre nosotros' },
   { key: 'productos', href: '/productos/', label: 'Productos' },
+  { key: 'empleo', href: '/empleo/', label: 'Empleo' },
   { key: 'contacto', href: '/contacto/', label: 'Contacto' },
 ];
 ---
