@@ -78,21 +78,22 @@ const categorias = [
       <div class="eyebrow-sm">Catálogo por categoría</div>
       <h2>Encuentra tu categoría</h2>
       <p class="section-sub">Trabajamos con primeras marcas. Si no lo tenemos en tienda, te decimos cuándo puede estar disponible. <a href={withBase('/proveedores/')} style="color:var(--green-deep); font-weight:600; text-decoration:underline;">Ver todos los proveedores →</a></p>
-      <div style="max-width:480px;">
-        <label class="field-label" for="product-search">Buscar producto, marca o tipo de trabajo</label>
-        <input id="product-search" type="search" placeholder="Ej. azulejo, cemento, Pladur…" style="width:100%; margin-top:6px; padding:14px 16px; border-radius:10px; border:1px solid var(--line); font-family:inherit; font-size:14.5px;">
-        <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:10px;">
-          {['azulejo', 'cemento', 'pintura', 'Pladur', 'grifería'].map((ej) => (
-            <button type="button" class="product-search-example" data-example={ej} style="font-size:12.5px; font-weight:500; color:var(--graphite); background:var(--cream); border:1px solid var(--line); padding:6px 12px; border-radius:999px; cursor:pointer;">{ej}</button>
-          ))}
-        </div>
-        <p id="product-search-empty" role="status" hidden style="margin-top:16px; font-size:13.5px; color:#6b6c64;">No encontramos nada con ese término — prueba con otra palabra, o <a href="https://wa.me/34607224454" style="color:var(--green-dark); font-weight:600;">pregúntanos por WhatsApp</a>.</p>
-      </div>
     </div>
   </section>
 
   <section style="background:var(--sand);">
     <div class="wrap">
+      <div class="product-search-bar">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        <input id="product-search" type="search" placeholder="Busca un producto, marca o tipo de trabajo…" aria-label="Buscar producto, marca o tipo de trabajo">
+      </div>
+      <div class="product-search-examples">
+        {['azulejo', 'cemento', 'pintura', 'Pladur', 'grifería'].map((ej) => (
+          <button type="button" class="product-chip" data-example={ej}>{ej}</button>
+        ))}
+      </div>
+      <p id="product-search-empty" role="status" hidden style="margin-top:-14px; margin-bottom:32px; font-size:13.5px; color:#6b6c64;">No encontramos nada con ese término — prueba con otra palabra, o <a href="https://wa.me/34607224454" style="color:var(--green-dark); font-weight:600;">pregúntanos por WhatsApp</a>.</p>
+
       <div class="grid" style="gap:24px;">
         {categorias.map((cat) => (
           <div class="card product-category-card" id={cat.id} data-cat-name={cat.nombre} data-cat-marcas={(cat.marcas ?? []).join(' ')} style="padding:34px 32px;">
@@ -128,6 +129,23 @@ const categorias = [
   </section>
 </BaseLayout>
 
+<style>
+  /* Barra de búsqueda en píldora, no campo de formulario: esto filtra una
+     lista, no envía nada, así que sigue el lenguaje visual de botones/tags
+     del sitio (bordes muy redondeados) en vez del de los inputs de
+     Contacto/Empleo (esquinas de 10px, etiqueta encima). */
+  .product-search-bar{ display:flex; align-items:center; gap:12px; background:var(--cream-card); border:1px solid var(--line); border-radius:999px; padding:14px 22px; max-width:520px; margin-bottom:14px; }
+  .product-search-bar svg{ flex:0 0 auto; color:#8a8b83; }
+  .product-search-bar input{ flex:1 1 auto; min-width:0; border:none; outline:none; background:none; font-family:inherit; font-size:14.5px; color:var(--ink); }
+  .product-search-bar input::placeholder{ color:#8a8b83; }
+  .product-search-bar:focus-within{ border-color:var(--green); }
+
+  .product-search-examples{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:32px; }
+  .product-search-examples .product-chip{ cursor:pointer; transition:border-color .15s ease, background .15s ease, color .15s ease; }
+  .product-search-examples .product-chip:hover{ border-color:var(--green); }
+  .product-search-examples .product-chip.is-active{ background:var(--ink); border-color:var(--ink); color:#fff; }
+</style>
+
 <script>
   // Buscador de productos: filtra en el propio navegador sobre el catálogo
   // ya existente (nombre de producto, categoría o marca), sin backend ni
@@ -148,6 +166,7 @@ const categorias = [
   const searchInput = document.getElementById('product-search') as HTMLInputElement | null;
   const emptyMsg = document.getElementById('product-search-empty');
   const categoryCards = document.querySelectorAll<HTMLElement>('.product-category-card');
+  const exampleButtons = document.querySelectorAll<HTMLButtonElement>('[data-example]');
 
   function applyFilter(rawQuery: string) {
     const q = normalize(rawQuery.trim());
@@ -174,11 +193,17 @@ const categorias = [
     });
 
     if (emptyMsg) emptyMsg.hidden = q === '' || anyVisible;
+
+    // Resalta el chip de ejemplo que coincide con el texto actual, tanto si
+    // se llegó a él con un clic como si se escribió el mismo término a mano.
+    exampleButtons.forEach((btn) => {
+      btn.classList.toggle('is-active', q !== '' && normalize(btn.dataset.example ?? '') === q);
+    });
   }
 
   searchInput?.addEventListener('input', () => applyFilter(searchInput.value));
 
-  document.querySelectorAll<HTMLButtonElement>('.product-search-example').forEach((btn) => {
+  exampleButtons.forEach((btn) => {
     btn.addEventListener('click', () => {
       if (!searchInput) return;
       searchInput.value = btn.dataset.example ?? '';
