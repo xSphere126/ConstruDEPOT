@@ -13,6 +13,25 @@ const showTeamSection = true;
 // Oculta de cara al despliegue para no publicar contenido de relleno;
 // basta con volver a poner esto en `true` en cuanto llegue el texto real.
 const showHistoriaSection = false;
+
+// Equipo real (nombres, puestos y descripciones ya confirmados). Cada uno
+// lleva un enlace de WhatsApp con el mensaje precargado mencionando su
+// nombre — sigue siendo el mismo número compartido de la tienda (no una
+// línea directa por persona), solo personaliza el primer mensaje. El campo
+// `puesto` es un resumen corto para ese mensaje (dos personas se llaman
+// Pepe, así que el puesto evita la ambigüedad de a cuál de los dos se
+// refiere quien escribe).
+const equipo = [
+  { avatar: 'paco', variante: 1, nombre: 'Paco', puesto: 'Gerente', descripcion: 'Gerente. El jefe jefazo, la última palabra siempre es suya.' },
+  { avatar: 'pepe2', variante: 2, nombre: 'Pepe', puesto: 'Agente comercial', descripcion: 'Agente comercial. Coordina cada pedido para que salga a tiempo.' },
+  { avatar: 'ache', variante: 3, nombre: 'Ache', puesto: 'Logística y comercial', descripcion: 'Operador de logística y comercial. Responsable del stock de almacén y un todoterreno con los clientes, habla árabe perfectamente.' },
+  { avatar: 'alicia', variante: 4, nombre: 'Alicia', puesto: 'Administración', descripcion: 'Administración y contabilidad. El mejor equipo llevando las cuentas al día.' },
+  { avatar: 'carlos', variante: 5, nombre: 'Carlos', puesto: 'Transportista', descripcion: 'Transportista. Lleva el material hasta donde otros no llegan.' },
+  { avatar: 'juan', variante: 1, nombre: 'Juan', puesto: 'Almacén', descripcion: 'Operador de almacén. Tu mercancía sale mejor ubicada y protegida que en tu propia casa.' },
+  { avatar: 'julian', variante: 2, nombre: 'Julian', puesto: 'Almacén', descripcion: 'Responsable de cargas del almacén. El que más kilómetros hace encima de un torito.' },
+  { avatar: 'pepe', variante: 3, nombre: 'Pepe', puesto: 'Informático', descripcion: 'Informático y experto en IA. Si algo falla en la web, ya lo ha arreglado antes de que te enteres.' },
+  { avatar: 'tania', variante: 4, nombre: 'Tania', puesto: 'Comercial', descripcion: 'Comercial. La más simpática del equipo, resuelve cualquier duda antes de que termines de preguntarla.' },
+];
 ---
 
 <BaseLayout
@@ -128,96 +147,19 @@ const showHistoriaSection = false;
         publicar la foto original). Queda ampliar el equipo según lleguen más.
       -->
       <div class="team-grid">
-        <div class="card">
-          <div class="team-avatar team-avatar--1">
-            <div class="team-avatar-float">
-              <img src={withBase('/images/avatares/paco.jpg')} alt="Paco" loading="lazy" style="width:100%; height:100%; object-fit:cover; border-radius:50%; display:block;" />
+        {equipo.map((persona) => (
+          <div class="card">
+            <div class={`team-avatar team-avatar--${persona.variante}`}>
+              <div class="team-avatar-float">
+                <img src={withBase(`/images/avatares/${persona.avatar}.jpg`)} alt={persona.nombre} loading="lazy" style="width:100%; height:100%; object-fit:cover; border-radius:50%; display:block;" />
+              </div>
             </div>
+            <span class="tag">Equipo</span>
+            <h3>{persona.nombre}</h3>
+            <p>{persona.descripcion}</p>
+            <a href={`https://wa.me/34607224454?text=${encodeURIComponent(`Hola, quiero hablar con ${persona.nombre} (${persona.puesto})`)}`} target="_blank" rel="noopener" style="display:inline-block; margin-top:12px; color:var(--green-dark); font-weight:600; font-size:13px;">💬 Escribir por WhatsApp</a>
           </div>
-          <span class="tag">Equipo</span>
-          <h3>Paco</h3>
-          <p>Gerente. El jefe jefazo, la última palabra siempre es suya.</p>
-        </div>
-        <div class="card">
-          <div class="team-avatar team-avatar--2">
-            <div class="team-avatar-float">
-              <img src={withBase('/images/avatares/pepe2.jpg')} alt="Pepe" loading="lazy" style="width:100%; height:100%; object-fit:cover; border-radius:50%; display:block;" />
-            </div>
-          </div>
-          <span class="tag">Equipo</span>
-          <h3>Pepe</h3>
-          <p>Agente comercial. Coordina cada pedido para que salga a tiempo.</p>
-        </div>
-        <div class="card">
-          <div class="team-avatar team-avatar--3">
-            <div class="team-avatar-float">
-              <img src={withBase('/images/avatares/ache.jpg')} alt="Ache" loading="lazy" style="width:100%; height:100%; object-fit:cover; border-radius:50%; display:block;" />
-            </div>
-          </div>
-          <span class="tag">Equipo</span>
-          <h3>Ache</h3>
-          <p>Operador de logística y comercial. Responsable del stock de almacén y un todoterreno con los clientes, habla árabe perfectamente.</p>
-        </div>
-        <div class="card">
-          <div class="team-avatar team-avatar--4">
-            <div class="team-avatar-float">
-              <img src={withBase('/images/avatares/alicia.jpg')} alt="Alicia" loading="lazy" style="width:100%; height:100%; object-fit:cover; border-radius:50%; display:block;" />
-            </div>
-          </div>
-          <span class="tag">Equipo</span>
-          <h3>Alicia</h3>
-          <p>Administración y contabilidad. El mejor equipo llevando las cuentas al día.</p>
-        </div>
-        <div class="card">
-          <div class="team-avatar team-avatar--5">
-            <div class="team-avatar-float">
-              <img src={withBase('/images/avatares/carlos.jpg')} alt="Carlos" loading="lazy" style="width:100%; height:100%; object-fit:cover; border-radius:50%; display:block;" />
-            </div>
-          </div>
-          <span class="tag">Equipo</span>
-          <h3>Carlos</h3>
-          <p>Transportista. Lleva el material hasta donde otros no llegan.</p>
-        </div>
-        <div class="card">
-          <div class="team-avatar team-avatar--1">
-            <div class="team-avatar-float">
-              <img src={withBase('/images/avatares/juan.jpg')} alt="Juan" loading="lazy" style="width:100%; height:100%; object-fit:cover; border-radius:50%; display:block;" />
-            </div>
-          </div>
-          <span class="tag">Equipo</span>
-          <h3>Juan</h3>
-          <p>Operador de almacén. Tu mercancía sale mejor ubicada y protegida que en tu propia casa.</p>
-        </div>
-        <div class="card">
-          <div class="team-avatar team-avatar--2">
-            <div class="team-avatar-float">
-              <img src={withBase('/images/avatares/julian.jpg')} alt="Julian" loading="lazy" style="width:100%; height:100%; object-fit:cover; border-radius:50%; display:block;" />
-            </div>
-          </div>
-          <span class="tag">Equipo</span>
-          <h3>Julian</h3>
-          <p>Responsable de cargas del almacén. El que más kilómetros hace encima de un torito.</p>
-        </div>
-        <div class="card">
-          <div class="team-avatar team-avatar--3">
-            <div class="team-avatar-float">
-              <img src={withBase('/images/avatares/pepe.jpg')} alt="Pepe" loading="lazy" style="width:100%; height:100%; object-fit:cover; border-radius:50%; display:block;" />
-            </div>
-          </div>
-          <span class="tag">Equipo</span>
-          <h3>Pepe</h3>
-          <p>Informático y experto en IA. Si algo falla en la web, ya lo ha arreglado antes de que te enteres.</p>
-        </div>
-        <div class="card">
-          <div class="team-avatar team-avatar--4">
-            <div class="team-avatar-float">
-              <img src={withBase('/images/avatares/tania.jpg')} alt="Tania" loading="lazy" style="width:100%; height:100%; object-fit:cover; border-radius:50%; display:block;" />
-            </div>
-          </div>
-          <span class="tag">Equipo</span>
-          <h3>Tania</h3>
-          <p>Comercial. La más simpática del equipo, resuelve cualquier duda antes de que termines de preguntarla.</p>
-        </div>
+        ))}
       </div>
     </div>
   </section>
