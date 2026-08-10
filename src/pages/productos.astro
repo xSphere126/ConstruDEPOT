@@ -78,6 +78,16 @@ const categorias = [
       <div class="eyebrow-sm">Catálogo por categoría</div>
       <h2>Encuentra tu categoría</h2>
       <p class="section-sub">Trabajamos con primeras marcas. Si no lo tenemos en tienda, te decimos cuándo puede estar disponible. <a href={withBase('/proveedores/')} style="color:var(--green-deep); font-weight:600; text-decoration:underline;">Ver todos los proveedores →</a></p>
+      <div style="max-width:480px;">
+        <label class="field-label" for="product-search">Buscar producto, marca o tipo de trabajo</label>
+        <input id="product-search" type="search" placeholder="Ej. azulejo, cemento, Pladur…" style="width:100%; margin-top:6px; padding:14px 16px; border-radius:10px; border:1px solid var(--line); font-family:inherit; font-size:14.5px;">
+        <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:10px;">
+          {['azulejo', 'cemento', 'pintura', 'Pladur', 'grifería'].map((ej) => (
+            <button type="button" class="product-search-example" data-example={ej} style="font-size:12.5px; font-weight:500; color:var(--graphite); background:var(--cream); border:1px solid var(--line); padding:6px 12px; border-radius:999px; cursor:pointer;">{ej}</button>
+          ))}
+        </div>
+        <p id="product-search-empty" role="status" hidden style="margin-top:16px; font-size:13.5px; color:#6b6c64;">No encontramos nada con ese término — prueba con otra palabra, o <a href="https://wa.me/34607224454" style="color:var(--green-dark); font-weight:600;">pregúntanos por WhatsApp</a>.</p>
+      </div>
     </div>
   </section>
 
@@ -85,7 +95,7 @@ const categorias = [
     <div class="wrap">
       <div class="grid" style="gap:24px;">
         {categorias.map((cat) => (
-          <div class="card" id={cat.id} style="padding:34px 32px;">
+          <div class="card product-category-card" id={cat.id} data-cat-name={cat.nombre} data-cat-marcas={(cat.marcas ?? []).join(' ')} style="padding:34px 32px;">
             <div class="grid grid-2" style="gap:32px; align-items:start;">
               <div>
                 <span class="tag">Categoría</span>
@@ -117,3 +127,63 @@ const categorias = [
     </div>
   </section>
 </BaseLayout>
+
+<script>
+  // Buscador de productos: filtra en el propio navegador sobre el catálogo
+  // ya existente (nombre de producto, categoría o marca), sin backend ni
+  // base de datos — no hay tantos productos como para necesitar más.
+  // Ignora acentos al comparar para que "climatizacion" encuentre
+  // "climatización".
+  function normalize(value: string): string {
+    return value
+      .toLowerCase()
+      .replace(/[áàäâ]/g, 'a')
+      .replace(/[éèëê]/g, 'e')
+      .replace(/[íìïî]/g, 'i')
+      .replace(/[óòöô]/g, 'o')
+      .replace(/[úùüû]/g, 'u')
+      .replace(/ñ/g, 'n');
+  }
+
+  const searchInput = document.getElementById('product-search') as HTMLInputElement | null;
+  const emptyMsg = document.getElementById('product-search-empty');
+  const categoryCards = document.querySelectorAll<HTMLElement>('.product-category-card');
+
+  function applyFilter(rawQuery: string) {
+    const q = normalize(rawQuery.trim());
+    let anyVisible = false;
+
+    categoryCards.forEach((card) => {
+      const catMatch = q === '' || normalize(card.dataset.catName ?? '').includes(q) || normalize(card.dataset.catMarcas ?? '').includes(q);
+      const chips = card.querySelectorAll<HTMLElement>('.product-chip');
+      let chipMatchAny = false;
+
+      chips.forEach((chip) => {
+        // Si la categoría entera coincide (por nombre o marca), se muestran
+        // todos sus productos aunque ninguno contenga el texto buscado —
+        // p. ej. buscar "Pladur" también debe enseñar el resto de
+        // Estructura y Obra, no solo las dos líneas de Pladur.
+        const match = q === '' || catMatch || normalize(chip.textContent ?? '').includes(q);
+        chip.style.display = match ? '' : 'none';
+        if (match) chipMatchAny = true;
+      });
+
+      const show = q === '' || catMatch || chipMatchAny;
+      card.style.display = show ? '' : 'none';
+      if (show) anyVisible = true;
+    });
+
+    if (emptyMsg) emptyMsg.hidden = q === '' || anyVisible;
+  }
+
+  searchInput?.addEventListener('input', () => applyFilter(searchInput.value));
+
+  document.querySelectorAll<HTMLButtonElement>('.product-search-example').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      if (!searchInput) return;
+      searchInput.value = btn.dataset.example ?? '';
+      applyFilter(searchInput.value);
+      searchInput.focus();
+    });
+  });
+</script>
