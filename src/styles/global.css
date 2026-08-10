@@ -167,7 +167,11 @@ h1 em{ font-style:normal; color:var(--green); }
 .info-item .ic{ color:var(--green); flex-shrink:0; }
 .badge-public{ background:rgba(65,183,24,.22); color:#D6F5C4; padding:5px 12px; border-radius:999px; font-size:12.5px; font-weight:700; display:flex; align-items:center; }
 
-.scroll-cue{ position:absolute; z-index:5; bottom:28px; left:50%; transform:translateX(-50%); display:flex; flex-direction:column; align-items:center; gap:8px; font-family:'Roboto', sans-serif; font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; color:rgba(255,255,255,.72); }
+/* Es un <button>, no un <div>: baja a la siguiente sección al pulsarlo.
+   Reset de estilos nativos de botón para que se siga viendo igual que
+   antes de convertirlo en interactivo. */
+.scroll-cue{ position:absolute; z-index:5; bottom:28px; left:50%; transform:translateX(-50%); display:flex; flex-direction:column; align-items:center; gap:8px; font-family:'Roboto', sans-serif; font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; color:rgba(255,255,255,.72); background:none; border:none; padding:0; cursor:pointer; }
+.scroll-cue:hover{ color:#fff; }
 .scroll-cue .chev{ animation:bob 1.8s ease-in-out infinite; }
 @keyframes bob{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(6px); } }
 @media (prefers-reduced-motion: reduce){ .scroll-cue .chev{ animation:none; } }

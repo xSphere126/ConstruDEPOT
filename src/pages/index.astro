@@ -86,13 +86,13 @@ const testimonios = [
       </div>
     </div>
 
-    <div class="scroll-cue">
+    <button type="button" class="scroll-cue" id="scroll-cue-btn" aria-label="Bajar a la siguiente sección">
       Descubre más
       <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
-    </div>
+    </button>
   </section>
 
-  <section class="trust-strip">
+  <section class="trust-strip" id="trust-strip" style="scroll-margin-top:110px;">
     <div class="wrap trust-strip-inner">
       <div class="trust-rating">
         <span class="stars">★★★★★</span>
@@ -307,3 +307,9 @@ const testimonios = [
   .testimonial-card{ transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease; }
   .testimonial-card:hover{ transform: translateY(-4px); border-color: var(--green); box-shadow: 0 16px 32px -20px rgba(0,0,0,.35); }
 </style>
+
+<script>
+  document.getElementById('scroll-cue-btn')?.addEventListener('click', () => {
+    document.getElementById('trust-strip')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+</script>
