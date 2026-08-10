@@ -110,7 +110,7 @@ const testimonios = [
       <p class="section-sub">Reseñas reales de nuestra ficha de Google, tal cual las escribieron.</p>
       <div class="grid grid-3">
         {testimonios.map((t) => (
-          <div class="card">
+          <div class="card testimonial-card">
             <span class="stars" aria-label={`${t.stars} de 5 estrellas`}>{'★'.repeat(t.stars)}</span>
             <h3 style="margin-top:10px;">{t.name}</h3>
             <p style="font-size:12.5px; color:#8a8b83; font-family:'Roboto', sans-serif; margin-bottom:12px;">{t.badge}</p>
@@ -119,15 +119,7 @@ const testimonios = [
         ))}
       </div>
       <p style="margin-top:24px;"><a href="https://www.google.com/maps/place/?q=place_id:ChIJr7CgOzy1Yw0RxNdaWmyXfNw" target="_blank" rel="noopener" class="google-link">Leer todas las reseñas en Google →</a></p>
-
-      <div class="cta-band" style="background:var(--ink); margin-top:40px;">
-        <div>
-          <p style="color:rgba(255,255,255,.6); font-family:'Roboto', sans-serif; font-size:12px; letter-spacing:.07em; text-transform:uppercase; margin-bottom:12px;">Nuestros clientes no solo compran material</p>
-          <h3>"Me ayudaron a elegir el suelo para mi casa, resolvieron todas mis dudas con mucha profesionalidad."</h3>
-          <p style="color:rgba(255,255,255,.65); font-size:13px; margin-top:12px;">— Ethan Alcaraz Sforza, reseña en Google</p>
-        </div>
-        <a href={withBase('/contacto/')} class="btn-primary">Cuéntanos tu proyecto →</a>
-      </div>
+      <p style="margin-top:16px;"><a href={withBase('/contacto/')} class="btn-outline" style="padding:14px 22px; font-size:13.5px;">¿Tienes un proyecto en mente? Cuéntanoslo →</a></p>
     </div>
   </section>
 
@@ -307,3 +299,12 @@ const testimonios = [
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  /* En vez de repetir una reseña ya visible en el grid dentro de un
+     recuadro aparte (quedaba redundante, la misma cita dos veces con dos
+     estilos distintos), las tarjetas reaccionan al pasar el ratón — invita
+     a leerlas sin duplicar ningún texto. */
+  .testimonial-card{ transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease; }
+  .testimonial-card:hover{ transform: translateY(-4px); border-color: var(--green); box-shadow: 0 16px 32px -20px rgba(0,0,0,.35); }
+</style>
