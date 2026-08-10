@@ -14,6 +14,23 @@ const snapwidgetId = import.meta.env.PUBLIC_SNAPWIDGET_ID || 'WIDGET_ID_PENDIENT
 // para cambiarlo). Sin ese valor, se sigue viendo el mosaico de marcador.
 const showInstagramSection = true;
 
+// "¿Qué vas a hacer?": botones de proyecto que precargan el formulario de
+// Contacto vía ?proyecto=, mismo mecanismo que ya usan los enlaces de
+// categoría de Productos (?categoria=) pero con su propio texto — "Me
+// interesa la categoría: reformar un baño" sonaba raro, así que Contacto
+// necesita una segunda función de precarga con frase natural (ver su
+// <script>). `param` es la frase tal cual encaja en "Quiero ___." y
+// "...porque quieres ___.", `label` es el texto del botón.
+const proyectos = [
+  { label: 'Reformar un baño', param: 'reformar un baño' },
+  { label: 'Hacer una terraza', param: 'hacer una terraza' },
+  { label: 'Levantar un muro', param: 'levantar un muro' },
+  { label: 'Reformar la vivienda', param: 'reformar toda la vivienda' },
+  { label: 'Pintar', param: 'pintar' },
+  { label: 'Aislar', param: 'aislar mi vivienda' },
+  { label: 'Otro proyecto', param: 'hablar de mi proyecto' },
+];
+
 const testimonios = [
   {
     name: 'Pere Serrano',
@@ -100,6 +117,19 @@ const testimonios = [
         <span class="trust-note">· 247 opiniones en Google</span>
       </div>
       <a href="https://www.google.com/maps/place/?q=place_id:ChIJr7CgOzy1Yw0RxNdaWmyXfNw" target="_blank" rel="noopener" class="google-link">Ver en Google →</a>
+    </div>
+  </section>
+
+  <section class="home-section">
+    <div class="wrap">
+      <div class="eyebrow-sm">¿Qué vas a hacer?</div>
+      <h2>Cuéntanos tu proyecto y te ayudamos con los materiales</h2>
+      <p class="section-sub">Elige lo que más se parece a lo tuyo, o cuéntanoslo directamente — no hace falta que sepas los nombres técnicos.</p>
+      <div class="project-buttons">
+        {proyectos.map((p) => (
+          <a href={withBase(`/contacto/?proyecto=${encodeURIComponent(p.param)}`)} class="btn-outline">{p.label}</a>
+        ))}
+      </div>
     </div>
   </section>
 
@@ -300,6 +330,8 @@ const testimonios = [
 </BaseLayout>
 
 <style>
+  .project-buttons{ display:flex; flex-wrap:wrap; gap:12px; }
+
   /* En vez de repetir una reseña ya visible en el grid dentro de un
      recuadro aparte (quedaba redundante, la misma cita dos veces con dos
      estilos distintos), las tarjetas reaccionan al pasar el ratón — invita
