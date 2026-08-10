@@ -194,6 +194,27 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
     }
   })();
 
+  // Si se llega desde un botón de proyecto de Inicio (ej. ?proyecto=reformar
+  // un baño), precargar el mensaje. Aparte de prefillFromCategoria (y no
+  // reutilizando su misma frase) porque "Me interesa la categoría: reformar
+  // un baño" suena raro — aquí el parámetro ya viene redactado para encajar
+  // en "Quiero ___." tal cual.
+  (function prefillFromProyecto() {
+    const params = new URLSearchParams(window.location.search);
+    const proyecto = params.get('proyecto');
+    if (!proyecto) return;
+
+    const msg = document.getElementById('f-mensaje') as HTMLTextAreaElement | null;
+    if (msg) {
+      msg.value = 'Quiero ' + proyecto + '. ';
+      msg.focus();
+    }
+    const banner = document.getElementById('banner-sub');
+    if (banner) {
+      banner.textContent = 'Nos escribes porque quieres ' + proyecto + '. Cuéntanos más y te decimos qué necesitas.';
+    }
+  })();
+
   declare global {
     interface Window {
       turnstile?: {
