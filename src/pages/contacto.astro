@@ -41,7 +41,7 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
         <div>
           <div class="eyebrow-sm">Formulario</div>
           <h2>Cuéntanos qué necesitas</h2>
-          <form id="contactForm" data-action={withBase('/enviar-contacto.php')} style="display:flex; flex-direction:column; gap:16px; margin-top:20px;">
+          <form id="contactForm" data-action={withBase('/enviar-contacto.php')} style="display:flex; flex-direction:column; gap:16px; margin-top:20px;" enctype="multipart/form-data">
             <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute; left:-9999px;" />
             <div>
               <span class="field-label">¿Quién eres?</span>
@@ -66,6 +66,11 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
             <div>
               <label class="field-label" for="f-mensaje">¿Qué material o categoría te interesa?</label>
               <textarea id="f-mensaje" name="mensaje" placeholder="Cuéntanos qué necesitas" rows="4" style="width:100%; margin-top:6px; padding:14px 16px; border-radius:10px; border:1px solid var(--line); font-family:inherit; font-size:14.5px; resize:vertical;"></textarea>
+            </div>
+            <div>
+              <label class="field-label" for="f-foto">Foto (opcional)</label>
+              <input id="f-foto" name="foto" type="file" accept="image/*" style="width:100%; margin-top:6px; padding:12px 14px; border-radius:10px; border:1px solid var(--line); font-family:inherit; font-size:13.5px; background:#fff;">
+              <p style="font-size:12px; color:#6b6c64; margin-top:6px;">Si tienes una foto de la obra o del material que quieres igualar, súbela aquí — la comprimimos automáticamente.</p>
             </div>
             {turnstileSiteKey && <div class="cf-turnstile" data-sitekey={turnstileSiteKey}></div>}
             <button type="submit" class="btn-primary" style="justify-content:center;">Enviar consulta →</button>
@@ -224,6 +229,33 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
     }
   }
 
+  // Límite del adjunto en el servidor (ver enviar-contacto.php): Graph solo
+  // admite fileAttachment de hasta ~3 MB ya codificados en base64 en una
+  // sola llamada a sendMail, así que el original debe quedarse en 2 MB.
+  // Una foto de móvil sin tocar suele pesar 3-8 MB, así que en vez de
+  // rechazarla se reduce en el propio navegador antes de enviarla — así
+  // "sube una foto" funciona de verdad la primera vez, sin que el usuario
+  // tenga que saber comprimir una imagen por su cuenta.
+  const MAX_PHOTO_BYTES = 2 * 1024 * 1024;
+  const MAX_PHOTO_DIMENSION = 1600;
+
+  async function resizePhoto(file: File): Promise<File> {
+    // createImageBitmap no sabe decodificar todo (p. ej. HEIC fuera de
+    // Safari); si falla, se captura más abajo y se usa el archivo original
+    // sin tocar, comprobando su tamaño en bruto contra el límite.
+    const bitmap = await createImageBitmap(file);
+    const scale = Math.min(1, MAX_PHOTO_DIMENSION / Math.max(bitmap.width, bitmap.height));
+    const canvas = document.createElement('canvas');
+    canvas.width = Math.round(bitmap.width * scale);
+    canvas.height = Math.round(bitmap.height * scale);
+    const ctx = canvas.getContext('2d');
+    if (!ctx) throw new Error('sin contexto de canvas');
+    ctx.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+    const blob: Blob | null = await new Promise((resolve) => canvas.toBlob(resolve, 'image/jpeg', 0.8));
+    if (!blob) throw new Error('no se pudo generar la imagen comprimida');
+    return new File([blob], 'foto.jpg', { type: 'image/jpeg' });
+  }
+
   // Envío del formulario a enviar-contacto.php (script propio, ver
   // public/config-local.example.php para las credenciales SMTP del buzón dedicado).
   const form = document.getElementById('contactForm') as HTMLFormElement | null;
@@ -250,14 +282,35 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
     const action = form.dataset.action;
     if (!action) return;
 
+    const fotoInput = form.querySelector<HTMLInputElement>('#f-foto');
+    const fotoFile = fotoInput?.files?.[0];
+    let fotoParaEnviar: File | null = null;
+    if (fotoFile) {
+      try {
+        fotoParaEnviar = await resizePhoto(fotoFile);
+      } catch {
+        if (fotoFile.size > MAX_PHOTO_BYTES) {
+          statusEl.textContent = 'La foto pesa demasiado y no hemos podido comprimirla automáticamente. Prueba con otra foto o envíanosla por WhatsApp: 607 224 454.';
+          return;
+        }
+        fotoParaEnviar = fotoFile;
+      }
+    }
+
     const submitBtn = form.querySelector<HTMLButtonElement>('button[type="submit"]');
     if (submitBtn) submitBtn.disabled = true;
     statusEl.textContent = 'Enviando…';
 
     try {
+      const formData = new FormData(form);
+      if (fotoParaEnviar) {
+        formData.set('foto', fotoParaEnviar, fotoParaEnviar.name);
+      } else {
+        formData.delete('foto');
+      }
       const res = await fetch(action, {
         method: 'POST',
-        body: new FormData(form),
+        body: formData,
         headers: { Accept: 'application/json' },
       });
       const data = await res.json().catch(() => null);

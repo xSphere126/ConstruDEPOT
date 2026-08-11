@@ -73,11 +73,58 @@ if ($email !== '' && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
     respond(false, 'El email no es válido.');
 }
 
+// La foto es opcional (obra o material a igualar). El navegador ya la
+// comprime antes de enviarla (ver contacto.astro), pero el límite se
+// vuelve a comprobar aquí porque el cliente se puede saltar: Graph solo
+// admite fileAttachment de hasta ~3 MB codificados en base64 en una sola
+// llamada, así que el original debe quedarse en 2 MB — mismo límite y
+// mismo patrón que el CV de enviar-empleo.php.
+$attachments = [];
+$fotoError = null;
+if (isset($_FILES['foto']) && $_FILES['foto']['error'] !== UPLOAD_ERR_NO_FILE) {
+    $foto = $_FILES['foto'];
+
+    if ($foto['error'] === UPLOAD_ERR_INI_SIZE || $foto['error'] === UPLOAD_ERR_FORM_SIZE) {
+        $fotoError = 'La foto pesa demasiado (máximo 2 MB).';
+    } elseif ($foto['error'] !== UPLOAD_ERR_OK) {
+        $fotoError = 'No se ha podido leer la foto adjunta.';
+    } elseif ($foto['size'] > 2 * 1024 * 1024) {
+        $fotoError = 'La foto pesa demasiado (máximo 2 MB).';
+    } else {
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        // finfo_open() puede devolver false si la extensión fileinfo no está
+        // disponible en el hosting — sin esta comprobación, finfo_file(false, ...)
+        // lanza un error fatal de PHP en vez de un mensaje controlado.
+        $mimeType = $finfo !== false ? finfo_file($finfo, $foto['tmp_name']) : false;
+        if ($finfo !== false) {
+            finfo_close($finfo);
+        }
+        $extensionesPorTipo = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'image/webp' => 'webp'];
+
+        if (!isset($extensionesPorTipo[$mimeType])) {
+            $fotoError = 'La foto debe ser JPG, PNG o WEBP.';
+        } else {
+            $contentBytes = base64_encode(file_get_contents($foto['tmp_name']));
+            $attachments[] = [
+                '@odata.type' => '#microsoft.graph.fileAttachment',
+                'name' => 'Foto - ' . $nombre . '.' . $extensionesPorTipo[$mimeType],
+                'contentType' => $mimeType,
+                'contentBytes' => $contentBytes,
+            ];
+        }
+    }
+}
+
+if ($fotoError !== null) {
+    respond(false, $fotoError);
+}
+
 $bodyText = implode("\n", [
     'Perfil: ' . ($perfil !== '' ? $perfil : 'no indicado'),
     'Nombre: ' . $nombre,
     'Teléfono: ' . $telefono,
     'Email: ' . ($email !== '' ? $email : 'no indicado'),
+    'Foto adjunta: ' . (count($attachments) > 0 ? 'sí' : 'no'),
     '',
     'Mensaje:',
     $mensaje !== '' ? $mensaje : '(sin mensaje)',
@@ -90,6 +137,9 @@ $message = [
 ];
 if ($email !== '') {
     $message['replyTo'] = [['emailAddress' => ['address' => $email, 'name' => $nombre]]];
+}
+if (count($attachments) > 0) {
+    $message['attachments'] = $attachments;
 }
 
 if (graphSendMail($message, 'Formulario contacto')) {
