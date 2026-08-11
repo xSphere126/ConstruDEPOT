@@ -309,8 +309,15 @@ body.home .btn-primary:hover{ background:var(--green-dark); color:#fff; }
 .brand-group{ margin-bottom:48px; }
 .brand-group:last-child{ margin-bottom:0; }
 .brand-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(150px, 1fr)); gap:14px; margin-top:20px; }
-.brand-tile{ background:var(--cream-card); border:1px solid var(--line); border-radius:16px; padding:22px 18px; min-height:88px; justify-content:center; transition:border-color .15s ease, box-shadow .15s ease, transform .15s ease; }
+/* .brand-tile envuelve el enlace a la marca (.brand-chip, externo, a su web
+   real) y, cuando la marca tiene categoría conocida en /productos/, un
+   segundo enlace interno debajo (.brand-category-link) — dos zonas
+   clicables distintas, por eso son dos <a> hermanos y no uno anidado
+   dentro del otro. */
+.brand-tile{ display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; background:var(--cream-card); border:1px solid var(--line); border-radius:16px; padding:22px 18px; min-height:88px; transition:border-color .15s ease, box-shadow .15s ease, transform .15s ease; }
 .brand-tile:hover{ border-color:var(--green); box-shadow:0 10px 24px rgba(0,0,0,.07); transform:translateY(-3px); }
+.brand-category-link{ font-family:'Roboto', sans-serif; font-size:11.5px; font-weight:600; color:#8a8b83; text-decoration:none; text-align:center; transition:color .15s ease; }
+.brand-category-link:hover{ color:var(--green-dark); text-decoration:underline; }
 .brands-note{ font-family:'Roboto', sans-serif; font-size:12.5px; color:var(--graphite); }
 
 /* Carrusel de marcas en Inicio: antes solo se veían 3 logos fijos (Keraben,
