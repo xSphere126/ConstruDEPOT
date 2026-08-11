@@ -475,7 +475,14 @@ table.cond td{ padding:16px; border-bottom:1px solid var(--line); font-size:14.5
 .required-mark{ color:#E8720C; font-weight:700; }
 .btn-toggle{ border:1.5px solid var(--line); color:var(--ink); font-weight:600; font-size:14px; padding:14px 20px; border-radius:999px; background:#fff; cursor:pointer; flex:1; text-align:center; transition:all .15s ease; }
 .btn-toggle:hover{ border-color:var(--green); }
-.btn-toggle.is-active{ background:var(--ink); border-color:var(--ink); color:#fff; }
+/* Verde de marca, no negro: el negro (--ink) ya es el color del botón de
+   envío del formulario ("Enviar consulta →") — si el estado seleccionado
+   también fuera negro, ambos elementos competirían por la misma atención
+   dentro del mismo formulario. El verde ya es el color que usa el sitio
+   para "esto está activo/es tuyo" (pestaña activa del menú, botón
+   primario en Inicio y en los cta-band), así que sigue ese mismo criterio
+   aquí. */
+.btn-toggle.is-active{ background:var(--green); border-color:var(--green); color:var(--ink); }
 
 /* =========================================================================
    MARCADORES DE CONTENIDO PENDIENTE — compartido
