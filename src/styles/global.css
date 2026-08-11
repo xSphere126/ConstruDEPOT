@@ -104,14 +104,16 @@ header.header-pinned .dot{ box-shadow:0 0 0 3px rgba(65,183,24,.18); }
    identidad. Al fijarse el header (fondo claro) se cambia al logo a color
    normal, igual que en el resto de páginas — ver .logo-mark--chip /
    .logo-mark--pinned más abajo. */
-/* Placa con menos relleno que antes (10px 18px → 8px 14px) para compensar
-   el logo más grande que lleva dentro: la caja verde ocupa prácticamente
-   el mismo espacio que antes, no crece con el logo — solo cambia lo que
-   se ve DENTRO de ella. Altura total del header (92px) sin tocar. */
-.logo-chip{ display:flex; align-items:center; background:var(--green); box-shadow:0 4px 16px rgba(0,0,0,.22); border-radius:14px; padding:8px 14px; }
+/* Placa verde con la MISMA altura total que antes (80px: 6px de margen a
+   cada lado dentro de la cabecera de 92px) — el primer intento (76px de
+   logo + 16px de relleno = 92px) llenaba la cabecera entera sin margen y
+   la placa tocaba el borde superior del navegador. Ahora el logo crece
+   recortando el relleno interno, no el margen exterior: mismo hueco de
+   siempre alrededor de la placa, más grande solo lo que hay dentro. */
+.logo-chip{ display:flex; align-items:center; background:var(--green); box-shadow:0 4px 16px rgba(0,0,0,.22); border-radius:14px; padding:6px 14px; }
 .logo-mark{ height:72px; width:auto; display:block; }
 .logo-mark svg, .logo-mark img{ height:100%; width:auto; display:block; }
-.logo-mark--chip{ height:76px; }
+.logo-mark--chip{ height:68px; }
 .logo-mark--pinned{ display:none; }
 header.header-pinned .logo-mark--chip{ display:none; }
 header.header-pinned .logo-mark--pinned{ display:block; }
