@@ -588,7 +588,13 @@ footer a:hover{ color:#fff; }
 .cookie-banner-actions{ display:flex; gap:14px; flex-shrink:0; margin-left:auto; }
 .cookie-banner-actions .btn-outline{ border-color:rgba(255,255,255,.45); color:#fff; padding:14px 26px; font-size:15px; }
 .cookie-banner-actions .btn-outline:hover{ border-color:#fff; }
-.cookie-banner-actions .btn-primary{ padding:14px 28px; font-size:15px; }
+/* .btn-primary rellena con --ink por defecto, pero el propio banner
+   también tiene fondo --ink — sin este override, "Aceptar todas" se
+   funde con el fondo y parece solo texto en negrita, sin forma de
+   botón. Mismo verde de marca que ya usan el CTA de Inicio y los
+   cta-band para "esto es lo que quieres pulsar". */
+.cookie-banner-actions .btn-primary{ padding:14px 28px; font-size:15px; background:var(--green); color:var(--ink); }
+.cookie-banner-actions .btn-primary:hover{ background:var(--green-dark); color:#fff; }
 
 .gated-embed{ position:relative; width:100%; height:100%; }
 .gated-embed iframe{ width:100%; height:100%; border:0; display:block; }
