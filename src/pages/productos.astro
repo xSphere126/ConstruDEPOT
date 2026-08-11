@@ -237,9 +237,16 @@ const categorias = categoriasBase.map((cat) => ({
     const marca = params.get('marca');
     if (!marca) return;
 
-    const marcaSpan = Array.from(document.querySelectorAll<HTMLElement>('.marca-nombre')).find(
-      (el) => el.dataset.marca === marca
-    );
+    // Algunas marcas (p. ej. Hormigones Cava) aparecen en más de una
+    // categoría, así que el mismo nombre puede repetirse en varias
+    // tarjetas — se busca primero DENTRO de la tarjeta a la que apunta el
+    // hash de la URL (la que "Ver en [categoría]" quería enseñar) antes de
+    // caer en la primera coincidencia de toda la página.
+    const hashId = window.location.hash.replace('#', '');
+    const scope = hashId ? document.getElementById(hashId) : null;
+    const marcaSpan =
+      (scope?.querySelector<HTMLElement>(`.marca-nombre[data-marca="${CSS.escape(marca)}"]`)) ??
+      Array.from(document.querySelectorAll<HTMLElement>('.marca-nombre')).find((el) => el.dataset.marca === marca);
     if (!marcaSpan) return;
 
     marcaSpan.classList.add('is-highlighted');
