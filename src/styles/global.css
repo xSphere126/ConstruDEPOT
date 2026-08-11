@@ -33,12 +33,19 @@ html, body{ width:100%; }
 /* ---------- Scrollbar ---------- */
 /* La barra de scroll por defecto del sistema (gris/azul, esquinas rectas)
    desentona con un sitio que usa formas de píldora en casi todo (botones,
-   chips, tags). Se adelgaza y redondea, en tonos neutros que combinan con
-   --cream, con un guiño de color de marca al pasar el ratón por encima. */
-html{ scrollbar-width:thin; scrollbar-color:rgba(74,74,74,.35) var(--cream); }
+   chips, tags). Se adelgaza y redondea, con un guiño de color de marca al
+   pasar el ratón por encima. El track va transparente a propósito, no de
+   un color fijo: la página pasa por fondos muy distintos (--cream,
+   --sand, y secciones oscuras en --ink como el footer o los cta-band), y
+   un track de un solo color queda mal contra los oscuros. El propio
+   navegador dibuja la scrollbar como una capa superpuesta —no hay forma
+   de leer qué hay debajo y colorearla a juego en tiempo real—, así que
+   transparente es lo que consigue que combine con cualquier fondo sin
+   tener que perseguir cada sección con JavaScript. */
+html{ scrollbar-width:thin; scrollbar-color:rgba(74,74,74,.4) transparent; }
 ::-webkit-scrollbar{ width:10px; height:10px; }
-::-webkit-scrollbar-track{ background:var(--cream); }
-::-webkit-scrollbar-thumb{ background:rgba(74,74,74,.35); border-radius:999px; border:2px solid var(--cream); background-clip:padding-box; }
+::-webkit-scrollbar-track{ background:transparent; }
+::-webkit-scrollbar-thumb{ background:rgba(74,74,74,.4); border-radius:999px; border:2px solid transparent; background-clip:padding-box; }
 ::-webkit-scrollbar-thumb:hover{ background:var(--green); }
 body{ font-family:'Roboto', sans-serif; font-weight:300; background:var(--cream); color:var(--ink); -webkit-font-smoothing:antialiased; }
 a{ color:inherit; text-decoration:none; }
