@@ -67,7 +67,10 @@ export const grupos: { nombre: string; marcas: Marca[] }[] = [
       { nombre: 'Industrias Bernabé', url: 'https://industriasbernabe.com/', logo: '/brands/industrias-bernabe.png', categorias: ['estructura-y-obra'] },
       { nombre: 'Ladrillera Murciana', url: 'https://www.ladrilleramurciana.com/', logo: '/brands/ladrillera-murciana.jpg', categorias: ['estructura-y-obra'] },
       { nombre: 'Holcim', url: 'https://www.holcim.es/', logo: '/brands/holcim.svg', white: true, categorias: ['estructura-y-obra'] },
-      { nombre: 'Chemical Building Project', url: 'https://chemicalbuildingproject.com/', logo: '/brands/chemicalbuildingproject.png', categorias: ['acabados-y-revestimientos'] },
+      // Comprobado en su web: además de adhesivos y morteros, fabrica
+      // imprimaciones — uno de los productos reales ya listados en
+      // Decoración y Pintura, así que encaja también en esa categoría.
+      { nombre: 'Chemical Building Project', url: 'https://chemicalbuildingproject.com/', logo: '/brands/chemicalbuildingproject.png', categorias: ['acabados-y-revestimientos', 'decoracion-y-pintura'] },
       { nombre: 'Hormigones Cava', url: 'https://www.hormigonescava.es/', logo: '/brands/hormigones-cava.png', white: true, categorias: ['estructura-y-obra', 'jardin-y-exterior'] },
       { nombre: 'La Escandella', url: 'https://www.laescandella.com/es/', logo: '/brands/laescandella.png', categorias: ['estructura-y-obra'] },
       { nombre: 'SAS Prefabricados de Hormigón', url: 'https://sas1900.com/', logo: '/brands/sas1900.webp', categorias: ['jardin-y-exterior'] },

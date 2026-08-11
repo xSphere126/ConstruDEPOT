@@ -39,7 +39,7 @@ const nombreCategoria = new Map(categoriasProductos.map((c) => [c.id, c.nombre])
                   )}
                 </a>
                 {marca.categorias?.map((catId) => (
-                  <a href={withBase(`/productos/#${catId}`)} class="brand-category-link">Ver en {nombreCategoria.get(catId)} →</a>
+                  <a href={withBase(`/productos/?marca=${encodeURIComponent(marca.nombre)}#${catId}`)} class="brand-category-link">Ver en {nombreCategoria.get(catId)} →</a>
                 ))}
               </div>
             ))}

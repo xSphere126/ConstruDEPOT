@@ -111,7 +111,12 @@ const categorias = categoriasBase.map((cat) => ({
                 <h3>{cat.nombre}</h3>
                 <p>{cat.desc}</p>
                 {cat.marcas.length > 0 && (
-                  <p class="category-brands"><strong>Marcas:</strong> {cat.marcas.join(' · ')}</p>
+                  <p class="category-brands"><strong>Marcas:</strong> {cat.marcas.map((m, i) => (
+                    <>
+                      {i > 0 && ' · '}
+                      <span class="marca-nombre" data-marca={m}>{m}</span>
+                    </>
+                  ))}</p>
                 )}
                 <div style="margin-top:20px;">
                   <a href={withBase(`/contacto/?categoria=${encodeURIComponent(cat.nombre)}`)} class="btn-outline" style="padding:14px 18px; font-size:13.5px;">Consultar disponibilidad →</a>
@@ -152,6 +157,19 @@ const categorias = categoriasBase.map((cat) => ({
   .product-search-examples .product-chip{ cursor:pointer; transition:border-color .15s ease, background .15s ease, color .15s ease; }
   .product-search-examples .product-chip:hover{ border-color:var(--green); }
   .product-search-examples .product-chip.is-active{ background:var(--ink); border-color:var(--ink); color:#fff; }
+
+  /* Al llegar desde /proveedores/ (enlace "Ver en [categoría]" bajo una
+     marca) con ?marca=X, se resalta esa marca dentro de "Marcas:" y se da
+     un aviso visual breve a la tarjeta entera, para confirmar que has
+     llegado al sitio correcto sin tener que leer la lista entera. El
+     nombre de la marca se queda resaltado (ayuda mientras miras la
+     tarjeta); el aviso de la tarjeta se desvanece solo. */
+  .marca-nombre.is-highlighted{ color:var(--green-dark); font-weight:700; }
+  .product-category-card.is-highlighted{ animation:highlight-fade 2.5s ease forwards; }
+  @keyframes highlight-fade{
+    0%{ border-color:var(--green); box-shadow:0 0 0 4px rgba(65,183,24,.28); }
+    100%{ border-color:var(--line); box-shadow:0 0 0 0 rgba(65,183,24,0); }
+  }
 </style>
 
 <script>
@@ -210,6 +228,24 @@ const categorias = categoriasBase.map((cat) => ({
   }
 
   searchInput?.addEventListener('input', () => applyFilter(searchInput.value));
+
+  // Si se llega desde /proveedores/ (enlace "Ver en [categoría]" de una
+  // marca concreta), resalta esa marca y da un aviso visual a su tarjeta —
+  // sin esto, aterrizar en una tarjeta con 6-12 marcas en texto plano no
+  // deja claro cuál de ellas era la que te trajo hasta aquí.
+  (function resaltarMarcaDesdeProveedores() {
+    const params = new URLSearchParams(window.location.search);
+    const marca = params.get('marca');
+    if (!marca) return;
+
+    const marcaSpan = Array.from(document.querySelectorAll<HTMLElement>('.marca-nombre')).find(
+      (el) => el.dataset.marca === marca
+    );
+    if (!marcaSpan) return;
+
+    marcaSpan.classList.add('is-highlighted');
+    marcaSpan.closest('.product-category-card')?.classList.add('is-highlighted');
+  })();
 
   exampleButtons.forEach((btn) => {
     btn.addEventListener('click', () => {

@@ -43,6 +43,7 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
           <h2>Cuéntanos qué necesitas</h2>
           <form id="contactForm" data-action={withBase('/enviar-contacto.php')} style="display:flex; flex-direction:column; gap:16px; margin-top:20px;" enctype="multipart/form-data">
             <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute; left:-9999px;" />
+            <p style="font-size:12px; color:#6b6c64; margin:0;"><span class="required-mark">*</span> campo obligatorio</p>
             <div>
               <span class="field-label">¿Quién eres?</span>
               <div style="display:flex; gap:10px; margin-top:8px;">
@@ -52,15 +53,15 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
               <input type="hidden" name="perfil" id="f-perfil" />
             </div>
             <div>
-              <label class="field-label" for="f-nombre">Nombre</label>
+              <label class="field-label" for="f-nombre">Nombre <span class="required-mark">*</span></label>
               <input id="f-nombre" name="nombre" type="text" required placeholder="Tu nombre" style="width:100%; margin-top:6px; padding:14px 16px; border-radius:10px; border:1px solid var(--line); font-family:inherit; font-size:14.5px;">
             </div>
             <div>
-              <label class="field-label" for="f-telefono">Teléfono</label>
+              <label class="field-label" for="f-telefono">Teléfono <span class="required-mark">*</span></label>
               <input id="f-telefono" name="telefono" type="tel" required placeholder="Tu teléfono" style="width:100%; margin-top:6px; padding:14px 16px; border-radius:10px; border:1px solid var(--line); font-family:inherit; font-size:14.5px;">
             </div>
             <div>
-              <label class="field-label" for="f-email">Email (opcional)</label>
+              <label class="field-label" for="f-email">Email</label>
               <input id="f-email" name="email" type="email" placeholder="Tu email" style="width:100%; margin-top:6px; padding:14px 16px; border-radius:10px; border:1px solid var(--line); font-family:inherit; font-size:14.5px;">
             </div>
             <div>
@@ -68,9 +69,9 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
               <textarea id="f-mensaje" name="mensaje" placeholder="Cuéntanos qué necesitas" rows="4" style="width:100%; margin-top:6px; padding:14px 16px; border-radius:10px; border:1px solid var(--line); font-family:inherit; font-size:14.5px; resize:vertical;"></textarea>
             </div>
             <div>
-              <label class="field-label" for="f-foto">Foto (opcional)</label>
+              <label class="field-label" for="f-foto">Foto</label>
               <input id="f-foto" name="foto" type="file" accept="image/*" style="width:100%; margin-top:6px; padding:12px 14px; border-radius:10px; border:1px solid var(--line); font-family:inherit; font-size:13.5px; background:#fff;">
-              <p style="font-size:12px; color:#6b6c64; margin-top:6px;">Si tienes una foto de la obra o del material que quieres igualar, súbela aquí — la comprimimos automáticamente.</p>
+              <p style="font-size:12px; color:#6b6c64; margin-top:6px;">Si tienes una foto de la obra o del material que quieres igualar, súbela aquí.</p>
             </div>
             {turnstileSiteKey && <div class="cf-turnstile" data-sitekey={turnstileSiteKey}></div>}
             <button type="submit" class="btn-primary" style="justify-content:center;">Enviar consulta →</button>
