@@ -8,6 +8,10 @@ const categoriasBase = [
     id: 'estructura-y-obra',
     nombre: 'Estructura y Obra',
     desc: 'Los materiales de base para que cualquier construcción empiece con buenos cimientos.',
+    // Palabras de zona/habitación que alguien sin vocabulario técnico podría
+    // buscar en vez del nombre de la categoría — no añaden ningún criterio
+    // técnico nuevo, solo sinónimos para encontrar la misma categoría real.
+    zonas: ['fachada'],
     productos: [
       'Hormigón preparado', 'Cemento gris y blanco', 'Ladrillo cerámico', 'Bloque de hormigón',
       'Mortero de cemento', 'Morteros técnicos', 'Arena y gravas', 'Mallas y varillas de armado',
@@ -19,6 +23,7 @@ const categoriasBase = [
     id: 'acabados-y-revestimientos',
     nombre: 'Acabados y Revestimientos',
     desc: 'El punto final que define el estilo de cada espacio.',
+    zonas: ['salón', 'suelos', 'interior'],
     productos: [
       'Gres porcelánico', 'Pavimento cerámico', 'Azulejo de pared', 'Parqué flotante',
       'Suelo vinílico (SPC/LVT)', 'Rodapiés y perfilería', 'Piedra natural', 'Adhesivos y juntas de alicatado',
@@ -29,6 +34,7 @@ const categoriasBase = [
     id: 'decoracion-y-pintura',
     nombre: 'Decoración y Pintura',
     desc: 'Todo lo necesario para dar el último toque, dentro y fuera.',
+    zonas: [],
     productos: [
       'Pintura plástica interior', 'Pintura de fachada', 'Esmaltes sintéticos', 'Imprimaciones y selladores',
       'Barnices para madera', 'Rodillos y brochas', 'Cintas y protección', 'Pasta niveladora',
@@ -38,6 +44,7 @@ const categoriasBase = [
     id: 'fontaneria-y-climatizacion',
     nombre: 'Fontanería y Climatización',
     desc: 'Instalaciones que no se ven pero que marcan la diferencia en el día a día.',
+    zonas: ['baño', 'cocina'],
     productos: [
       'Grifería de baño y cocina', 'Sanitarios e inodoros', 'Platos de ducha y mamparas', 'Tubería PVC y multicapa',
       'Bombas de agua', 'Radiadores', 'Aire acondicionado', 'Termos eléctricos', 'Válvulas y racores',
@@ -48,6 +55,7 @@ const categoriasBase = [
     id: 'jardin-y-exterior',
     nombre: 'Jardín y Exterior',
     desc: 'Para que el exterior de tu casa o proyecto esté a la altura del interior.',
+    zonas: ['terraza', 'patio'],
     productos: [
       'Hormigón impreso', 'Césped artificial', 'Adoquín y baldosa de exterior', 'Piedra decorativa',
       'Vallas y cerramientos', 'Iluminación exterior', 'Riego y goteo', 'Macetas y jardineras',
@@ -85,10 +93,10 @@ const categorias = categoriasBase.map((cat) => ({
       <p class="section-sub">Trabajamos con primeras marcas. Si no lo tenemos en tienda, te decimos cuándo puede estar disponible. <a href={withBase('/proveedores/')} style="color:var(--green-deep); font-weight:600; text-decoration:underline;">Ver todos los proveedores →</a></p>
       <div class="product-search-bar">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
-        <input id="product-search" type="search" placeholder="Busca un producto, marca o tipo de trabajo…" aria-label="Buscar producto, marca o tipo de trabajo">
+        <input id="product-search" type="search" placeholder="Busca un producto, marca o incluso la zona de tu casa…" aria-label="Buscar producto, marca o zona de la casa">
       </div>
       <div class="product-search-examples">
-        {['azulejo', 'cemento', 'pintura', 'pladur', 'grifería'].map((ej) => (
+        {['azulejo', 'baño', 'cemento', 'jardín', 'pintura', 'grifería'].map((ej) => (
           <button type="button" class="product-chip" data-example={ej}>{ej}</button>
         ))}
       </div>
@@ -96,7 +104,7 @@ const categorias = categoriasBase.map((cat) => ({
 
       <div class="grid" style="gap:24px;">
         {categorias.map((cat) => (
-          <div class="card product-category-card" id={cat.id} data-cat-name={cat.nombre} data-cat-marcas={(cat.marcas ?? []).join(' ')} style="padding:34px 32px;">
+          <div class="card product-category-card" id={cat.id} data-cat-name={cat.nombre} data-cat-marcas={(cat.marcas ?? []).join(' ')} data-cat-zonas={cat.zonas.join(' ')} style="padding:34px 32px;">
             <div class="grid grid-2" style="gap:32px; align-items:start;">
               <div>
                 <span class="tag">Categoría</span>
@@ -173,7 +181,7 @@ const categorias = categoriasBase.map((cat) => ({
     let anyVisible = false;
 
     categoryCards.forEach((card) => {
-      const catMatch = q === '' || normalize(card.dataset.catName ?? '').includes(q) || normalize(card.dataset.catMarcas ?? '').includes(q);
+      const catMatch = q === '' || normalize(card.dataset.catName ?? '').includes(q) || normalize(card.dataset.catMarcas ?? '').includes(q) || normalize(card.dataset.catZonas ?? '').includes(q);
       const chips = card.querySelectorAll<HTMLElement>('.product-chip');
       let chipMatchAny = false;
 
