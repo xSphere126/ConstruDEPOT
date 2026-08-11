@@ -14,3 +14,9 @@ RewriteRule ^ https://construdepot.es%{REQUEST_URI} [L,R=301]
   Header set X-Frame-Options "SAMEORIGIN"
   Header set Referrer-Policy "strict-origin-when-cross-origin"
 </IfModule>
+
+# Sin esto, IONOS sirve su propia página de error genérica ("ERROR 404:
+# ARCHIVO NO ENCONTRADO") en vez de la 404 propia del sitio (dist/404.html) —
+# nunca ha habido esta directiva, así que la página 404 diseñada nunca ha
+# llegado a mostrarse en producción hasta ahora.
+ErrorDocument 404 /404.html
