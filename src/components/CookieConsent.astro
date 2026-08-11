@@ -28,22 +28,50 @@ import { withBase } from '../lib/url';
   interface Consent {
     necessary: true;
     thirdParty: boolean;
+    // Overrides por categoría (p. ej. { maps: true }) — permiten aceptar UN
+    // elemento concreto (ver .gated-embed-accept más abajo) sin que eso
+    // desbloquee el resto de contenido de terceros del sitio, tal como
+    // promete la política de cookies ("sin afectar al resto").
+    categories: Record<string, boolean>;
     ts: number;
   }
 
   function getConsent(): Consent | null {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
-      return raw ? (JSON.parse(raw) as Consent) : null;
+      if (!raw) return null;
+      const parsed = JSON.parse(raw) as Partial<Consent>;
+      return { necessary: true, thirdParty: parsed.thirdParty ?? false, categories: parsed.categories ?? {}, ts: parsed.ts ?? Date.now() };
     } catch {
       return null;
     }
   }
 
+  // Usado por "Aceptar todas" / "Rechazar": es una decisión general, así que
+  // sustituye cualquier override de categoría anterior en vez de sumarse a él.
   function setConsent(thirdParty: boolean): Consent {
-    const value: Consent = { necessary: true, thirdParty, ts: Date.now() };
+    const value: Consent = { necessary: true, thirdParty, categories: {}, ts: Date.now() };
     localStorage.setItem(STORAGE_KEY, JSON.stringify(value));
     return value;
+  }
+
+  // Usado por el botón "Aceptar y mostrar" de un elemento concreto: solo
+  // añade un override para ESA categoría, conservando el resto tal cual
+  // estaba (incluida la preferencia general del banner principal).
+  function setCategoryConsent(category: string): Consent {
+    const existing = getConsent();
+    const value: Consent = {
+      necessary: true,
+      thirdParty: existing?.thirdParty ?? false,
+      categories: { ...(existing?.categories ?? {}), [category]: true },
+      ts: Date.now(),
+    };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(value));
+    return value;
+  }
+
+  function categoryAllowed(consent: Consent, category: string): boolean {
+    return category in consent.categories ? consent.categories[category] : consent.thirdParty;
   }
 
   function loadEmbed(el: Element) {
@@ -86,8 +114,11 @@ import { withBase } from '../lib/url';
 
   function activateGatedEmbeds() {
     const consent = getConsent();
-    if (!consent?.thirdParty) return;
-    document.querySelectorAll('[data-gated-embed]').forEach(loadEmbed);
+    if (!consent) return;
+    document.querySelectorAll<HTMLElement>('[data-gated-embed]').forEach((el) => {
+      const category = el.getAttribute('data-category') ?? '';
+      if (categoryAllowed(consent, category)) loadEmbed(el);
+    });
   }
 
   // El banner es position:fixed anclado abajo, así que cuando el visitante llega
@@ -117,8 +148,9 @@ import { withBase } from '../lib/url';
 
   document.querySelectorAll('.gated-embed-accept').forEach((btn) => {
     btn.addEventListener('click', () => {
-      setConsent(true);
       const el = btn.closest('[data-gated-embed]');
+      const category = el?.getAttribute('data-category') ?? '';
+      setCategoryConsent(category);
       if (el) loadEmbed(el);
       hideBanner();
     });
