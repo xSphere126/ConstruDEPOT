@@ -115,24 +115,25 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
           <form id="empleoForm" data-action={withBase('/enviar-empleo.php')} style="display:flex; flex-direction:column; gap:16px;" enctype="multipart/form-data">
             <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute; left:-9999px;" />
             <input type="hidden" id="f-puesto" name="puesto" value="" />
+            <p style="font-size:12px; color:#6b6c64; margin:0;"><span class="required-mark">*</span> campo obligatorio</p>
             <div>
-              <label class="field-label" for="f-nombre">Nombre</label>
+              <label class="field-label" for="f-nombre">Nombre <span class="required-mark">*</span></label>
               <input id="f-nombre" name="nombre" type="text" required placeholder="Tu nombre" style="width:100%; margin-top:6px; padding:14px 16px; border-radius:10px; border:1px solid var(--line); font-family:inherit; font-size:14.5px;">
             </div>
             <div>
-              <label class="field-label" for="f-telefono">Teléfono</label>
+              <label class="field-label" for="f-telefono">Teléfono <span class="required-mark">*</span></label>
               <input id="f-telefono" name="telefono" type="tel" required placeholder="Tu teléfono" style="width:100%; margin-top:6px; padding:14px 16px; border-radius:10px; border:1px solid var(--line); font-family:inherit; font-size:14.5px;">
             </div>
             <div>
-              <label class="field-label" for="f-email">Email</label>
+              <label class="field-label" for="f-email">Email <span class="required-mark">*</span></label>
               <input id="f-email" name="email" type="email" required placeholder="Tu email" style="width:100%; margin-top:6px; padding:14px 16px; border-radius:10px; border:1px solid var(--line); font-family:inherit; font-size:14.5px;">
             </div>
             <div>
-              <label class="field-label" for="f-mensaje">Tu experiencia o qué buscas</label>
+              <label class="field-label" for="f-mensaje">Tu experiencia o qué buscas <span class="required-mark">*</span></label>
               <textarea id="f-mensaje" name="mensaje" required placeholder="Cuéntanos tu experiencia o qué tipo de puesto buscas" rows="4" style="width:100%; margin-top:6px; padding:14px 16px; border-radius:10px; border:1px solid var(--line); font-family:inherit; font-size:14.5px; resize:vertical;"></textarea>
             </div>
             <div>
-              <label class="field-label" for="f-cv">CV (PDF, opcional)</label>
+              <label class="field-label" for="f-cv">CV (PDF)</label>
               <input id="f-cv" name="cv" type="file" accept=".pdf,application/pdf" style="width:100%; margin-top:6px; padding:12px 14px; border-radius:10px; border:1px solid var(--line); font-family:inherit; font-size:13.5px; background:#fff;">
               <span style="display:block; font-size:12px; color:#6b6c64; margin-top:6px;">Máximo 2&nbsp;MB. Si no lo tienes, el mensaje de arriba ya nos vale.</span>
             </div>
