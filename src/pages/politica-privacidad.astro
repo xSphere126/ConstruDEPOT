@@ -18,7 +18,7 @@ import { withBase } from '../lib/url';
 
   <section>
     <div class="wrap legal-content">
-      <p class="updated">Última actualización: julio de 2026</p>
+      <p class="updated">Última actualización: agosto de 2026</p>
 
       <h2>1. Responsable del tratamiento</h2>
       <ul>
@@ -30,20 +30,23 @@ import { withBase } from '../lib/url';
 
       <h2>2. Qué datos tratamos y con qué finalidad</h2>
       <h3>Formulario de contacto</h3>
-      <p>Cuando rellenas el formulario de la página de Contacto tratamos los datos que nos facilitas voluntariamente: nombre, teléfono, email (opcional) y el mensaje o categoría de producto que nos indicas. Los usamos exclusivamente para responder a tu consulta y, si procede, gestionar la relación comercial que se derive de ella.</p>
-      <p>El formulario se procesa con un script propio alojado en nuestro hosting, que envía tu consulta directamente a nuestro correo. No usamos ningún servicio externo de terceros para gestionar el formulario, por lo que estos datos no salen de nuestra propia infraestructura.</p>
+      <p>Cuando rellenas el formulario de la página de Contacto tratamos los datos que nos facilitas voluntariamente: nombre, teléfono, email (opcional), el mensaje o categoría de producto que nos indicas y, si la adjuntas, una foto de la obra o del material que quieres igualar. Los usamos exclusivamente para responder a tu consulta y, si procede, gestionar la relación comercial que se derive de ella.</p>
+      <p>El formulario se procesa con un script propio alojado en nuestro hosting, que envía tu consulta por correo a través de Microsoft 365 (API de Microsoft Graph) y verifica que no eres un robot mediante Cloudflare Turnstile antes de que el mensaje llegue a nuestro buzón.</p>
+
+      <h3>Formulario de empleo / candidaturas</h3>
+      <p>Si envías una candidatura desde la página de Empleo, tratamos los datos que nos facilitas voluntariamente: nombre, teléfono, email, tu experiencia o el mensaje que nos escribas y, si lo adjuntas, tu currículum en PDF. Estos datos se usan exclusivamente para valorar tu candidatura dentro de nuestro proceso de selección, y se envían por el mismo circuito técnico que el formulario de contacto (Microsoft 365 vía API de Microsoft Graph, con la misma verificación anti-bot de Cloudflare Turnstile).</p>
 
       <h3>Navegación y contenido de terceros</h3>
       <p>Si aceptas las cookies de terceros (ver <a href={withBase('/politica-cookies/')}>Política de cookies</a>), esta web carga contenido embebido de Google Maps y de Instagram (vía SnapWidget), que pueden tratar datos de tu navegación conforme a sus propias políticas de privacidad.</p>
 
       <h2>3. Legitimación</h2>
-      <p>La base legal para tratar tus datos del formulario de contacto es tu propio consentimiento, otorgado al rellenar y enviar el formulario de forma voluntaria (art. 6.1.a RGPD).</p>
+      <p>La base legal para tratar tus datos, tanto del formulario de contacto como del de empleo, es tu propio consentimiento, otorgado al rellenar y enviar el formulario de forma voluntaria (art. 6.1.a RGPD); en el caso del formulario de empleo, además, marcando expresamente la casilla de consentimiento para el proceso de selección.</p>
 
       <h2>4. Conservación de los datos</h2>
-      <p>Conservamos los datos del formulario de contacto mientras sea necesario para atender tu consulta y, en su caso, mientras dure la relación comercial que pueda derivarse, salvo que solicites su supresión antes.</p>
+      <p>Conservamos los datos del formulario de contacto mientras sea necesario para atender tu consulta y, en su caso, mientras dure la relación comercial que pueda derivarse, salvo que solicites su supresión antes. Los datos de candidaturas de empleo se conservan mientras dure el proceso de selección correspondiente y, como máximo, durante el tiempo razonable que podamos necesitarlos para valorarte de cara a futuras vacantes que encajen con tu perfil, salvo que solicites su supresión antes.</p>
 
       <h2>5. Destinatarios</h2>
-      <p>No cedemos tus datos a terceros salvo obligación legal. El formulario de contacto se procesa íntegramente en nuestra propia infraestructura, sin encargados de tratamiento externos. Si aceptas contenido embebido de terceros (ver siguiente sección), esos proveedores pueden tratar datos de tu navegación conforme a sus propias políticas:</p>
+      <p>No cedemos tus datos a terceros salvo obligación legal. Los formularios de contacto y de empleo se envían por correo a través de Microsoft 365 (Microsoft Corporation) y se protegen frente a envíos automatizados con Cloudflare Turnstile (Cloudflare, Inc.) — ambos actúan como encargados del tratamiento en la parte estrictamente técnica del envío, no como terceros con acceso independiente a tus datos. Si aceptas contenido embebido de terceros (ver siguiente sección), esos proveedores pueden tratar datos de tu navegación conforme a sus propias políticas:</p>
       <ul>
         <li><strong>Google</strong> (mapa embebido): Estados Unidos / UE, según el servicio</li>
         <li><strong>Meta / SnapWidget</strong> (feed de Instagram embebido): Estados Unidos</li>

@@ -1,7 +1,15 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import SignatureMark from '../components/SignatureMark.astro';
 import { withBase } from '../lib/url';
+
+const destinos = [
+  { href: '/', titulo: 'Inicio', desc: 'Vuelve a la página principal.' },
+  { href: '/sobre-nosotros/', titulo: 'Sobre nosotros', desc: 'Conoce al equipo y nuestro almacén.' },
+  { href: '/productos/', titulo: 'Productos', desc: 'Consulta el catálogo por categorías.' },
+  { href: '/proveedores/', titulo: 'Proveedores', desc: 'Las marcas con las que trabajamos.' },
+  { href: '/empleo/', titulo: 'Empleo', desc: 'Vacantes abiertas y candidatura espontánea.' },
+  { href: '/contacto/', titulo: 'Contacto', desc: 'Escríbenos o llámanos directamente.' },
+];
 ---
 
 <BaseLayout
@@ -9,8 +17,7 @@ import { withBase } from '../lib/url';
   description="La página que buscas no existe o se ha movido."
   headerVariant="solid"
 >
-  <section class="page-banner">
-    <SignatureMark class="icon-wm" />
+  <section class="page-banner page-banner--photo" style={`--banner-photo:url(${withBase('/images/matexterior2.jpg')})`}>
     <div class="wrap">
       <div class="breadcrumb"><a href={withBase('/')}>Inicio</a> · Error 404</div>
       <h1>Esta página no existe</h1>
@@ -21,18 +28,21 @@ import { withBase } from '../lib/url';
   <section>
     <div class="wrap">
       <div class="grid grid-3">
-        <a href={withBase('/')} class="card" style="text-decoration:none;">
-          <h3>Inicio</h3>
-          <p>Vuelve a la página principal.</p>
-        </a>
-        <a href={withBase('/productos/')} class="card" style="text-decoration:none;">
-          <h3>Productos</h3>
-          <p>Consulta el catálogo por categorías.</p>
-        </a>
-        <a href={withBase('/contacto/')} class="card" style="text-decoration:none;">
-          <h3>Contacto</h3>
-          <p>Escríbenos o llámanos directamente.</p>
-        </a>
+        {destinos.map((d) => (
+          <a href={withBase(d.href)} class="card" style="text-decoration:none;">
+            <h3>{d.titulo}</h3>
+            <p>{d.desc}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section style="background:var(--sand);">
+    <div class="wrap">
+      <div class="cta-band" style="background:var(--ink);">
+        <h3>¿Tampoco has encontrado lo que buscabas ahí? Pregúntanos directamente.</h3>
+        <a href="https://wa.me/34607224454" class="btn-primary">Escribir por WhatsApp →</a>
       </div>
     </div>
   </section>
