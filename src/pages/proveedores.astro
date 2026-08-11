@@ -2,7 +2,10 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PerondaLogo from '../components/PerondaLogo.astro';
 import { grupos } from '../data/marcas';
+import { categoriasProductos } from '../data/categorias';
 import { withBase } from '../lib/url';
+
+const nombreCategoria = new Map(categoriasProductos.map((c) => [c.id, c.nombre]));
 ---
 
 <BaseLayout
@@ -25,15 +28,20 @@ import { withBase } from '../lib/url';
           <h2 class="eyebrow-sm">{grupo.nombre}</h2>
           <div class="brand-grid">
             {grupo.marcas.map((marca) => (
-              <a href={marca.url} target={marca.url !== '#' ? '_blank' : undefined} rel={marca.url !== '#' ? 'noopener' : undefined} class="brand-chip brand-tile" aria-label={marca.nombre}>
-                {marca.logo ? (
-                  <img src={withBase(marca.logo)} alt={marca.nombre} class={`brand-logo${marca.white ? ' brand-logo--white' : ''}`} />
-                ) : marca.svg ? (
-                  <PerondaLogo class="brand-logo brand-logo-svg" />
-                ) : (
-                  <span class="brand-chip-text">{marca.nombre}</span>
-                )}
-              </a>
+              <div class="brand-tile">
+                <a href={marca.url} target={marca.url !== '#' ? '_blank' : undefined} rel={marca.url !== '#' ? 'noopener' : undefined} class="brand-chip" aria-label={marca.nombre}>
+                  {marca.logo ? (
+                    <img src={withBase(marca.logo)} alt={marca.nombre} class={`brand-logo${marca.white ? ' brand-logo--white' : ''}`} />
+                  ) : marca.svg ? (
+                    <PerondaLogo class="brand-logo brand-logo-svg" />
+                  ) : (
+                    <span class="brand-chip-text">{marca.nombre}</span>
+                  )}
+                </a>
+                {marca.categorias?.map((catId) => (
+                  <a href={withBase(`/productos/#${catId}`)} class="brand-category-link">Ver en {nombreCategoria.get(catId)} →</a>
+                ))}
+              </div>
             ))}
           </div>
         </div>

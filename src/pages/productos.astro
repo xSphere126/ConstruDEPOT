@@ -1,8 +1,9 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { withBase } from '../lib/url';
+import { todasLasMarcas } from '../data/marcas';
 
-const categorias = [
+const categoriasBase = [
   {
     id: 'estructura-y-obra',
     nombre: 'Estructura y Obra',
@@ -13,7 +14,6 @@ const categorias = [
       'Aditivos para hormigón', 'Bovedillas', 'Placas de Pladur', 'Perfilería de Pladur y escayola',
       'Yesos y escayola', 'Prefabricados de hormigón', 'Tejas cerámicas y de hormigón', 'Lana de roca y de vidrio',
     ],
-    marcas: ['Escayescos', 'Levantia', 'Holcim', 'Hormigones Cava', 'La Escandella', 'Ladrillera Murciana'],
   },
   {
     id: 'acabados-y-revestimientos',
@@ -24,7 +24,6 @@ const categorias = [
       'Suelo vinílico (SPC/LVT)', 'Rodapiés y perfilería', 'Piedra natural', 'Adhesivos y juntas de alicatado',
       'Terrazos y baldosas', 'Material cerámico refractario',
     ],
-    marcas: ['Keraben', 'Peronda', 'Massima Surfaces', 'KTL Cerámica', 'Villaceramica', 'Cerámica Mediterráneo', 'Porcelastone', 'Realonda', 'Alma Cerámicas', 'Benesol', 'Magnifica', 'Chemical Building Project'],
   },
   {
     id: 'decoracion-y-pintura',
@@ -44,7 +43,6 @@ const categorias = [
       'Bombas de agua', 'Radiadores', 'Aire acondicionado', 'Termos eléctricos', 'Válvulas y racores',
       'Bañeras e hidromasaje', 'Fregaderos de cocina', 'Muebles y espejos de baño',
     ],
-    marcas: ['Roca', 'Bathco', 'Imex', 'Ledimex', 'Mediterránea del Baño', 'Profiltek', 'Visobath', 'Coycama'],
   },
   {
     id: 'jardin-y-exterior',
@@ -54,9 +52,16 @@ const categorias = [
       'Hormigón impreso', 'Césped artificial', 'Adoquín y baldosa de exterior', 'Piedra decorativa',
       'Vallas y cerramientos', 'Iluminación exterior', 'Riego y goteo', 'Macetas y jardineras',
     ],
-    marcas: ['Hormigones Cava', 'SAS Prefabricados de Hormigón', 'Verniprens'],
   },
 ];
+
+// Las marcas de cada categoría se derivan de marcas.ts (única fuente de verdad,
+// compartida con /proveedores/) en vez de mantener una segunda lista a mano que
+// podría desincronizarse.
+const categorias = categoriasBase.map((cat) => ({
+  ...cat,
+  marcas: todasLasMarcas.filter((m) => m.categorias?.includes(cat.id)).map((m) => m.nombre),
+}));
 ---
 
 <BaseLayout
@@ -83,7 +88,7 @@ const categorias = [
         <input id="product-search" type="search" placeholder="Busca un producto, marca o tipo de trabajo…" aria-label="Buscar producto, marca o tipo de trabajo">
       </div>
       <div class="product-search-examples">
-        {['azulejo', 'cemento', 'pintura', 'Pladur', 'grifería'].map((ej) => (
+        {['azulejo', 'cemento', 'pintura', 'pladur', 'grifería'].map((ej) => (
           <button type="button" class="product-chip" data-example={ej}>{ej}</button>
         ))}
       </div>
@@ -97,7 +102,7 @@ const categorias = [
                 <span class="tag">Categoría</span>
                 <h3>{cat.nombre}</h3>
                 <p>{cat.desc}</p>
-                {cat.marcas && (
+                {cat.marcas.length > 0 && (
                   <p class="category-brands"><strong>Marcas:</strong> {cat.marcas.join(' · ')}</p>
                 )}
                 <div style="margin-top:20px;">
