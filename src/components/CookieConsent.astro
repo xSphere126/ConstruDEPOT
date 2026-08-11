@@ -74,7 +74,7 @@ import { withBase } from '../lib/url';
     return category in consent.categories ? consent.categories[category] : consent.thirdParty;
   }
 
-  function loadEmbed(el: Element) {
+  function loadEmbed(el: HTMLElement) {
     const src = el.getAttribute('data-src');
     const title = el.getAttribute('data-title');
     if (!src || el.querySelector('iframe')) return;
@@ -93,7 +93,13 @@ import { withBase } from '../lib/url';
       iframe.className = 'snapwidget-widget';
       iframe.scrolling = 'no';
     }
-    el.innerHTML = '';
+    // El placeholder se OCULTA, no se destruye (a diferencia de antes, que
+    // vaciaba el contenedor con innerHTML=''): así unloadEmbed() más abajo
+    // puede devolver el aviso original con su botón intacto si el visitante
+    // retira el consentimiento después, sin tener que reconstruirlo a mano
+    // ni volver a engancharle el listener de clic.
+    const placeholder = el.querySelector<HTMLElement>('.gated-embed-placeholder');
+    if (placeholder) placeholder.hidden = true;
     el.appendChild(iframe);
 
     // El script de SnapWidget solo busca iframes ".snapwidget-widget" que
@@ -112,6 +118,18 @@ import { withBase } from '../lib/url';
     }
   }
 
+  // Contrario de loadEmbed(): quita el iframe activo y devuelve el aviso
+  // original. Necesario para cuando alguien retira el consentimiento DESPUÉS
+  // de haberlo dado (reabriendo "Configurar cookies" y pulsando "Rechazar")
+  // en la misma visita — sin esto, el mapa o el feed de Instagram se quedaban
+  // funcionando con normalidad pese al rechazo, hasta la siguiente carga de
+  // página.
+  function unloadEmbed(el: HTMLElement) {
+    el.querySelector('iframe')?.remove();
+    const placeholder = el.querySelector<HTMLElement>('.gated-embed-placeholder');
+    if (placeholder) placeholder.hidden = false;
+  }
+
   function activateGatedEmbeds() {
     const consent = getConsent();
     if (!consent) return;
@@ -119,6 +137,10 @@ import { withBase } from '../lib/url';
       const category = el.getAttribute('data-category') ?? '';
       if (categoryAllowed(consent, category)) loadEmbed(el);
     });
+  }
+
+  function deactivateGatedEmbeds() {
+    document.querySelectorAll<HTMLElement>('[data-gated-embed]').forEach(unloadEmbed);
   }
 
   // El banner es position:fixed anclado abajo, así que cuando el visitante llega
@@ -148,7 +170,7 @@ import { withBase } from '../lib/url';
 
   document.querySelectorAll('.gated-embed-accept').forEach((btn) => {
     btn.addEventListener('click', () => {
-      const el = btn.closest('[data-gated-embed]');
+      const el = btn.closest<HTMLElement>('[data-gated-embed]');
       const category = el?.getAttribute('data-category') ?? '';
       setCategoryConsent(category);
       if (el) loadEmbed(el);
@@ -164,6 +186,7 @@ import { withBase } from '../lib/url';
 
   document.getElementById('cookieRejectAll')?.addEventListener('click', () => {
     setConsent(false);
+    deactivateGatedEmbeds();
     hideBanner();
   });
 
