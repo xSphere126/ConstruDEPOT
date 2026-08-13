@@ -2,6 +2,9 @@
 
 Web de Construdepot by Quiles, almacén de materiales de construcción, reforma
 y decoración en Elche, Alicante. Construida con [Astro](https://astro.build).
+Publicada en producción en [construdepot.es](https://construdepot.es) (IONOS,
+subida manual por FTP) y con una copia de previsualización automática en
+GitHub Pages en cada push a `main`.
 
 ## Desarrollo
 
@@ -18,62 +21,71 @@ lanzar en segundo plano con `npx astro dev --background` (gestionar con
 
 ```text
 src/
-├── components/    Header, Footer, Logo, SignatureMark (isotipo de marca)
+├── components/    Header, Footer, Logo, CookieConsent, GatedEmbed (mapa/
+│                   Instagram con aviso de cookies), IconInstagram, PerondaLogo
+├── data/          marcas.ts, categorias.ts, vacantes.ts — fuentes únicas de
+│                   verdad para Proveedores/Productos y las vacantes de Empleo
 ├── layouts/       BaseLayout.astro — <head>, Header y Footer comunes
-├── pages/         una ruta por archivo (inicio, sobre-nosotros, productos, contacto, profesionales)
+├── lib/           url.ts (withBase, para que los enlaces funcionen igual en
+│                   producción y en la subruta de GitHub Pages)
+├── pages/         una ruta por archivo (inicio, sobre-nosotros, productos,
+│                   proveedores, empleo, contacto, legales, 404)
 └── styles/        global.css — tokens de marca, tipografía y todos los estilos
+
+public/
+├── lib/           graph-mail.php, turnstile.php — helpers PHP compartidos
+├── brands/        logos reales de proveedores (ver src/data/marcas.ts)
+├── images/        fotos reales de tienda/almacén/exposición
+├── enviar-contacto.php, enviar-empleo.php — reciben los formularios y
+│                   envían el correo vía Microsoft Graph
+└── config-local.php   credenciales reales (Microsoft Graph, Turnstile) —
+                    nunca en git, solo en local y en el servidor
 ```
 
 Cada página usa `BaseLayout` pasando `headerVariant` (`transparent` en Inicio,
 `solid` en el resto) y `active` para resaltar el ítem de navegación actual.
 
-`profesionales.astro` es una redirección estática a `/contacto/#profesionales`
-— ese contenido se fusionó dentro de la página de Contacto.
+## Formularios (Contacto y Empleo)
+
+Ambos formularios envían por correo a través de Microsoft 365 (API de
+Microsoft Graph) usando el helper compartido `public/lib/graph-mail.php`, y
+están protegidos por un honeypot más verificación anti-bot de Cloudflare
+Turnstile (`public/lib/turnstile.php`). El de Empleo admite además adjuntar
+un CV en PDF; el de Contacto, una foto (comprimida en el propio navegador
+antes de enviarla).
+
+Las credenciales reales viven en `public/config-local.php`, que **nunca se
+sube a git** (ver `.gitignore`) — solo existe en local y, subido a mano, en el
+servidor de IONOS. La plantilla documentada está en
+`public/config-local.example.php`.
 
 ## Variables de entorno
 
-Copiar `.env.example` a `.env` y rellenar cuando estén disponibles:
+Copiar `.env.example` a `.env` (si no existe, ver la plantilla documentada
+más abajo) y rellenar cuando estén disponibles:
 
 | Variable | Para qué | Cómo se obtiene |
 |---|---|---|
-| `PUBLIC_FORMSPREE_ID` | Envío real del formulario de Contacto | Crear formulario gratuito en [formspree.io](https://formspree.io) |
 | `PUBLIC_SNAPWIDGET_ID` | Feed de Instagram en Inicio | Crear widget gratuito en [snapwidget.com](https://snapwidget.com), conectar `@construdepot_by_quiles` |
+| `PUBLIC_TURNSTILE_SITE_KEY` | Verificación anti-bot en los formularios de Contacto y Empleo | Clave pública del sitio en el panel de [Cloudflare Turnstile](https://dash.cloudflare.com/?to=/:account/turnstile) |
 
-Sin estas variables, el sitio sigue funcionando: el formulario muestra un
-aviso en vez de enviar, y el feed de Instagram muestra un mosaico de
-marcador de posición.
-
-## Contenido pendiente
-
-Los bloques marcados con la clase `.pending` (⚑ en pantalla) necesitan un
-dato real del cliente antes de publicar — historia de la empresa, equipo,
-dirección exacta, condiciones de suministro a profesionales, etc. No rellenar
-con datos inventados: son placeholders intencionados.
-
-## Antes de publicar: dominio, canonical y sitemap
-
-`BaseLayout.astro` solo emite `<link rel="canonical">` y las URLs absolutas de
-Open Graph cuando `site` está configurado en `astro.config.mjs` — así se evita
-publicar una URL inventada mientras no haya dominio elegido. Cuando lo haya:
-
-1. Descomentar y rellenar `site: 'https://tu-dominio.es'` en `astro.config.mjs`.
-2. `npx astro add sitemap` para generar `sitemap-index.xml` automáticamente.
-3. Descomentar la línea `Sitemap:` en `public/robots.txt`.
+Sin `PUBLIC_SNAPWIDGET_ID`, el feed de Instagram no se muestra (queda tras el
+aviso de cookies, sin cargar). Sin `PUBLIC_TURNSTILE_SITE_KEY`, el widget de
+verificación simplemente no aparece y los formularios siguen funcionando
+igual, sin esa capa de protección anti-bot.
 
 ## SEO técnico ya incluido
 
-- Meta tags Open Graph y Twitter Card (título/descripción se completan solos
-  por página; la imagen y la URL canónica se activan al fijar `site`, ver
-  arriba).
+- Meta tags Open Graph y Twitter Card, canonical y sitemap (`sitemap-index.xml`,
+  generado por `@astrojs/sitemap`) apuntando al dominio real.
 - Datos estructurados JSON-LD (`schema.org/HardwareStore`) con nombre,
-  teléfono, horario y redes sociales. **No incluye valoración/reseñas**: la
-  valoración de 4,8/5 que se ve en Inicio está marcada en el propio texto
-  como dato de directorio externo sin confirmar, y publicarla en datos
-  estructurados no verificados incumple las políticas de rich results de
-  Google — añadirla en cuanto se confirme la ficha real de Google Business.
-- `robots.txt`, favicon con el isotipo real de marca (antes era el de Astro
-  por defecto), página 404 personalizada, enlace "saltar al contenido" para
-  navegación por teclado.
+  teléfono, horario, redes sociales y valoración media — la de 4,5/5 con 247
+  reseñas, verificada en vivo contra la ficha real de Google Maps antes de
+  publicarla (no es una cifra de directorio de terceros sin confirmar).
+- `robots.txt` con enlace al sitemap, favicon con el isotipo real de marca,
+  página 404 personalizada (con `ErrorDocument 404` en `.htaccess` para que
+  IONOS la sirva de verdad), enlace "saltar al contenido" para navegación
+  por teclado.
 
 ## Comandos
 
@@ -83,3 +95,13 @@ publicar una URL inventada mientras no haya dominio elegido. Cuando lo haya:
 | `npm run build` | Build de producción en `./dist/` |
 | `npm run preview` | Previsualiza el build de producción |
 | `npx astro check` | Comprueba tipos en los archivos `.astro` |
+
+## Desplegar a IONOS
+
+`npm run build` y subir por FTP el contenido de `dist/` — lo más seguro es
+subirlo completo, **excepto `config-local.php`** (el del servidor tiene las
+credenciales reales; el de `dist/` es una copia del `.php` local, que no las
+tiene). Astro agrupa todo el CSS/JS en un único archivo con hash dentro de
+`_astro/`, y ese hash cambia en casi cada cambio de estilos — subir solo el
+HTML sin el `_astro/` correspondiente (o al revés) deja páginas rotas o sin
+estilos.
