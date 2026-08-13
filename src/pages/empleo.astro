@@ -236,16 +236,31 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
       turnstile?: {
         render: (container: string | HTMLElement, options: { sitekey: string }) => string;
         reset: (widgetId?: string | HTMLElement) => void;
+        remove: (widgetId: string) => void;
       };
     }
   }
   let turnstileWidgetId: string | null = null;
   function ensureTurnstileRendered(retries = 20) {
     const container = document.getElementById('turnstileWidget');
-    if (!container || turnstileWidgetId !== null) return;
+    if (!container) return;
     if (!window.turnstile) {
       if (retries > 0) setTimeout(() => ensureTurnstileRendered(retries - 1), 150);
       return;
+    }
+    // Cambiar de vacante mueve #turnstileWidget (con el widget ya
+    // renderizado dentro) a otro contenedor vía appendChild — los
+    // navegadores descartan el contenido de cualquier <iframe> al
+    // reubicarlo en el DOM, así que el widget de Cloudflare se queda
+    // invisible y roto aunque el hueco siga ahí. La guarda antigua
+    // (`turnstileWidgetId !== null`) evitaba volver a renderizar creyendo
+    // que ya había uno válido — por eso solo funcionaba en la primera
+    // vacante. Ahora se destruye cualquier widget previo y se renderiza
+    // desde cero cada vez que se llama, tanto la primera vez como al
+    // cambiar de oferta.
+    if (turnstileWidgetId !== null) {
+      window.turnstile.remove(turnstileWidgetId);
+      turnstileWidgetId = null;
     }
     const sitekey = container.dataset.sitekey;
     if (!sitekey) return;

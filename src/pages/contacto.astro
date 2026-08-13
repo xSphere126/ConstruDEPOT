@@ -226,6 +226,7 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
       turnstile?: {
         render: (container: string | HTMLElement, options: { sitekey: string }) => string;
         reset: (widgetId?: string | HTMLElement) => void;
+        remove: (widgetId: string) => void;
       };
     }
   }
