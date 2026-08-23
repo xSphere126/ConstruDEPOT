@@ -2,7 +2,7 @@
 /**
  * Recibe el formulario de contacto y lo envía por email a través del
  * helper compartido de Microsoft Graph (lib/graph-mail.php) — ver
- * config-local.example.php para las credenciales del buzón dedicado.
+ * README.md para las credenciales del buzón dedicado.
  */
 
 require_once __DIR__ . '/lib/graph-mail.php';
@@ -27,7 +27,6 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 // servidor lleva guion, así que el código busca ese, no el del punto.
 $configFile = __DIR__ . '/config-local.php';
 if (!file_exists($configFile)) {
-    // Buzón todavía no creado / configurado — ver config-local.example.php.
     respond(false, 'El formulario todavía no está conectado.');
 }
 require_once $configFile;

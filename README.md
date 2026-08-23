@@ -54,10 +54,10 @@ Turnstile (`public/lib/turnstile.php`). El de Empleo admite además adjuntar
 un CV en PDF; el de Contacto, una foto (comprimida en el propio navegador
 antes de enviarla).
 
-Las credenciales reales viven en `public/config-local.php`, que **nunca se
-sube a git** (ver `.gitignore`) — solo existe en local y, subido a mano, en el
-servidor de IONOS. La plantilla documentada está en
-`public/config-local.example.php`.
+Las credenciales reales viven en `public/config-local.php` (con guion, no
+punto: IONOS renombra `config.local.php` a `config-local.php` al subirlo),
+que **nunca se sube a git** — solo existe, ya configurado, en el servidor de
+IONOS.
 
 ## Variables de entorno
 

@@ -253,8 +253,7 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
     return new File([blob], 'foto.jpg', { type: 'image/jpeg' });
   }
 
-  // Envío del formulario a enviar-contacto.php (script propio, ver
-  // public/config-local.example.php para las credenciales SMTP del buzón dedicado).
+  // Envío del formulario a enviar-contacto.php.
   const form = document.getElementById('contactForm') as HTMLFormElement | null;
   const statusEl = document.getElementById('form-status');
   const againBtn = document.getElementById('form-again') as HTMLButtonElement | null;

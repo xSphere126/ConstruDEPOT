@@ -17,10 +17,9 @@ pnpm-debug.log*
 .env
 .env.production
 
-# credenciales SMTP del formulario de contacto — se sube a mano por FTP al
-# servidor, nunca al repositorio (es público). Ver public/config-local.example.php.
-# Nombre con guion, no punto: IONOS renombra "config.local.php" a
-# "config-local.php" al subirlo.
+# credenciales del formulario — se sube a mano por FTP al servidor, nunca al
+# repositorio (es público). Nombre con guion, no punto: IONOS renombra
+# "config.local.php" a "config-local.php" al subirlo.
 public/config-local.php
 
 # macOS-specific files

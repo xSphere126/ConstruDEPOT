@@ -2,8 +2,8 @@
 /**
  * Envío de correo compartido vía Microsoft Graph API (OAuth2, client
  * credentials), usado por todos los formularios del sitio (contacto,
- * empleo...) contra el mismo buzón dedicado — ver config-local.example.php
- * en la raíz de /public/. No usa SMTP con usuario y contraseña: el tenant
+ * empleo...) contra el mismo buzón dedicado — ver README.md para las
+ * credenciales. No usa SMTP con usuario y contraseña: el tenant
  * de Microsoft 365 tiene activados los "Security Defaults", que bloquean
  * la autenticación básica de SMTP aunque el interruptor de "SMTP AUTH" del
  * buzón individual esté activado. OAuth2 vía Graph funciona igual con

@@ -2,8 +2,8 @@
 /**
  * Recibe el formulario de candidatura de /empleo/ y lo envía por email (con
  * el CV adjunto, si lo hay) a través del helper compartido de Microsoft
- * Graph (lib/graph-mail.php) — ver config-local.example.php para las
- * credenciales del buzón dedicado. Mismo patrón que enviar-contacto.php.
+ * Graph (lib/graph-mail.php) — ver README.md para las credenciales del
+ * buzón dedicado. Mismo patrón que enviar-contacto.php.
  */
 
 require_once __DIR__ . '/lib/graph-mail.php';
