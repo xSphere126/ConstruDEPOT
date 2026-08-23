@@ -2,25 +2,14 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { withBase } from '../lib/url';
 
-// Sección "Quién te atiende": empieza a rellenarse con gente real (Carlos,
-// transportista) en vez de los ejemplos anteriores (Ana/Javier/Marta). Se
-// reactiva ya con esta primera entrada real; se irá ampliando según lleguen
-// más fotos del resto del equipo.
 const showTeamSection = true;
 
-// Sección "Nuestra historia": todavía es texto de ejemplo (ver
-// placeholder-text más abajo), pendiente de la historia real del cliente.
-// Oculta de cara al despliegue para no publicar contenido de relleno;
-// basta con volver a poner esto en `true` en cuanto llegue el texto real.
+// showHistoriaSection: dejar en false hasta tener la historia real del
+// cliente (placeholder-text de abajo es contenido de relleno, no publicar).
 const showHistoriaSection = false;
 
-// Equipo real (nombres, puestos y descripciones ya confirmados). Cada uno
-// lleva un enlace de WhatsApp con el mensaje precargado mencionando su
-// nombre — sigue siendo el mismo número compartido de la tienda (no una
-// línea directa por persona), solo personaliza el primer mensaje. El campo
-// `puesto` es un resumen corto para ese mensaje (dos personas se llaman
-// Pepe, así que el puesto evita la ambigüedad de a cuál de los dos se
-// refiere quien escribe).
+// `puesto` desambigua el mensaje de WhatsApp: dos personas del equipo se
+// llaman Pepe.
 const equipo = [
   { avatar: 'paco', variante: 1, nombre: 'Paco', puesto: 'Gerente', descripcion: 'Gerente. El jefe jefazo, la última palabra siempre es suya.' },
   { avatar: 'pepe2', variante: 2, nombre: 'Pepe', puesto: 'Agente comercial', descripcion: 'Agente comercial. Coordina cada pedido para que salga a tiempo.' },

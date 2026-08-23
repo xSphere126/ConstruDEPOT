@@ -3,15 +3,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import GatedEmbed from '../components/GatedEmbed.astro';
 import { withBase } from '../lib/url';
 
-// Sección "Para profesionales" oculta a petición del cliente: la tabla de
-// condiciones (plazos, facturación, zona de reparto, contacto directo) sigue
-// sin datos reales y las 4 filas en "A concretar con el equipo" transmitían
-// poco terminado. Se guarda el bloque completo, solo oculto, para
-// reactivarlo en cuanto haya condiciones reales que mostrar — igual que se
-// hizo con la sección de Instagram en index.astro. Si se reactiva, revertir
-// también el enlace de "Ver condiciones de suministro" en index.astro y
-// apuntar esta sección con su propia URL (/profesionales/ ya no existe:
-// se eliminó por completo, ver /empleo/ para la página de empleo actual).
+// showProfesionalesSection: false hasta tener condiciones reales de
+// suministro (plazos, facturación, zona de reparto) — la tabla de abajo es
+// contenido de relleno. Si se reactiva, actualizar también el enlace "Ver
+// condiciones de suministro" en index.astro.
 const showProfesionalesSection = false;
 
 // Cloudflare Turnstile (anti-bot): opcional a propósito, ver .env.example.
