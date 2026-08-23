@@ -13,6 +13,27 @@ RewriteRule ^ https://construdepot.es%{REQUEST_URI} [L,R=301]
   Header set X-Content-Type-Options "nosniff"
   Header set X-Frame-Options "SAMEORIGIN"
   Header set Referrer-Policy "strict-origin-when-cross-origin"
+
+  # El sitio ya fuerza https:// arriba (RewriteRule), pero eso solo actúa
+  # DESPUÉS de que el navegador haga una primera petición — HSTS hace que,
+  # a partir de la primera visita, el navegador ni intente http:// en el
+  # futuro. max-age de 6 meses, sin includeSubDomains/preload todavía por
+  # si en el futuro hiciera falta algún subdominio en http.
+  Header set Strict-Transport-Security "max-age=15552000"
+
+  # Desactiva APIs del navegador que este sitio no usa en absoluto, para
+  # que un futuro XSS (o un tercero embebido comprometido) no pueda
+  # pedir acceso a cámara/micrófono/ubicación desde esta página.
+  Header set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=()"
+
+  # Content-Security-Policy: restringe de qué orígenes puede cargar
+  # scripts/iframes/fuentes esta web, a los que realmente usa (Cloudflare
+  # Turnstile, el widget de Instagram, el mapa de Google, Google Fonts).
+  # 'unsafe-inline' en script-src y style-src es necesario porque el sitio
+  # usa <script> y style="" en línea en muchas páginas (no hay nonces ni
+  # nada parecido) — no es una CSP perfecta, pero igual bloquea que un XSS
+  # cargue un script o se conecte a un dominio fuera de esta lista.
+  Header set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com https://snapwidget.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; frame-src https://www.google.com https://snapwidget.com https://challenges.cloudflare.com; connect-src 'self' https://challenges.cloudflare.com; frame-ancestors 'self'; base-uri 'self'; form-action 'self'; object-src 'none'"
 </IfModule>
 
 # Sin esto, IONOS sirve su propia página de error genérica ("ERROR 404:

@@ -51,6 +51,19 @@ if (turnstileConfigured()) {
     }
 }
 
+// Límite de frecuencia por IP: a diferencia de Empleo, aquí NO se limita por
+// vacante/asunto (tiene sentido mandar una consulta como particular y luego
+// otra como profesional), pero sin ningún límite alguien con forma de
+// conseguir tokens de Turnstile válidos repetidamente podría automatizar
+// envíos sin parar. 30 segundos es corto de sobra para no molestar a quien
+// manda dos consultas distintas seguidas, pero corta el envío en ráfaga.
+$throttleKey = sha1($_SERVER['REMOTE_ADDR'] ?? '');
+$throttleFile = sys_get_temp_dir() . '/construdepot-contacto-' . $throttleKey . '.lock';
+$throttleSeconds = 30;
+if (file_exists($throttleFile) && (time() - filemtime($throttleFile)) < $throttleSeconds) {
+    respond(false, 'Ya hemos recibido un mensaje tuyo hace un momento. Espera unos segundos e inténtalo de nuevo.');
+}
+
 // Saneado: se elimina cualquier salto de línea de los campos de una sola
 // línea para evitar inyección de cabeceras de correo, y se recorta
 // espacios sobrantes.
@@ -143,6 +156,7 @@ if (count($attachments) > 0) {
 }
 
 if (graphSendMail($message, 'Formulario contacto')) {
+    touch($throttleFile);
     respond(true, 'Gracias, hemos recibido tu consulta.');
 }
 
