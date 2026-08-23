@@ -36,12 +36,26 @@ import { withBase } from '../lib/url';
     ts: number;
   }
 
+  // Un valor guardado con una forma inesperada (p. ej. "categories" como
+  // texto o array en vez de objeto — probado a propósito escribiendo
+  // valores manipulados en localStorage) no debe romper el resto del
+  // script: categoryAllowed() usa el operador "in", que lanza una
+  // excepción si se le pasa algo que no sea un objeto de verdad.
+  function isPlainObject(value: unknown): value is Record<string, boolean> {
+    return typeof value === 'object' && value !== null && !Array.isArray(value);
+  }
+
   function getConsent(): Consent | null {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (!raw) return null;
       const parsed = JSON.parse(raw) as Partial<Consent>;
-      return { necessary: true, thirdParty: parsed.thirdParty ?? false, categories: parsed.categories ?? {}, ts: parsed.ts ?? Date.now() };
+      return {
+        necessary: true,
+        thirdParty: parsed.thirdParty === true,
+        categories: isPlainObject(parsed.categories) ? parsed.categories : {},
+        ts: typeof parsed.ts === 'number' ? parsed.ts : Date.now(),
+      };
     } catch {
       return null;
     }
