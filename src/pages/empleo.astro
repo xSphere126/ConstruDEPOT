@@ -148,7 +148,7 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
           <!-- Fuera del <form> a propósito, igual que en contacto.astro: al
                enviar con éxito se oculta todo el formulario y este mensaje
                necesita seguir visible para mostrar la confirmación. -->
-          <p id="form-status" role="status" style="font-size:12.5px; color:var(--graphite); margin-top:16px;">Revisamos las candidaturas y contactamos si encaja con alguna vacante.</p>
+          <p id="form-status" class="form-status" role="status">Revisamos las candidaturas y contactamos si encaja con alguna vacante.</p>
         </div>
       </div>
     </div>
@@ -285,6 +285,7 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
       if (puestoField) puestoField.value = btn.dataset.aplicarVacante ?? '';
       slot.appendChild(applicationBlock);
       form.hidden = false;
+      statusEl.classList.remove('form-success');
       statusEl.textContent = DEFAULT_STATUS;
       ensureTurnstileRendered();
       applicationBlock.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -314,6 +315,7 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
 
     const submitBtn = form.querySelector<HTMLButtonElement>('button[type="submit"]');
     if (submitBtn) submitBtn.disabled = true;
+    statusEl.classList.remove('form-success');
     statusEl.textContent = 'Enviando…';
 
     try {
@@ -327,6 +329,7 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
       if (res.ok && data?.ok) {
         form.reset();
         form.hidden = true;
+        statusEl.classList.add('form-success');
         statusEl.textContent = 'Gracias, hemos recibido tu candidatura. Te contactamos si encaja con alguna vacante.';
       } else {
         const motivo = data?.message || 'No hemos podido enviar tu candidatura.';

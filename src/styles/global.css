@@ -197,6 +197,15 @@ h1 em{ font-style:normal; color:var(--green); }
 .category-brands strong{ color:var(--ink); }
 .card:target{ border-color:var(--green); box-shadow:0 0 0 3px rgba(65,183,24,.18); animation:target-pulse 1.8s ease-out 1; }
 @keyframes target-pulse{ 0%{ box-shadow:0 0 0 0 rgba(65,183,24,.35); } 100%{ box-shadow:0 0 0 3px rgba(65,183,24,.18); } }
+
+.form-status{ font-size:12.5px; color:var(--graphite); margin-top:16px; }
+/* Fondo verde muy suave (no blanco puro) a propósito: el formulario de
+   empleo vive dentro de paneles que ya son blancos (fila de vacante, isla
+   del CTA), así que una caja blanca lisa se fundiría con el fondo — el
+   tinte de color es lo que la separa ahí, además de sobre el fondo arena
+   de contacto. */
+.form-status.form-success{ display:flex; align-items:flex-start; gap:12px; background:rgba(65,183,24,.08); border:1px solid var(--line); border-left:4px solid var(--green-dark); border-radius:12px; padding:16px 18px; box-shadow:0 4px 14px -8px rgba(0,0,0,.18); color:var(--ink); font-size:14px; }
+.form-status.form-success::before{ content:'✓'; flex:0 0 22px; width:22px; height:22px; border-radius:50%; background:var(--green-dark); color:#fff; font-size:12px; font-weight:700; display:flex; align-items:center; justify-content:center; margin-top:1px; }
 @media (prefers-reduced-motion: reduce){ .card:target{ animation:none; } }
 
 .btn-primary{ background:var(--ink); color:#fff; font-weight:600; font-size:15px; padding:15px 26px; border-radius:999px; display:inline-flex; align-items:center; gap:8px; border:none; cursor:pointer; transition:background .15s ease, color .15s ease, transform .15s ease, box-shadow .15s ease; }
