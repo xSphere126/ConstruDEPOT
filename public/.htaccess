@@ -20,3 +20,29 @@ RewriteRule ^ https://construdepot.es%{REQUEST_URI} [L,R=301]
 # nunca ha habido esta directiva, así que la página 404 diseñada nunca ha
 # llegado a mostrarse en producción hasta ahora.
 ErrorDocument 404 /404.html
+
+# Sin esto, Apache "adivina" archivos parecidos al que se pide y los ofrece
+# como alternativa (respuesta 300 Multiple Choices) — comprobado en vivo:
+# pedir /config-local.example.php (que no existe en el servidor) hacía que
+# Apache sugiriera activamente /config-local.php como "documento similar",
+# confirmando esa ruta a quien la sondeara. MultiViews no lo usa nada en
+# este sitio (no hay archivos con el mismo nombre y distinta extensión que
+# dependan de negociación de contenido), así que desactivarlo no rompe nada.
+<IfModule mod_negotiation.c>
+  Options -MultiViews
+</IfModule>
+
+# config-local.php (y su plantilla) nunca deben pedirse por navegador: solo
+# los usa "require" internamente enviar-contacto.php / enviar-empleo.php.
+# Aunque ya no filtran nada al pedirlos directamente (el PHP se ejecuta sin
+# imprimir salida), no hay ninguna razón para que respondan 200 en vez de
+# 403 — es una capa extra de por si acaso.
+<FilesMatch "^config-local(\.example)?\.php$">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+  </IfModule>
+</FilesMatch>

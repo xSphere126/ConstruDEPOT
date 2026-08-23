@@ -1,0 +1,13 @@
+# Nada de esta carpeta debe pedirse nunca directamente por navegador — son
+# helpers PHP (graph-mail.php, turnstile.php) que solo usan "require_once"
+# enviar-contacto.php y enviar-empleo.php, un nivel por encima. Se deniega
+# el acceso a la carpeta entera en vez de listar archivo por archivo, para
+# que cualquier helper que se añada aquí en el futuro quede protegido por
+# defecto sin tener que acordarse de añadirlo a mano.
+<IfModule mod_authz_core.c>
+  Require all denied
+</IfModule>
+<IfModule !mod_authz_core.c>
+  Order allow,deny
+  Deny from all
+</IfModule>
