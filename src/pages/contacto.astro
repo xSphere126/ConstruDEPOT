@@ -64,9 +64,9 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
               <textarea id="f-mensaje" name="mensaje" placeholder="Cuéntanos qué necesitas" rows="4" style="width:100%; margin-top:6px; padding:14px 16px; border-radius:10px; border:1px solid var(--line); font-family:inherit; font-size:14.5px; resize:vertical;"></textarea>
             </div>
             <div>
-              <label class="field-label" for="f-foto">Foto</label>
-              <input id="f-foto" name="foto" type="file" accept="image/*" style="width:100%; margin-top:6px; padding:12px 14px; border-radius:10px; border:1px solid var(--line); font-family:inherit; font-size:13.5px; background:#fff;">
-              <p style="font-size:12px; color:#6b6c64; margin-top:6px;">Si tienes una foto de la obra o del material que quieres igualar, súbela aquí.</p>
+              <label class="field-label" for="f-foto">Fotos</label>
+              <input id="f-foto" name="fotos[]" type="file" accept="image/*" multiple style="width:100%; margin-top:6px; padding:12px 14px; border-radius:10px; border:1px solid var(--line); font-family:inherit; font-size:13.5px; background:#fff;">
+              <p style="font-size:12px; color:#6b6c64; margin-top:6px;">Si tienes fotos de la obra o del material que quieres igualar, súbelas aquí (máximo 3).</p>
             </div>
             {turnstileSiteKey && <div class="cf-turnstile" data-sitekey={turnstileSiteKey}></div>}
             <button type="submit" class="btn-primary" style="justify-content:center;">Enviar consulta →</button>
@@ -228,12 +228,18 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
 
   // Límite del adjunto en el servidor (ver enviar-contacto.php): Graph solo
   // admite fileAttachment de hasta ~3 MB ya codificados en base64 en una
-  // sola llamada a sendMail, así que el original debe quedarse en 2 MB.
-  // Una foto de móvil sin tocar suele pesar 3-8 MB, así que en vez de
-  // rechazarla se reduce en el propio navegador antes de enviarla — así
-  // "sube una foto" funciona de verdad la primera vez, sin que el usuario
-  // tenga que saber comprimir una imagen por su cuenta.
+  // sola llamada a sendMail, y ese límite es total, no por adjunto — con
+  // varias fotos el reparto es más ajustado que con una sola. Una foto de
+  // móvil sin tocar suele pesar 3-8 MB, así que en vez de rechazarla se
+  // reduce en el propio navegador antes de enviarla — así "sube una foto"
+  // funciona de verdad la primera vez, sin que el usuario tenga que saber
+  // comprimir una imagen por su cuenta. MAX_FOTOS y MAX_TOTAL_FOTOS_BYTES
+  // reflejan exactamente los mismos límites que ya aplica el servidor —
+  // esto es solo para avisar antes de enviar, no un control de seguridad
+  // (ese vive en enviar-contacto.php, que no confía en nada de aquí).
+  const MAX_FOTOS = 3;
   const MAX_PHOTO_BYTES = 2 * 1024 * 1024;
+  const MAX_TOTAL_FOTOS_BYTES = 2 * 1024 * 1024;
   const MAX_PHOTO_DIMENSION = 1600;
 
   async function resizePhoto(file: File): Promise<File> {
@@ -280,18 +286,30 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
     if (!action) return;
 
     const fotoInput = form.querySelector<HTMLInputElement>('#f-foto');
-    const fotoFile = fotoInput?.files?.[0];
-    let fotoParaEnviar: File | null = null;
-    if (fotoFile) {
+    const fotoFiles = fotoInput?.files ? Array.from(fotoInput.files) : [];
+
+    if (fotoFiles.length > MAX_FOTOS) {
+      statusEl.textContent = `Puedes adjuntar como máximo ${MAX_FOTOS} fotos. Quita alguna e inténtalo de nuevo.`;
+      return;
+    }
+
+    const fotosParaEnviar: File[] = [];
+    for (const fotoFile of fotoFiles) {
       try {
-        fotoParaEnviar = await resizePhoto(fotoFile);
+        fotosParaEnviar.push(await resizePhoto(fotoFile));
       } catch {
         if (fotoFile.size > MAX_PHOTO_BYTES) {
-          statusEl.textContent = 'La foto pesa demasiado y no hemos podido comprimirla automáticamente. Prueba con otra foto o envíanosla por WhatsApp: 607 224 454.';
+          statusEl.textContent = 'Una de las fotos pesa demasiado y no hemos podido comprimirla automáticamente. Prueba con otra foto o envíanosla por WhatsApp: 607 224 454.';
           return;
         }
-        fotoParaEnviar = fotoFile;
+        fotosParaEnviar.push(fotoFile);
       }
+    }
+
+    const totalFotoBytes = fotosParaEnviar.reduce((sum, f) => sum + f.size, 0);
+    if (totalFotoBytes > MAX_TOTAL_FOTOS_BYTES) {
+      statusEl.textContent = 'Las fotos juntas pesan demasiado. Prueba a enviar menos fotos o hazlo por WhatsApp: 607 224 454.';
+      return;
     }
 
     const submitBtn = form.querySelector<HTMLButtonElement>('button[type="submit"]');
@@ -301,11 +319,8 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
 
     try {
       const formData = new FormData(form);
-      if (fotoParaEnviar) {
-        formData.set('foto', fotoParaEnviar, fotoParaEnviar.name);
-      } else {
-        formData.delete('foto');
-      }
+      formData.delete('fotos[]');
+      fotosParaEnviar.forEach((f) => formData.append('fotos[]', f, f.name));
       const res = await fetch(action, {
         method: 'POST',
         body: formData,

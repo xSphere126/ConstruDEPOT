@@ -85,45 +85,77 @@ if ($email !== '' && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
     respond(false, 'El email no es válido.');
 }
 
-// La foto es opcional (obra o material a igualar). El navegador ya la
-// comprime antes de enviarla (ver contacto.astro), pero el límite se
-// vuelve a comprobar aquí porque el cliente se puede saltar: Graph solo
-// admite fileAttachment de hasta ~3 MB codificados en base64 en una sola
-// llamada, así que el original debe quedarse en 2 MB — mismo límite y
-// mismo patrón que el CV de enviar-empleo.php.
+// Las fotos son opcionales (obra o material a igualar), hasta MAX_FOTOS. El
+// navegador ya las comprime antes de enviarlas (ver contacto.astro), pero
+// todo se vuelve a comprobar aquí porque el cliente se puede saltar por
+// completo (llamando directamente a este script): cada foto se valida por
+// separado (tamaño y MIME real vía finfo, no la extensión ni el
+// Content-Type que declara el navegador), y además se limita el peso
+// COMBINADO de todas juntas — Graph solo admite ~3 MB en base64 por envío
+// en una sola llamada a sendMail, y ese límite es total, no por adjunto.
+// Pasarse no da un error claro: graphSendMail() simplemente devuelve false.
+const MAX_FOTOS = 3;
+const MAX_FOTO_BYTES = 2 * 1024 * 1024;
+const MAX_TOTAL_FOTOS_BYTES = 2 * 1024 * 1024;
+$extensionesPorTipo = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'image/webp' => 'webp'];
+
 $attachments = [];
 $fotoError = null;
-if (isset($_FILES['foto']) && $_FILES['foto']['error'] !== UPLOAD_ERR_NO_FILE) {
-    $foto = $_FILES['foto'];
+$totalFotoBytes = 0;
 
-    if ($foto['error'] === UPLOAD_ERR_INI_SIZE || $foto['error'] === UPLOAD_ERR_FORM_SIZE) {
-        $fotoError = 'La foto pesa demasiado (máximo 2 MB).';
-    } elseif ($foto['error'] !== UPLOAD_ERR_OK) {
-        $fotoError = 'No se ha podido leer la foto adjunta.';
-    } elseif ($foto['size'] > 2 * 1024 * 1024) {
-        $fotoError = 'La foto pesa demasiado (máximo 2 MB).';
-    } else {
+if (isset($_FILES['fotos']) && is_array($_FILES['fotos']['name'])) {
+    $numFotos = count($_FILES['fotos']['name']);
+    if ($numFotos > MAX_FOTOS) {
+        $fotoError = 'Puedes adjuntar como máximo ' . MAX_FOTOS . ' fotos.';
+    }
+
+    for ($i = 0; $fotoError === null && $i < $numFotos; $i++) {
+        $error = $_FILES['fotos']['error'][$i];
+        if ($error === UPLOAD_ERR_NO_FILE) {
+            continue;
+        }
+        if ($error === UPLOAD_ERR_INI_SIZE || $error === UPLOAD_ERR_FORM_SIZE) {
+            $fotoError = 'Una de las fotos pesa demasiado (máximo 2 MB).';
+            break;
+        }
+        if ($error !== UPLOAD_ERR_OK) {
+            $fotoError = 'No se ha podido leer una de las fotos adjuntas.';
+            break;
+        }
+
+        $size = $_FILES['fotos']['size'][$i];
+        if ($size > MAX_FOTO_BYTES) {
+            $fotoError = 'Una de las fotos pesa demasiado (máximo 2 MB).';
+            break;
+        }
+        $totalFotoBytes += $size;
+        if ($totalFotoBytes > MAX_TOTAL_FOTOS_BYTES) {
+            $fotoError = 'Las fotos juntas pesan demasiado (máximo 2 MB en total).';
+            break;
+        }
+
+        $tmpName = $_FILES['fotos']['tmp_name'][$i];
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
         // finfo_open() puede devolver false si la extensión fileinfo no está
         // disponible en el hosting — sin esta comprobación, finfo_file(false, ...)
         // lanza un error fatal de PHP en vez de un mensaje controlado.
-        $mimeType = $finfo !== false ? finfo_file($finfo, $foto['tmp_name']) : false;
+        $mimeType = $finfo !== false ? finfo_file($finfo, $tmpName) : false;
         if ($finfo !== false) {
             finfo_close($finfo);
         }
-        $extensionesPorTipo = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'image/webp' => 'webp'];
 
         if (!isset($extensionesPorTipo[$mimeType])) {
-            $fotoError = 'La foto debe ser JPG, PNG o WEBP.';
-        } else {
-            $contentBytes = base64_encode(file_get_contents($foto['tmp_name']));
-            $attachments[] = [
-                '@odata.type' => '#microsoft.graph.fileAttachment',
-                'name' => 'Foto - ' . $nombre . '.' . $extensionesPorTipo[$mimeType],
-                'contentType' => $mimeType,
-                'contentBytes' => $contentBytes,
-            ];
+            $fotoError = 'Las fotos deben ser JPG, PNG o WEBP.';
+            break;
         }
+
+        $contentBytes = base64_encode(file_get_contents($tmpName));
+        $attachments[] = [
+            '@odata.type' => '#microsoft.graph.fileAttachment',
+            'name' => 'Foto ' . (count($attachments) + 1) . ' - ' . $nombre . '.' . $extensionesPorTipo[$mimeType],
+            'contentType' => $mimeType,
+            'contentBytes' => $contentBytes,
+        ];
     }
 }
 
@@ -136,7 +168,7 @@ $bodyText = implode("\n", [
     'Nombre: ' . $nombre,
     'Teléfono: ' . $telefono,
     'Email: ' . ($email !== '' ? $email : 'no indicado'),
-    'Foto adjunta: ' . (count($attachments) > 0 ? 'sí' : 'no'),
+    'Fotos adjuntas: ' . count($attachments),
     '',
     'Mensaje:',
     $mensaje !== '' ? $mensaje : '(sin mensaje)',
