@@ -64,29 +64,28 @@ const i18nForm = {
     <div class="eyebrow-sm">{e.positionsEyebrow}</div>
     <h2>{hayVacantes ? e.positionsTitleWithJobs : e.positionsTitleNoJobs}</h2>
     <p class="section-sub">{hayVacantes ? e.positionsSubWithJobs : e.positionsSubNoJobs}</p>
-    {locale !== 'es' && hayVacantes && <p class="job-listings-note">{e.jobListingsNote}</p>}
 
     <div class="job-list">
       {vacantes.map((v) => (
         <div class="job-row">
           <button type="button" class="job-row-head" data-job-toggle aria-expanded="false" aria-controls={`panel-${v.id}`}>
-            <span class="job-row-title">{v.titulo}</span>
+            <span class="job-row-title">{v.titulo[locale]}</span>
             <span class="job-row-tags">
-              {v.ubicacion}
-              {v.etiqueta && <span class="tag" style="margin-bottom:0;">{v.etiqueta}</span>}
+              {v.ubicacion[locale]}
+              {v.etiqueta && <span class="tag" style="margin-bottom:0;">{v.etiqueta[locale]}</span>}
             </span>
             <span class="job-row-chevron" aria-hidden="true">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
             </span>
           </button>
           <div class="job-row-panel" id={`panel-${v.id}`} data-job-panel hidden>
-            <p>{v.descripcion}</p>
-            {v.requisitos && v.requisitos.length > 0 && (
+            <p>{v.descripcion[locale]}</p>
+            {v.requisitos && v.requisitos[locale].length > 0 && (
               <ul class="job-requisitos">
-                {v.requisitos.map((r) => <li>{r}</li>)}
+                {v.requisitos[locale].map((r) => <li>{r}</li>)}
               </ul>
             )}
-            <button type="button" class="btn-primary" data-aplicar-vacante={v.titulo} data-aplicar-target={`panel-${v.id}`}>
+            <button type="button" class="btn-primary" data-aplicar-vacante={v.titulo[locale]} data-aplicar-target={`panel-${v.id}`}>
               {e.applyButton} <span class="arrow-icon">→</span>
             </button>
             <div class="job-form-slot" data-form-slot></div>
@@ -153,7 +152,6 @@ const i18nForm = {
 
 <style>
   .empleo-team-avatars{ display:flex; flex-wrap:wrap; gap:14px; margin-bottom:18px; }
-  .job-listings-note{ font-size:12.5px; color:var(--graphite); font-style:italic; margin-top:-14px; margin-bottom:24px; }
 
   .job-list{ display:flex; flex-direction:column; gap:14px; }
   .job-row{ background:var(--cream-card); border:1px solid var(--line); border-radius:16px; overflow:hidden; }
@@ -297,8 +295,7 @@ const i18nForm = {
         statusEl.classList.add('form-success');
         statusEl.textContent = i18n.success;
       } else {
-        const motivo = data?.message || i18n.genericError;
-        statusEl.textContent = `${motivo} ${i18n.errorSuffix}`;
+        statusEl.textContent = `${i18n.genericError} ${i18n.errorSuffix}`;
       }
     } catch {
       statusEl.textContent = i18n.networkError;

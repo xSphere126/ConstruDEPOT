@@ -285,7 +285,6 @@ export const fr: Dictionary = {
     positionsTitleNoJobs: 'Il n’y a aucun poste ouvert pour le moment',
     positionsSubWithJobs: 'Cliquez sur un poste pour voir les détails et postuler directement depuis là.',
     positionsSubNoJobs: 'Laissez votre candidature ci-dessous et nous la conserverons pour dès qu’une opportunité se présente.',
-    jobListingsNote: 'Les offres d’emploi sont publiées en espagnol, la langue utilisée pour le recrutement.',
     applyButton: 'Postuler à ce poste',
     spontaneousTitle: 'Vous voulez rejoindre ConstruDepot ?',
     spontaneousText: 'Même si aucun poste publié ne correspond à votre profil pour le moment, vous pouvez tout de même nous envoyer votre CV. Nous étudierons votre candidature pour de futures opportunités au sein de l’entreprise.',

@@ -283,7 +283,6 @@ export const es = {
     positionsTitleNoJobs: 'Ahora mismo no hay posiciones abiertas',
     positionsSubWithJobs: 'Pulsa un puesto para ver el detalle y aplicar directamente desde ahí.',
     positionsSubNoJobs: 'Deja tu candidatura más abajo y la guardamos para cuando surja algo.',
-    jobListingsNote: 'Las vacantes se publican en español, el idioma en el que se gestiona la contratación.',
     applyButton: 'Aplicar a este puesto',
     spontaneousTitle: '¿Quieres formar parte de ConstruDepot?',
     spontaneousText: 'Aunque ahora mismo no haya ninguna vacante publicada que encaje con tu perfil, puedes enviarnos igualmente tu currículum. Valoraremos tu candidatura para futuras oportunidades dentro de la empresa.',

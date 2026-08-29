@@ -285,7 +285,6 @@ export const en: Dictionary = {
     positionsTitleNoJobs: 'There are no open positions right now',
     positionsSubWithJobs: 'Click a position to see the details and apply directly from there.',
     positionsSubNoJobs: 'Leave your application below and we’ll keep it for when something comes up.',
-    jobListingsNote: 'Job listings are published in Spanish, the language used for hiring.',
     applyButton: 'Apply for this position',
     spontaneousTitle: 'Want to be part of ConstruDepot?',
     spontaneousText: "Even if there's no open position that matches your profile right now, you can still send us your CV. We'll consider your application for future opportunities within the company.",

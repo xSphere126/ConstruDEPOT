@@ -341,8 +341,7 @@ const i18nForm = {
         statusEl.textContent = i18n.success;
         if (againBtn) againBtn.hidden = false;
       } else {
-        const motivo = data?.message || i18n.genericError;
-        statusEl.textContent = `${motivo} ${i18n.errorSuffix}`;
+        statusEl.textContent = `${i18n.genericError} ${i18n.errorSuffix}`;
       }
     } catch {
       statusEl.textContent = i18n.networkError;
