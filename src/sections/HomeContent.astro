@@ -15,12 +15,7 @@ const home = dict.home;
 const categoriaEntry = (await getEntry('categorias', locale)) ?? (await getEntry('categorias', 'es'));
 const categorias = categoriaEntry!.data.categorias;
 
-const snapwidgetId = import.meta.env.PUBLIC_SNAPWIDGET_ID || 'WIDGET_ID_PENDIENTE';
-// Sección "Síguenos en Instagram": decidido contratar SnapWidget (plan Lite,
-// widget 1128145, grid 4x2 en escritorio / 2x3 en móvil, configurado desde su
-// panel — ver [[construdepot-positioning]]). El ID real va en sitio/.env como
-// PUBLIC_SNAPWIDGET_ID (no es secreto, pero así no hace falta tocar código
-// para cambiarlo). Sin ese valor, se sigue viendo el mosaico de marcador.
+const snapwidgetId = import.meta.env.PUBLIC_SNAPWIDGET_ID;
 const showInstagramSection = true;
 
 // Reseñas reales de Google: nunca se traducen (ver plan de i18n) — se
@@ -236,21 +231,8 @@ const catIcons: Record<string, string> = {
         </div>
       </div>
       <div class="insta-embed-wrap">
-        {snapwidgetId !== 'WIDGET_ID_PENDIENTE' ? (
-          <GatedEmbed category="social" src={`https://snapwidget.com/embed/${snapwidgetId}`} title={dict.gatedEmbed.instagramTitle} label={dict.gatedEmbed.instagramLabel} class="insta-embed" />
-        ) : (
-          <div class="insta-fallback">
-            <div class="insta-grid">
-              {Array.from({ length: 4 }).map(() => (
-                <div class="insta-tile"><IconInstagram width={24} height={24} strokeWidth={1.6} /></div>
-              ))}
-            </div>
-          </div>
-        )}
+        <GatedEmbed category="social" src={`https://snapwidget.com/embed/${snapwidgetId}`} title={dict.gatedEmbed.instagramTitle} label={dict.gatedEmbed.instagramLabel} class="insta-embed" />
       </div>
-      {snapwidgetId === 'WIDGET_ID_PENDIENTE' && (
-        <p style="font-size:12.5px; color:var(--graphite); margin-top:16px; font-family:'Roboto', sans-serif;">⚑ PENDIENTE: SnapWidget es de pago, no gratuito. Decidir si se contrata un plan o se usa una alternativa antes de activar el widget; luego poner el ID en <code>sitio/.env</code> como <code>PUBLIC_SNAPWIDGET_ID</code>. Mientras tanto se ve el mosaico de marcador de arriba.</p>
-      )}
     </div>
   </section>
 )}
