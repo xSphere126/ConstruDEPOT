@@ -16,7 +16,6 @@ const categoriaEntry = (await getEntry('categorias', locale)) ?? (await getEntry
 const categorias = categoriaEntry!.data.categorias;
 
 const snapwidgetId = import.meta.env.PUBLIC_SNAPWIDGET_ID;
-const showInstagramSection = true;
 
 // Reseñas reales de Google: nunca se traducen (ver plan de i18n) — se
 // muestran tal cual las escribieron sus autores en español, con una
@@ -102,7 +101,7 @@ const catIcons: Record<string, string> = {
 
 <section class="trust-strip" id="trust-strip" style="scroll-margin-top:110px;">
   <div class="wrap trust-strip-inner">
-    <div class="trust-rating">
+    <div class="trust-rating" dir="ltr">
       <span class="stars">★★★★★</span>
       <strong>{home.trust.rating}</strong>
       <span class="trust-note">{home.trust.note}</span>
@@ -215,7 +214,7 @@ const catIcons: Record<string, string> = {
   </div>
 </section>
 
-{showInstagramSection && (
+{snapwidgetId && (
   <section class="home-section" style="background:var(--sand);">
     <div class="wrap">
       <div class="insta-header">
@@ -227,7 +226,7 @@ const catIcons: Record<string, string> = {
           <div class="ic">
             <IconInstagram width={18} height={18} />
           </div>
-          <a href="https://www.instagram.com/construdepot_by_quiles/" target="_blank" rel="noopener" class="google-link" style="border-color:var(--ink); color:var(--ink);">@construdepot_by_quiles <span class="arrow-icon">→</span></a>
+          <a href="https://www.instagram.com/construdepot_by_quiles/" target="_blank" rel="noopener" class="google-link" style="border-color:var(--ink); color:var(--ink);"><span dir="ltr">@construdepot_by_quiles</span> <span class="arrow-icon">→</span></a>
         </div>
       </div>
       <div class="insta-embed-wrap">

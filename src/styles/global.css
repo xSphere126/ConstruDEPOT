@@ -64,6 +64,7 @@ header.header-pinned{ position:fixed; background:rgba(250,246,236,.94); backdrop
 header.header-pinned .logo-chip{ background:transparent; box-shadow:none; }
 header.header-pinned nav.mainnav a{ color:var(--ink); }
 header.header-pinned .schedule-pill{ color:var(--graphite); opacity:1; }
+header.header-pinned .lang-switcher-toggle{ color:var(--ink); border-color:var(--line); }
 header.header-pinned .dot{ box-shadow:0 0 0 3px rgba(65,183,24,.18); }
 
 /* Placa verde con la MISMA altura total (80px: 6px de margen a cada lado en
