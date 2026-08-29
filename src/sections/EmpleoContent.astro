@@ -1,0 +1,310 @@
+---
+import { withBase } from '../lib/url';
+import { vacantes } from '../data/vacantes';
+import { t, localizedHref } from '../i18n/useTranslations';
+import type { Locale } from '../i18n/locales';
+
+const locale = (Astro.currentLocale as Locale | undefined) ?? 'es';
+const dict = t(locale);
+const e = dict.empleo;
+
+const hayVacantes = vacantes.length > 0;
+
+const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
+
+const i18nForm = {
+  sending: e.sending,
+  success: e.success,
+  genericError: e.genericError,
+  errorSuffix: e.errorSuffix,
+  networkError: e.networkError,
+  cvNotPdf: e.cvNotPdf,
+  cvTooLarge: e.cvTooLarge,
+  defaultStatus: e.formStatusDefault,
+};
+---
+
+<section class="page-banner page-banner--photo" style={`--banner-photo:url(${withBase('/images/matalmacen4.jpg')})`}>
+  <div class="wrap">
+    <div class="breadcrumb"><a href={withBase('/')}>{dict.nav.inicio}</a> · {e.breadcrumbCurrent}</div>
+    <h1>{e.h1}</h1>
+    <p>{e.sub}</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="grid grid-2" style="align-items:center; gap:48px;">
+      <div>
+        <div class="eyebrow-sm">{e.areasEyebrow}</div>
+        <h2>{e.areasTitle}</h2>
+        <p class="section-sub">{e.areasSub}</p>
+        <div class="product-chips" style="margin-bottom:28px;">
+          {e.areas.map((area) => <span class="product-chip">{area}</span>)}
+        </div>
+        <p class="section-sub" style="margin-bottom:0;">{e.areasClosing}</p>
+      </div>
+      <div class="empleo-team-preview">
+        <div class="empleo-team-avatars">
+          <div class="team-avatar team-avatar--1"><div class="team-avatar-float"><img src={withBase('/images/avatares/tania.jpg')} alt="Tania" loading="lazy" style="width:100%; height:100%; object-fit:cover; border-radius:50%; display:block;" /></div></div>
+          <div class="team-avatar team-avatar--2"><div class="team-avatar-float"><img src={withBase('/images/avatares/juan.jpg')} alt="Juan" loading="lazy" style="width:100%; height:100%; object-fit:cover; border-radius:50%; display:block;" /></div></div>
+          <div class="team-avatar team-avatar--3"><div class="team-avatar-float"><img src={withBase('/images/avatares/julian.jpg')} alt="Julian" loading="lazy" style="width:100%; height:100%; object-fit:cover; border-radius:50%; display:block;" /></div></div>
+          <div class="team-avatar team-avatar--4"><div class="team-avatar-float"><img src={withBase('/images/avatares/paco.jpg')} alt="Paco" loading="lazy" style="width:100%; height:100%; object-fit:cover; border-radius:50%; display:block;" /></div></div>
+          <div class="team-avatar team-avatar--5"><div class="team-avatar-float"><img src={withBase('/images/avatares/carlos.jpg')} alt="Carlos" loading="lazy" style="width:100%; height:100%; object-fit:cover; border-radius:50%; display:block;" /></div></div>
+        </div>
+        <p class="section-sub" style="margin-bottom:10px;">{e.teamPreviewText}</p>
+        <a href={`${localizedHref('sobre-nosotros', locale)}#quien-te-atiende`} style="color:var(--green-dark); font-weight:600; font-size:14.5px;">{e.teamPreviewLink} <span class="arrow-icon">→</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="background:var(--sand);">
+  <div class="wrap">
+    <div class="eyebrow-sm">{e.positionsEyebrow}</div>
+    <h2>{hayVacantes ? e.positionsTitleWithJobs : e.positionsTitleNoJobs}</h2>
+    <p class="section-sub">{hayVacantes ? e.positionsSubWithJobs : e.positionsSubNoJobs}</p>
+    {locale !== 'es' && hayVacantes && <p class="job-listings-note">{e.jobListingsNote}</p>}
+
+    <div class="job-list">
+      {vacantes.map((v) => (
+        <div class="job-row">
+          <button type="button" class="job-row-head" data-job-toggle aria-expanded="false" aria-controls={`panel-${v.id}`}>
+            <span class="job-row-title">{v.titulo}</span>
+            <span class="job-row-tags">
+              {v.ubicacion}
+              {v.etiqueta && <span class="tag" style="margin-bottom:0;">{v.etiqueta}</span>}
+            </span>
+            <span class="job-row-chevron" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+            </span>
+          </button>
+          <div class="job-row-panel" id={`panel-${v.id}`} data-job-panel hidden>
+            <p>{v.descripcion}</p>
+            {v.requisitos && v.requisitos.length > 0 && (
+              <ul class="job-requisitos">
+                {v.requisitos.map((r) => <li>{r}</li>)}
+              </ul>
+            )}
+            <button type="button" class="btn-primary" data-aplicar-vacante={v.titulo} data-aplicar-target={`panel-${v.id}`}>
+              {e.applyButton} <span class="arrow-icon">→</span>
+            </button>
+            <div class="job-form-slot" data-form-slot></div>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <div class="cta-band" style="margin-top:32px;" id="cta-espontanea">
+      <div>
+        <h3>{e.spontaneousTitle}</h3>
+        <p style="color:rgba(255,255,255,.8); font-size:14.5px; margin-top:10px; max-width:520px;">{e.spontaneousText}</p>
+      </div>
+      <button type="button" class="btn-primary" data-aplicar-vacante={e.spontaneousLabel} data-aplicar-target="cta-espontanea">
+        {e.spontaneousButton} <span class="arrow-icon">→</span>
+      </button>
+      <div class="job-form-slot" data-form-slot style="flex-basis:100%;"></div>
+    </div>
+
+    <p class="section-sub" style="margin-top:24px; margin-bottom:0;">{e.contactClosingBefore}<a href="https://wa.me/34607224454" style="color:var(--green-dark); font-weight:600;">WhatsApp</a>{e.contactClosingMiddle}<a href="mailto:info@construdepot.es" style="color:var(--green-dark); font-weight:600;">info@construdepot.es</a>.</p>
+
+    <div id="formHome" hidden>
+      <div id="applicationBlock" data-i18n={JSON.stringify(i18nForm)}>
+        <div class="eyebrow-sm">{e.formEyebrow}</div>
+        <h3 style="font-family:'Roboto', sans-serif; font-size:19px; font-weight:600; margin-bottom:16px;">{e.formTitle}</h3>
+        <form id="empleoForm" data-action={withBase('/enviar-empleo.php')} style="display:flex; flex-direction:column; gap:16px;" enctype="multipart/form-data">
+          <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute; inset-inline-start:-9999px;" />
+          <input type="hidden" id="f-puesto" name="puesto" value="" />
+          <p style="font-size:12px; color:#6b6c64; margin:0;"><span class="required-mark">*</span> {e.requiredNote}</p>
+          <div>
+            <label class="field-label" for="f-nombre">{e.fieldNombre} <span class="required-mark">*</span></label>
+            <input id="f-nombre" name="nombre" type="text" required placeholder={e.placeholderNombre} style="width:100%; margin-top:6px; padding:14px 16px; border-radius:10px; border:1px solid var(--line); font-family:inherit; font-size:14.5px;">
+          </div>
+          <div>
+            <label class="field-label" for="f-telefono">{e.fieldTelefono} <span class="required-mark">*</span></label>
+            <input id="f-telefono" name="telefono" type="tel" required placeholder={e.placeholderTelefono} style="width:100%; margin-top:6px; padding:14px 16px; border-radius:10px; border:1px solid var(--line); font-family:inherit; font-size:14.5px;">
+          </div>
+          <div>
+            <label class="field-label" for="f-email">{e.fieldEmail} <span class="required-mark">*</span></label>
+            <input id="f-email" name="email" type="email" required placeholder={e.placeholderEmail} style="width:100%; margin-top:6px; padding:14px 16px; border-radius:10px; border:1px solid var(--line); font-family:inherit; font-size:14.5px;">
+          </div>
+          <div>
+            <label class="field-label" for="f-mensaje">{e.fieldMensaje} <span class="required-mark">*</span></label>
+            <textarea id="f-mensaje" name="mensaje" required placeholder={e.placeholderMensaje} rows="4" style="width:100%; margin-top:6px; padding:14px 16px; border-radius:10px; border:1px solid var(--line); font-family:inherit; font-size:14.5px; resize:vertical;"></textarea>
+          </div>
+          <div>
+            <label class="field-label" for="f-cv">{e.fieldCv}</label>
+            <input id="f-cv" name="cv" type="file" accept=".pdf,application/pdf" style="width:100%; margin-top:6px; padding:12px 14px; border-radius:10px; border:1px solid var(--line); font-family:inherit; font-size:13.5px; background:#fff;">
+            <span style="display:block; font-size:12px; color:#6b6c64; margin-top:6px;">{e.cvHelp}</span>
+          </div>
+          <label style="display:flex; align-items:flex-start; gap:10px; font-size:12.5px; color:var(--graphite); line-height:1.5;">
+            <input type="checkbox" name="consentimiento" value="1" required style="margin-top:3px;">
+            <span>{e.consentBefore}<a href={withBase('/politica-privacidad/')} style="color:var(--green-dark); font-weight:600;">{e.consentLink}</a>{e.consentAfter}</span>
+          </label>
+          {turnstileSiteKey && <div id="turnstileWidget" data-sitekey={turnstileSiteKey}></div>}
+          <button type="submit" class="btn-primary" style="justify-content:center;">{e.submit} <span class="arrow-icon">→</span></button>
+        </form>
+        {turnstileSiteKey && <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" defer></script>}
+        <p id="form-status" class="form-status" role="status">{e.formStatusDefault}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .empleo-team-avatars{ display:flex; flex-wrap:wrap; gap:14px; margin-bottom:18px; }
+  .job-listings-note{ font-size:12.5px; color:var(--graphite); font-style:italic; margin-top:-14px; margin-bottom:24px; }
+
+  .job-list{ display:flex; flex-direction:column; gap:14px; }
+  .job-row{ background:var(--cream-card); border:1px solid var(--line); border-radius:16px; overflow:hidden; }
+  .job-row-head{ width:100%; display:flex; flex-direction:column; align-items:flex-start; gap:5px; padding:20px 46px 20px 22px; background:none; border:none; cursor:pointer; text-align:left; font-family:inherit; position:relative; }
+  .job-row-title{ font-family:'Roboto', sans-serif; font-weight:600; font-size:16.5px; color:var(--ink); }
+  .job-row-tags{ font-size:13px; color:#6b6c64; display:flex; align-items:center; flex-wrap:wrap; gap:8px; }
+  .job-row-chevron{ position:absolute; top:22px; inset-inline-end:22px; color:#6b6c64; transition:transform .2s ease; display:flex; }
+  .job-row-head[aria-expanded="true"] .job-row-chevron{ transform:rotate(180deg); }
+  .job-row-panel{ padding:0 22px 26px; }
+  .job-row-panel p{ font-size:14.5px; color:#5a5b54; line-height:1.6; margin-bottom:14px; max-width:640px; }
+  .job-requisitos{ list-style:none; padding:0; margin:0 0 20px; display:flex; flex-direction:column; gap:8px; max-width:520px; }
+  .job-requisitos li{ font-size:13.5px; color:#4b4c46; padding-inline-start:22px; position:relative; }
+  .job-requisitos li::before{ content:'✓'; position:absolute; inset-inline-start:0; color:var(--green-dark); font-weight:700; }
+  .job-form-slot:not(:empty){ margin-top:24px; padding-top:24px; border-top:1px solid var(--line); }
+
+  #cta-espontanea .job-form-slot:not(:empty){ margin-top:24px; padding:26px 24px; border-top:none; background:var(--cream-card); border-radius:16px; }
+</style>
+
+<script>
+  const applicationBlock = document.getElementById('applicationBlock');
+  const formHome = document.getElementById('formHome');
+  const jobToggles = document.querySelectorAll<HTMLButtonElement>('[data-job-toggle]');
+
+  jobToggles.forEach((toggle) => {
+    toggle.addEventListener('click', () => {
+      const isOpen = toggle.getAttribute('aria-expanded') === 'true';
+
+      jobToggles.forEach((other) => {
+        if (other === toggle) return;
+        other.setAttribute('aria-expanded', 'false');
+        const otherPanel = document.getElementById(other.getAttribute('aria-controls') ?? '');
+        if (!otherPanel) return;
+        otherPanel.hidden = true;
+        if (applicationBlock && formHome && otherPanel.contains(applicationBlock)) {
+          formHome.appendChild(applicationBlock);
+        }
+      });
+
+      const panel = document.getElementById(toggle.getAttribute('aria-controls') ?? '');
+      toggle.setAttribute('aria-expanded', String(!isOpen));
+      if (panel) panel.hidden = isOpen;
+    });
+  });
+
+  interface FormI18n {
+    sending: string;
+    success: string;
+    genericError: string;
+    errorSuffix: string;
+    networkError: string;
+    cvNotPdf: string;
+    cvTooLarge: string;
+    defaultStatus: string;
+  }
+
+  const MAX_CV_BYTES = 2 * 1024 * 1024;
+  const form = document.getElementById('empleoForm') as HTMLFormElement | null;
+  const statusEl = document.getElementById('form-status');
+  const i18n: FormI18n | null = applicationBlock?.dataset.i18n ? JSON.parse(applicationBlock.dataset.i18n) : null;
+
+  declare global {
+    interface Window {
+      turnstile?: {
+        render: (container: string | HTMLElement, options: { sitekey: string }) => string;
+        reset: (widgetId?: string | HTMLElement) => void;
+        remove: (widgetId: string) => void;
+      };
+    }
+  }
+  let turnstileWidgetId: string | null = null;
+  function ensureTurnstileRendered(retries = 20) {
+    const container = document.getElementById('turnstileWidget');
+    if (!container) return;
+    if (!window.turnstile) {
+      if (retries > 0) setTimeout(() => ensureTurnstileRendered(retries - 1), 150);
+      return;
+    }
+    if (turnstileWidgetId !== null) {
+      window.turnstile.remove(turnstileWidgetId);
+      turnstileWidgetId = null;
+    }
+    const sitekey = container.dataset.sitekey;
+    if (!sitekey) return;
+    turnstileWidgetId = window.turnstile.render(container, { sitekey });
+  }
+
+  document.querySelectorAll<HTMLButtonElement>('[data-aplicar-vacante]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const targetPanel = document.getElementById(btn.dataset.aplicarTarget ?? '');
+      const slot = targetPanel?.querySelector<HTMLElement>('[data-form-slot]');
+      const puestoField = document.getElementById('f-puesto') as HTMLInputElement | null;
+      if (!applicationBlock || !slot || !form || !statusEl || !i18n) return;
+
+      if (puestoField) puestoField.value = btn.dataset.aplicarVacante ?? '';
+      slot.appendChild(applicationBlock);
+      form.hidden = false;
+      statusEl.classList.remove('form-success');
+      statusEl.textContent = i18n.defaultStatus;
+      ensureTurnstileRendered();
+      applicationBlock.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      document.getElementById('f-nombre')?.focus();
+    });
+  });
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!statusEl || !i18n) return;
+
+    const action = form.dataset.action;
+    if (!action) return;
+
+    const cvInput = form.querySelector<HTMLInputElement>('#f-cv');
+    const cvFile = cvInput?.files?.[0];
+    if (cvFile) {
+      if (cvFile.type !== 'application/pdf') {
+        statusEl.textContent = i18n.cvNotPdf;
+        return;
+      }
+      if (cvFile.size > MAX_CV_BYTES) {
+        statusEl.textContent = i18n.cvTooLarge;
+        return;
+      }
+    }
+
+    const submitBtn = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+    if (submitBtn) submitBtn.disabled = true;
+    statusEl.classList.remove('form-success');
+    statusEl.textContent = i18n.sending;
+
+    try {
+      const res = await fetch(action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { Accept: 'application/json' },
+      });
+      const data = await res.json().catch(() => null);
+
+      if (res.ok && data?.ok) {
+        form.reset();
+        form.hidden = true;
+        statusEl.classList.add('form-success');
+        statusEl.textContent = i18n.success;
+      } else {
+        const motivo = data?.message || i18n.genericError;
+        statusEl.textContent = `${motivo} ${i18n.errorSuffix}`;
+      }
+    } catch {
+      statusEl.textContent = i18n.networkError;
+    } finally {
+      if (submitBtn) submitBtn.disabled = false;
+      if (turnstileWidgetId !== null) window.turnstile?.reset(turnstileWidgetId);
+    }
+  });
+</script>

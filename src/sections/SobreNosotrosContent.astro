@@ -1,0 +1,325 @@
+---
+import { withBase } from '../lib/url';
+import { t } from '../i18n/useTranslations';
+import type { Locale } from '../i18n/locales';
+
+const locale = (Astro.currentLocale as Locale | undefined) ?? 'es';
+const dict = t(locale);
+const s = dict.sobreNosotros;
+
+const showTeamSection = true;
+const showHistoriaSection = false;
+
+const equipoMeta = [
+  { avatar: 'paco', variante: 1, nombre: 'Paco' },
+  { avatar: 'pepe2', variante: 2, nombre: 'Pepe' },
+  { avatar: 'ache', variante: 3, nombre: 'Ache' },
+  { avatar: 'alicia', variante: 4, nombre: 'Alicia' },
+  { avatar: 'carlos', variante: 5, nombre: 'Carlos' },
+  { avatar: 'juan', variante: 1, nombre: 'Juan' },
+  { avatar: 'julian', variante: 2, nombre: 'Julian' },
+  { avatar: 'pepe', variante: 3, nombre: 'Pepe' },
+  { avatar: 'tania', variante: 4, nombre: 'Tania' },
+];
+const equipo = equipoMeta.map((meta, i) => ({ ...meta, ...s.equipo[i] }));
+---
+
+<section class="page-banner page-banner--photo" style={`--banner-photo:url(${withBase('/images/entrada2.webp')})`}>
+  <div class="wrap">
+    <div class="breadcrumb"><a href={withBase('/')}>{dict.nav.inicio}</a> · {s.breadcrumbCurrent}</div>
+    <h1>{s.h1}</h1>
+    <p>{s.sub}</p>
+  </div>
+</section>
+
+{showHistoriaSection && (
+<section>
+  <div class="wrap">
+    <div class="eyebrow-sm">Nuestra historia</div>
+    <h2>Cómo empezamos</h2>
+    <p class="section-sub placeholder-text">Aquí contaremos cómo empezó Construdepot: el año, quién lo puso en marcha y qué le impulsó a hacerlo.</p>
+    <p class="placeholder-text" style="max-width:600px; margin-bottom:16px;">Un segundo párrafo explicará cómo ha crecido el negocio con los años: qué ha cambiado, qué se ha ampliado, cómo ha evolucionado el trato con particulares y profesionales.</p>
+    <p class="placeholder-text" style="max-width:600px; margin-bottom:16px;">Y un tercero cerrará con lo que se mantiene igual pese al crecimiento: el trato cercano, el compromiso con Elche, la forma de trabajar de siempre.</p>
+    <span class="placeholder-note">✎ Texto de ejemplo, pendiente de historia real</span>
+  </div>
+</section>
+)}
+
+<section style="background:var(--sand);">
+  <div class="wrap">
+    <div class="eyebrow-sm">{s.espacioEyebrow}</div>
+    <h2>{s.espacioTitle}</h2>
+    <p class="section-sub">{s.espacioSub}</p>
+
+    <div class="photo-group">
+      <h3 style="font-size:16px; margin:28px 0 4px;">{s.exposicionTitle}</h3>
+      <p style="font-size:13.5px; color:#6b6c64; margin-bottom:0;">{s.exposicionDesc}</p>
+      <div class="carousel-wrap" role="region" aria-roledescription="carrusel" aria-label={s.exposicionRegion}>
+        <button type="button" class="carousel-btn carousel-btn--prev" data-carousel-prev aria-label={s.exposicionPrev}>‹</button>
+        <div class="carousel" data-carousel>
+          <img src={withBase('/images/intbaño4.jpg')} alt="Exposición de baños con mueble de madera, sanitarios y espejo redondo iluminado" loading="lazy" />
+          <img src={withBase('/images/cocina.jpg')} alt="Exposición de cocina con isla de madera y grifería Gessi" loading="lazy" class="is-active" />
+          <img src={withBase('/images/intazulejos.jpg')} alt="Pared de muestras de azulejo y pavimento de varias marcas" loading="lazy" />
+          <img src={withBase('/images/mamparas.jpg')} alt="Exposición de mamparas de ducha de varios acabados" loading="lazy" />
+          <img src={withBase('/images/intbaño2.jpg')} alt="Baño de exposición con pared de piedra oscura y ducha con mampara" loading="lazy" />
+          <img src={withBase('/images/grifos.jpg')} alt="Expositor de griferías y muestras de azulejo Keraben" loading="lazy" />
+          <img src={withBase('/images/intbaño5.jpg')} alt="Baño de exposición con mueble en tonos madera y grifería dorada" loading="lazy" />
+          <img src={withBase('/images/matint.jpg')} alt="Exposición de baños con doble lavabo en mármol y espejos ovalados" loading="lazy" />
+        </div>
+        <button type="button" class="carousel-btn carousel-btn--next" data-carousel-next aria-label={s.exposicionNext}>›</button>
+        <p class="carousel-counter" aria-live="polite" data-carousel-counter></p>
+      </div>
+    </div>
+
+    <div class="photo-group">
+      <h3 style="font-size:16px; margin:28px 0 4px;">{s.almacenTitle}</h3>
+      <p style="font-size:13.5px; color:#6b6c64; margin-bottom:0;">{s.almacenDesc}</p>
+      <div class="carousel-wrap" role="region" aria-roledescription="carrusel" aria-label={s.almacenRegion}>
+        <button type="button" class="carousel-btn carousel-btn--prev" data-carousel-prev aria-label={s.almacenPrev}>‹</button>
+        <div class="carousel" data-carousel>
+          <img src={withBase('/images/matexterior.jpg')} alt="Patio exterior de 10.000 m² con palets de ladrillo y bloque listos para cargar" loading="lazy" />
+          <img src={withBase('/images/matalmacen8.jpg')} alt="Nave de almacén con stock de placas de Pladur y Escayescos" loading="lazy" class="is-active" />
+          <img src={withBase('/images/exteriorcargarapida.jpg')} alt="Fachada de Construdepot con zona de carga y descarga rápida" loading="lazy" />
+          <img src={withBase('/images/matalmacen3.jpg')} alt="Nave de almacén con sacos de cemento y mortero apilados por color" loading="lazy" />
+          <img src={withBase('/images/matalmacen5.jpg')} alt="Nave de almacén con palés de ladrillo cerámico bajo cartel de Ladrillos" loading="lazy" />
+          <img src={withBase('/images/matexterior4.jpg')} alt="Patio exterior con bloques de hormigón apilados y palmera al fondo" loading="lazy" />
+          <img src={withBase('/images/matalmacen2.jpg')} alt="Nave de almacén con perfilería y placas de Pladur en estanterías" loading="lazy" />
+          <img src={withBase('/images/matalmacen9.jpg')} alt="Nave de almacén con estanterías de picking y pasillo central" loading="lazy" />
+        </div>
+        <button type="button" class="carousel-btn carousel-btn--next" data-carousel-next aria-label={s.almacenNext}>›</button>
+        <p class="carousel-counter" aria-live="polite" data-carousel-counter></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="background:var(--sand);">
+  <div class="wrap">
+    <div class="eyebrow-sm">{s.valoresEyebrow}</div>
+    <h2>{s.valoresTitle}</h2>
+    <div class="grid grid-3">
+      {s.valores.map((v) => (
+        <div class="card">
+          <h3>{v.titulo}</h3>
+          <p>{v.desc}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+{showTeamSection && (
+<section id="quien-te-atiende" style="background:var(--cream); scroll-margin-top:110px;">
+  <div class="wrap">
+    <div class="eyebrow-sm">{s.equipoEyebrow}</div>
+    <h2>{s.equipoTitle}</h2>
+    <p class="section-sub">{s.equipoSub}</p>
+    <div class="team-grid">
+      {equipo.map((persona) => (
+        <div class="card">
+          <div class={`team-avatar team-avatar--${persona.variante}`}>
+            <div class="team-avatar-float">
+              <img src={withBase(`/images/avatares/${persona.avatar}.jpg`)} alt={persona.nombre} loading="lazy" style="width:100%; height:100%; object-fit:cover; border-radius:50%; display:block;" />
+            </div>
+          </div>
+          <span class="tag">{s.equipoTag}</span>
+          <h3>{persona.nombre}</h3>
+          <p>{persona.descripcion}</p>
+          <a href={`https://wa.me/34607224454?text=${encodeURIComponent(s.whatsappTeamPrefill.replace('{nombre}', persona.nombre).replace('{puesto}', persona.puesto))}`} target="_blank" rel="noopener" style="display:inline-block; margin-top:12px; color:var(--green-dark); font-weight:600; font-size:13px;">💬 {s.whatsappTeam}</a>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+)}
+
+<section style="background:var(--sand);">
+  <div class="wrap">
+    <div class="cta-band">
+      <h3>{s.ctaText}</h3>
+      <a href={withBase('/contacto/')} class="btn-primary">{s.ctaButton} <span class="arrow-icon">→</span></a>
+    </div>
+  </div>
+</section>
+
+<div class="lightbox" data-lightbox hidden>
+  <button type="button" class="lightbox-close" data-lightbox-close aria-label={s.lightboxClose}>✕</button>
+  <button type="button" class="lightbox-nav lightbox-nav--prev" data-lightbox-prev aria-label={s.lightboxPrev}>‹</button>
+  <img data-lightbox-img alt="" />
+  <button type="button" class="lightbox-nav lightbox-nav--next" data-lightbox-next aria-label={s.lightboxNext}>›</button>
+</div>
+
+<script>
+  // Carruseles de "Nuestro espacio": foto activa centrada a tamaño completo,
+  // con la anterior/siguiente asomando a los lados (scroll-snap nativo).
+  // Navegación acotada, sin bucle infinito: las flechas se deshabilitan al
+  // llegar a la primera/última foto, en vez de dar la vuelta. Avanza sola
+  // cada 4s y se para sola al llegar al final (no da la vuelta); se
+  // detiene también al poner el cursor encima, al enfocar algo dentro con
+  // teclado, o mientras el lightbox está abierto encima. Los botones
+  // también funcionan y reinician el temporizador para no pelear con el
+  // avance automático.
+  const AUTO_ADVANCE_MS = 4000;
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const tracks = document.querySelectorAll<HTMLElement>('[data-carousel]');
+  const autoplayControls: { stop: () => void; start: () => void }[] = [];
+  let lightboxIsOpen = false;
+
+  const lightbox = document.querySelector<HTMLElement>('[data-lightbox]');
+  const lightboxImg = lightbox?.querySelector<HTMLImageElement>('[data-lightbox-img]');
+  let currentImages: HTMLImageElement[] = [];
+  let currentIndex = 0;
+
+  const showImage = (index: number) => {
+    if (!lightboxImg || currentImages.length === 0) return;
+    currentIndex = (index + currentImages.length) % currentImages.length;
+    const src = currentImages[currentIndex].currentSrc || currentImages[currentIndex].src;
+    lightboxImg.src = src;
+    lightboxImg.alt = currentImages[currentIndex].alt;
+  };
+
+  const openLightbox = (track: HTMLElement, img: HTMLImageElement) => {
+    currentImages = Array.from(track.querySelectorAll('img'));
+    showImage(currentImages.indexOf(img));
+    lightbox?.removeAttribute('hidden');
+    document.body.style.overflow = 'hidden';
+    lightboxIsOpen = true;
+    autoplayControls.forEach((c) => c.stop());
+  };
+
+  const closeLightbox = () => {
+    lightbox?.setAttribute('hidden', '');
+    document.body.style.overflow = '';
+    lightboxIsOpen = false;
+    autoplayControls.forEach((c) => c.start());
+  };
+
+  tracks.forEach((track) => {
+    const wrap = track.closest('.carousel-wrap');
+    const prevBtn = wrap?.querySelector<HTMLButtonElement>('[data-carousel-prev]');
+    const nextBtn = wrap?.querySelector<HTMLButtonElement>('[data-carousel-next]');
+    const counterEl = wrap?.querySelector<HTMLElement>('[data-carousel-counter]');
+    const slides = Array.from(track.querySelectorAll<HTMLImageElement>('img'));
+    slides.forEach((img, n) => { img.dataset.slideIndex = String(n + 1); });
+    let current = slides.find((img) => img.classList.contains('is-active')) ?? slides[0];
+    let timer: ReturnType<typeof setInterval> | undefined;
+    let scrollRaf: number | undefined;
+
+    const setActive = (el: HTMLImageElement) => {
+      current = el;
+      slides.forEach((img) => {
+        const isActive = img === el;
+        img.classList.toggle('is-active', isActive);
+        if (!isActive && document.activeElement === img) img.blur();
+        img.tabIndex = isActive ? 0 : -1;
+        img.setAttribute('aria-hidden', isActive ? 'false' : 'true');
+        img.setAttribute('aria-label', isActive ? `Ver foto en grande: ${img.alt}` : `Ir a esta foto: ${img.alt}`);
+        img.style.cursor = isActive ? 'zoom-in' : 'pointer';
+      });
+      if (counterEl) counterEl.textContent = `${el.dataset.slideIndex} / ${slides.length}`;
+      if (prevBtn) prevBtn.disabled = !el.previousElementSibling;
+      if (nextBtn) nextBtn.disabled = !el.nextElementSibling;
+    };
+    setActive(current);
+    track.scrollLeft = current.offsetLeft - (track.clientWidth - current.offsetWidth) / 2;
+
+    const findClosest = () => {
+      const trackRect = track.getBoundingClientRect();
+      const center = trackRect.left + trackRect.width / 2;
+      let closest = slides[0];
+      let closestDist = Infinity;
+      slides.forEach((img) => {
+        const r = img.getBoundingClientRect();
+        const dist = Math.abs((r.left + r.width / 2) - center);
+        if (dist < closestDist) { closestDist = dist; closest = img; }
+      });
+      return closest;
+    };
+
+    const paintActive = () => {
+      const closest = findClosest();
+      slides.forEach((img) => img.classList.toggle('is-active', img === closest));
+    };
+
+    const syncCurrentOnSettle = () => { setActive(findClosest()); };
+
+    const centerOn = (el: HTMLImageElement) => {
+      const target = el.offsetLeft - (track.clientWidth - el.offsetWidth) / 2;
+      track.scrollTo({ left: target, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
+    };
+
+    const step = (dir: number) => {
+      const next = (dir > 0 ? current.nextElementSibling : current.previousElementSibling) as HTMLImageElement | null;
+      if (!next) return;
+      setActive(next);
+      centerOn(next);
+    };
+
+    const AUTOPLAY_LOOP_FADE_MS = 220;
+    const loopAutoplayToStart = () => {
+      track.classList.add('is-looping');
+      window.setTimeout(() => {
+        track.scrollLeft = slides[0].offsetLeft - (track.clientWidth - slides[0].offsetWidth) / 2;
+        setActive(slides[0]);
+        track.classList.remove('is-looping');
+      }, AUTOPLAY_LOOP_FADE_MS);
+    };
+
+    const start = () => {
+      stop();
+      if (prefersReducedMotion || lightboxIsOpen) return;
+      timer = setInterval(() => {
+        if (current.nextElementSibling) step(1);
+        else loopAutoplayToStart();
+      }, AUTO_ADVANCE_MS);
+    };
+    const stop = () => {
+      if (timer) clearInterval(timer);
+    };
+    autoplayControls.push({ stop, start });
+
+    prevBtn?.addEventListener('click', () => { step(-1); start(); });
+    nextBtn?.addEventListener('click', () => { step(1); start(); });
+    wrap?.addEventListener('mouseenter', stop);
+    wrap?.addEventListener('mouseleave', start);
+    wrap?.addEventListener('focusin', stop);
+    wrap?.addEventListener('focusout', (e) => {
+      if (!wrap.contains((e as FocusEvent).relatedTarget as Node)) start();
+    });
+    track.addEventListener('scroll', () => {
+      if (scrollRaf) cancelAnimationFrame(scrollRaf);
+      scrollRaf = requestAnimationFrame(paintActive);
+    }, { passive: true });
+    track.addEventListener('scrollend', syncCurrentOnSettle, { passive: true });
+
+    slides.forEach((img) => {
+      img.setAttribute('role', 'button');
+      img.addEventListener('click', () => {
+        if (img === current) { openLightbox(track, img); return; }
+        if (img === current.nextElementSibling) step(1);
+        else if (img === current.previousElementSibling) step(-1);
+      });
+      img.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          if (img === current) openLightbox(track, img);
+        }
+      });
+    });
+
+    start();
+  });
+
+  lightbox?.querySelector('[data-lightbox-close]')?.addEventListener('click', closeLightbox);
+  lightbox?.querySelector('[data-lightbox-prev]')?.addEventListener('click', () => showImage(currentIndex - 1));
+  lightbox?.querySelector('[data-lightbox-next]')?.addEventListener('click', () => showImage(currentIndex + 1));
+  lightbox?.addEventListener('click', (e) => {
+    if (e.target === lightbox) closeLightbox();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (lightbox?.hasAttribute('hidden')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') showImage(currentIndex - 1);
+    if (e.key === 'ArrowRight') showImage(currentIndex + 1);
+  });
+</script>
