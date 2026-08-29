@@ -6,6 +6,7 @@ export type PageKey =
   | 'contacto'
   | 'sobre-nosotros'
   | 'empleo'
+  | 'proveedores'
   | 'aviso-legal'
   | 'politica-privacidad'
   | 'politica-cookies';
@@ -16,6 +17,7 @@ export const PAGE_PATHS: Record<PageKey, string> = {
   contacto: 'contacto/',
   'sobre-nosotros': 'sobre-nosotros/',
   empleo: 'empleo/',
+  proveedores: 'proveedores/',
   'aviso-legal': 'aviso-legal/',
   'politica-privacidad': 'politica-privacidad/',
   'politica-cookies': 'politica-cookies/',
@@ -30,7 +32,8 @@ export const TRANSLATED_LOCALES: Record<PageKey, Locale[]> = {
   contacto: ['es', 'en', 'fr', 'ar'],
   'sobre-nosotros': ['es', 'en', 'fr', 'ar'],
   empleo: ['es', 'en', 'fr', 'ar'],
-  'aviso-legal': ['es'],
-  'politica-privacidad': ['es'],
-  'politica-cookies': ['es'],
+  proveedores: ['es', 'en', 'fr', 'ar'],
+  'aviso-legal': ['es', 'en', 'fr', 'ar'],
+  'politica-privacidad': ['es', 'en', 'fr', 'ar'],
+  'politica-cookies': ['es', 'en', 'fr', 'ar'],
 };

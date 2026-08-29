@@ -319,4 +319,144 @@ export const fr: Dictionary = {
     cvNotPdf: 'Le CV doit être un fichier PDF.',
     cvTooLarge: 'Le CV est trop lourd (maximum 2 Mo).',
   },
+  legal: {
+    translationDisclaimer: 'Cette page est une traduction fournie à titre d’aide. Le texte juridiquement contraignant est la version en espagnol.',
+  },
+  notFound: {
+    breadcrumbCurrent: 'Erreur 404',
+    h1: "Cette page n'existe pas",
+    sub: 'Le lien est peut-être cassé ou la page a été déplacée. Essayez plutôt ceci :',
+    destinos: [
+      { titulo: 'Accueil', desc: "Retournez à la page d'accueil." },
+      { titulo: 'À propos', desc: 'Découvrez l’équipe et notre entrepôt.' },
+      { titulo: 'Produits', desc: 'Consultez le catalogue par catégorie.' },
+      { titulo: 'Fournisseurs', desc: 'Les marques avec lesquelles nous travaillons.' },
+      { titulo: 'Emploi', desc: 'Postes ouverts et candidatures spontanées.' },
+      { titulo: 'Contact', desc: 'Écrivez-nous ou appelez-nous directement.' },
+    ],
+    ctaText: "Vous n'avez toujours pas trouvé ce que vous cherchiez ? Demandez-nous directement.",
+    ctaButton: 'Écrire sur WhatsApp',
+  },
+  proveedores: {
+    metaTitle: 'Fournisseurs',
+    metaDescription: 'Les marques avec lesquelles nous travaillons chez Construdepot by Quiles : carrelage et sols, salles de bain, Pladur et bien plus.',
+    breadcrumbCurrent: 'Fournisseurs',
+    h1: 'Les marques avec lesquelles nous travaillons',
+    sub: 'Nous travaillons avec des fabricants de référence dans chaque catégorie. Vous cherchez une marque en particulier ? Demandez-nous.',
+    groupNames: {
+      'Azulejo y pavimento': 'Carrelage et sols',
+      Baños: 'Salles de bain',
+      'Resto de productos': 'Autres produits',
+      Pladur: 'Pladur',
+    },
+    verEn: 'Voir dans',
+    ctaText: 'Vous cherchez une marque que vous ne voyez pas ici ? Demandez-nous, nous pouvons sûrement l’obtenir.',
+    ctaButton: 'Écrire sur WhatsApp',
+  },
+  avisoLegal: {
+    metaTitle: 'Mentions légales',
+    metaDescription: 'Mentions légales de Construdepot by Quiles conformément à la loi espagnole 34/2002 (LSSI-CE).',
+    breadcrumbCurrent: 'Mentions légales',
+    h1: 'Mentions légales',
+    sub: 'Informations sur le titulaire de ce site, conformément à la loi espagnole 34/2002 relative aux services de la société de l’information et au commerce électronique (LSSI-CE).',
+    updatedLabel: 'Dernière mise à jour : juillet 2026',
+    bodyHtml: `
+      <h2>1. Données d’identification du titulaire</h2>
+      <p>En application de l’article 10 de la LSSI-CE, les informations suivantes sont communiquées :</p>
+      <ul>
+        <li><strong>Nom commercial :</strong> Construdepot by Quiles</li>
+        <li><strong>Raison sociale :</strong> Autoservicio Construcción Elche, S.L.</li>
+        <li><strong>Numéro fiscal (CIF) :</strong> B75399659</li>
+        <li><strong>Objet social :</strong> Installation et services de plomberie, climatisation, gaz, électricité et maintenance des installations. Achat-vente et fourniture de matériaux de construction, quincaillerie, constructions et bâtiments, installations de plomberie, installations électriques et traitements de l’eau.</li>
+        <li><strong>Siège social :</strong> N-340, Partida Jubalcoy, pol. 1, n° 74 · 03295 Elche, Alicante, Espagne</li>
+        <li><strong>E-mail :</strong> <a href="mailto:info@construdepot.es">info@construdepot.es</a></li>
+        <li><strong>Téléphone :</strong> <a href="tel:+34607224454">+34 607 224 454</a> (WhatsApp) · <a href="tel:+34965799179">+34 965 79 91 79</a> (fixe)</li>
+        <li><strong>Immatriculation :</strong> Registre du commerce d’Alicante, Section 8, Feuille A-194439 (inscription 1, 2024).</li>
+      </ul>
+      <h2>2. Objet</h2>
+      <p>Ce site web a pour objet d’informer sur l’activité de Construdepot by Quiles (vente de matériaux de construction, de rénovation et de décoration à Elche, Alicante) et de faciliter le contact avec les particuliers et les professionnels. Il n’inclut pas de vente en ligne ni de traitement de paiements.</p>
+      <h2>3. Conditions d’utilisation</h2>
+      <p>L’accès et l’utilisation de ce site confèrent la qualité d’utilisateur et impliquent l’acceptation, dès cet accès, des conditions énoncées ici. L’utilisateur s’engage à faire un usage approprié des contenus et services proposés, et à ne pas les utiliser pour se livrer à des activités illicites, portant atteinte aux droits de tiers, ou pouvant de quelque manière que ce soit endommager, rendre inutilisable ou détériorer le site web.</p>
+      <h2>4. Propriété intellectuelle et industrielle</h2>
+      <p>La conception, la programmation, les textes et les images propres à ce site web appartiennent à Construdepot by Quiles et sont protégés par la réglementation en matière de propriété intellectuelle et industrielle. Leur reproduction, distribution ou transformation sans autorisation expresse est interdite, sauf pour un usage personnel et privé.</p>
+      <p>Les logos et marques des fabricants présentés dans la section Fournisseurs et ailleurs sur le site sont des marques déposées appartenant à leurs titulaires respectifs. Ils sont affichés uniquement à des fins d’identification, pour indiquer quels fabricants et produits Construdepot by Quiles commercialise, en vertu du droit de référencer la marque d’autrui lors de la revente de produits originaux (épuisement du droit des marques, art. 36-37 de la loi espagnole 17/2001 sur les marques). Leur utilisation n’implique aucun parrainage, affiliation officielle ni approbation de la part de ces fabricants, sauf indication expresse contraire.</p>
+      <h2>5. Liens vers des tiers</h2>
+      <p>Ce site inclut des liens et du contenu intégré de tiers (Google Maps, Instagram, WhatsApp) dont Construdepot by Quiles ne contrôle pas le contenu et n’assume aucune responsabilité. Leur utilisation est soumise aux conditions et politiques de confidentialité de chaque fournisseur.</p>
+      <h2>6. Législation applicable</h2>
+      <p>Les présentes conditions sont régies par la législation espagnole. Pour tout litige découlant de l’utilisation de ce site, les parties se soumettent aux juridictions du domicile de l’utilisateur, lorsque la réglementation en matière de consommation le permet.</p>
+      <h2>7. Contact</h2>
+      <p>Pour toute question concernant ces mentions légales, vous pouvez écrire à <a href="mailto:info@construdepot.es">info@construdepot.es</a>.</p>
+    `,
+  },
+  politicaPrivacidad: {
+    metaTitle: 'Politique de confidentialité',
+    metaDescription: 'Comment Construdepot by Quiles traite les données personnelles des personnes qui utilisent ce site, conformément au RGPD et à la loi espagnole LOPDGDD.',
+    breadcrumbCurrent: 'Politique de confidentialité',
+    h1: 'Politique de confidentialité',
+    sub: 'Comment nous traitons vos données personnelles lorsque vous utilisez le formulaire de contact ou naviguez sur ce site.',
+    updatedLabel: 'Dernière mise à jour : août 2026',
+    bodyHtml: `
+      <h2>1. Responsable du traitement</h2>
+      <ul>
+        <li><strong>Nom commercial :</strong> Construdepot by Quiles</li>
+        <li><strong>Raison sociale et numéro fiscal :</strong> Autoservicio Construcción Elche, S.L. · B75399659</li>
+        <li><strong>Siège social :</strong> N-340, Partida Jubalcoy, pol. 1, n° 74 · 03295 Elche, Alicante, Espagne</li>
+        <li><strong>E-mail :</strong> <a href="mailto:info@construdepot.es">info@construdepot.es</a></li>
+      </ul>
+      <h2>2. Quelles données nous traitons et pourquoi</h2>
+      <h3>Formulaire de contact</h3>
+      <p>Lorsque vous remplissez le formulaire de la page Contact, nous traitons les données que vous nous fournissez volontairement : nom, téléphone, e-mail (facultatif), le message ou la catégorie de produit que vous indiquez et, si vous la joignez, une photo du chantier ou du matériau que vous souhaitez assortir. Nous les utilisons exclusivement pour répondre à votre demande et, le cas échéant, gérer la relation commerciale qui pourrait en découler.</p>
+      <p>Le formulaire est traité par un script propre hébergé sur notre serveur, qui envoie votre demande par e-mail via Microsoft 365 (API Microsoft Graph) et vérifie que vous n’êtes pas un robot grâce à Cloudflare Turnstile avant que le message n’atteigne notre boîte de réception.</p>
+      <h3>Formulaire d’emploi / candidatures</h3>
+      <p>Si vous envoyez une candidature depuis la page Emploi, nous traitons les données que vous nous fournissez volontairement : nom, téléphone, e-mail, votre expérience ou le message que vous rédigez et, si vous le joignez, votre CV au format PDF. Ces données sont utilisées exclusivement pour évaluer votre candidature dans le cadre de notre processus de sélection, et sont envoyées par le même circuit technique que le formulaire de contact (Microsoft 365 via l’API Microsoft Graph, avec la même vérification anti-robot Cloudflare Turnstile).</p>
+      <h3>Navigation et contenu de tiers</h3>
+      <p>Si vous acceptez les cookies tiers (voir la <a href="{cookiesLink}">politique de cookies</a>), ce site charge du contenu intégré de Google Maps et d’Instagram (via SnapWidget), qui peuvent traiter des données relatives à votre navigation conformément à leurs propres politiques de confidentialité.</p>
+      <h2>3. Base légale</h2>
+      <p>La base légale du traitement de vos données, tant pour le formulaire de contact que pour celui de candidature, est votre propre consentement, donné en remplissant et en envoyant volontairement le formulaire (art. 6.1.a du RGPD) ; pour le formulaire de candidature, également en cochant expressément la case de consentement pour le processus de sélection.</p>
+      <h2>4. Conservation des données</h2>
+      <p>Nous conservons les données du formulaire de contact aussi longtemps que nécessaire pour traiter votre demande et, le cas échéant, pendant la durée de la relation commerciale qui pourrait en découler, sauf si vous en demandez la suppression avant. Les données de candidature sont conservées pendant la durée du processus de sélection concerné et, au maximum, pendant une durée raisonnable pendant laquelle nous pourrions en avoir besoin pour vous considérer pour de futurs postes correspondant à votre profil, sauf si vous en demandez la suppression avant.</p>
+      <h2>5. Destinataires</h2>
+      <p>Nous ne cédons pas vos données à des tiers, sauf obligation légale. Les formulaires de contact et de candidature sont envoyés par e-mail via Microsoft 365 (Microsoft Corporation) et sont protégés contre les envois automatisés par Cloudflare Turnstile (Cloudflare, Inc.) — tous deux agissent en tant que sous-traitants pour la partie strictement technique de l’envoi, et non en tant que tiers ayant un accès indépendant à vos données. Si vous acceptez du contenu intégré de tiers (voir la section suivante), ces fournisseurs peuvent traiter des données relatives à votre navigation conformément à leurs propres politiques :</p>
+      <ul>
+        <li><strong>Google</strong> (carte intégrée) : États-Unis / UE, selon le service</li>
+        <li><strong>Meta / SnapWidget</strong> (fil Instagram intégré) : États-Unis</li>
+      </ul>
+      <h2>6. Vos droits</h2>
+      <p>Vous pouvez exercer à tout moment vos droits d’accès, de rectification, d’effacement, d’opposition, de limitation du traitement et de portabilité de vos données, en écrivant à <a href="mailto:info@construdepot.es">info@construdepot.es</a> en indiquant le droit que vous souhaitez exercer, accompagné d’une copie d’un document justifiant de votre identité.</p>
+      <p>Si vous estimez que votre demande n’a pas été correctement traitée, vous pouvez déposer une réclamation auprès de l’Agence espagnole de protection des données (<a href="https://www.aepd.es" target="_blank" rel="noopener">aepd.es</a>).</p>
+      <h2>7. Mesures de sécurité</h2>
+      <p>Nous appliquons des mesures techniques et organisationnelles raisonnables pour protéger vos données personnelles contre les accès non autorisés, la perte ou l’altération, adaptées à l’état de la technique et à la nature des données traitées.</p>
+      <h2>8. Modifications de cette politique</h2>
+      <p>Nous pouvons mettre à jour cette politique de confidentialité pour l’adapter à des évolutions législatives ou à des changements sur le site. La date de dernière mise à jour figure en haut de cette page.</p>
+    `,
+  },
+  politicaCookies: {
+    metaTitle: 'Politique de cookies',
+    metaDescription: 'Quels cookies ce site utilise, pour quoi faire, et comment vous pouvez les accepter ou les refuser.',
+    breadcrumbCurrent: 'Politique de cookies',
+    h1: 'Politique de cookies',
+    sub: 'Quels cookies ce site utilise, à quoi ils servent, et comment vous pouvez les accepter ou les refuser.',
+    updatedLabel: 'Dernière mise à jour : juillet 2026',
+    bodyHtml: `
+      <h2>1. Qu’est-ce qu’un cookie ?</h2>
+      <p>Les cookies sont de petits fichiers qu’un site web enregistre dans votre navigateur pour se souvenir d’informations sur votre visite. Sous ce même terme, nous incluons également d’autres technologies de stockage local similaires (comme <em>localStorage</em>), que nous utilisons dans le même but : mémoriser votre choix concernant les cookies.</p>
+      <h2>2. Cookies que nous utilisons</h2>
+      <h3>Techniques / nécessaires (ne nécessitent pas votre consentement)</h3>
+      <p>Nous enregistrons dans votre navigateur, via le stockage local, la préférence que vous choisissez dans l’avis sur les cookies (accepter ou refuser le contenu tiers), afin de ne plus vous la demander sur chaque page. Cette information n’est utilisée à aucune autre fin et est exemptée de consentement car strictement nécessaire au fonctionnement que vous demandez vous-même (art. 22.2 LSSI-CE).</p>
+      <h3>Tiers (nécessitent votre consentement préalable)</h3>
+      <p>Si vous acceptez l’avis sur les cookies, ce site charge le contenu tiers suivant, qui peut installer ses propres cookies :</p>
+      <ul>
+        <li><strong>Google Maps</strong> : carte intégrée sur l’Accueil et le Contact, pour indiquer notre emplacement. Voir la <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">politique de confidentialité de Google</a>.</li>
+        <li><strong>Instagram (SnapWidget)</strong> : fil de publications intégré sur l’Accueil. Voir la <a href="https://help.instagram.com/519522125107875" target="_blank" rel="noopener">politique de données de Meta</a>.</li>
+      </ul>
+      <p>Tant que vous n’acceptez pas ce contenu, aucun des deux ne se charge : vous verrez un avis avec un bouton pour l’activer, section par section, à la place de la carte ou du fil.</p>
+      <p>Si nous intégrons à l’avenir des outils d’analyse web (par exemple Google Analytics), ils rejoindront cette même catégorie et seront également soumis à votre consentement préalable. Nous mettrons à jour cette page le cas échéant.</p>
+      <h2>3. Comment accepter ou refuser les cookies</h2>
+      <p>Lors de votre première visite sur le site, vous verrez un avis avec deux options tout aussi visibles : <strong>« Tout accepter »</strong> et <strong>« Refuser »</strong>. Votre choix est mémorisé pour vos prochaines visites. Vous pouvez également accepter le contenu d’un élément précis (par exemple, seulement la carte) directement depuis son propre avis, sans affecter le reste.</p>
+      <p>Vous pouvez modifier votre décision à tout moment depuis le lien <strong>« Paramètres des cookies »</strong> dans le pied de page de n’importe quelle section du site.</p>
+      <p>Vous pouvez également bloquer ou supprimer les cookies depuis les paramètres de votre navigateur ; sachez que cela peut affecter l’affichage de la carte ou du fil Instagram sur n’importe quel site, pas seulement celui-ci.</p>
+      <h2>4. Contact</h2>
+      <p>Pour toute question sur cette politique, écrivez-nous à <a href="mailto:info@construdepot.es">info@construdepot.es</a>.</p>
+    `,
+  },
 };

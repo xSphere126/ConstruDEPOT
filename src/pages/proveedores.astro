@@ -1,60 +1,16 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import PerondaLogo from '../components/PerondaLogo.astro';
-import { grupos } from '../data/marcas';
-import { categoriasProductos } from '../data/categorias';
-import { withBase } from '../lib/url';
+import ProveedoresContent from '../sections/ProveedoresContent.astro';
+import { t } from '../i18n/useTranslations';
 
-const nombreCategoria = new Map(categoriasProductos.map((c) => [c.id, c.nombre]));
+const dict = t('es');
 ---
 
 <BaseLayout
-  title="Proveedores"
-  description="Las marcas con las que trabajamos en Construdepot by Quiles: azulejo y pavimento, baños, Pladur y mucho más."
+  title={dict.proveedores.metaTitle}
+  description={dict.proveedores.metaDescription}
   headerVariant="solid"
+  pageKey="proveedores"
 >
-  <section class="page-banner page-banner--photo" style={`--banner-photo:url(${withBase('/images/intazulejos2.jpg')})`}>
-    <div class="wrap">
-      <div class="breadcrumb"><a href={withBase('/')}>Inicio</a> · <a href={withBase('/productos/')}>Productos</a> · Proveedores</div>
-      <h1>Las marcas con las que trabajamos</h1>
-      <p>Trabajamos con fabricantes de referencia en cada categoría. Si buscas una marca concreta, pregúntanos.</p>
-    </div>
-  </section>
-
-  <section>
-    <div class="wrap">
-      {grupos.map((grupo) => (
-        <div class="brand-group">
-          <h2 class="eyebrow-sm">{grupo.nombre}</h2>
-          <div class="brand-grid">
-            {grupo.marcas.map((marca) => (
-              <div class="brand-tile">
-                <a href={marca.url} target={marca.url !== '#' ? '_blank' : undefined} rel={marca.url !== '#' ? 'noopener' : undefined} class="brand-chip" aria-label={marca.nombre}>
-                  {marca.logo ? (
-                    <img src={withBase(marca.logo)} alt={marca.nombre} class={`brand-logo${marca.white ? ' brand-logo--white' : ''}`} />
-                  ) : marca.svg ? (
-                    <PerondaLogo class="brand-logo brand-logo-svg" />
-                  ) : (
-                    <span class="brand-chip-text">{marca.nombre}</span>
-                  )}
-                </a>
-                {marca.categorias?.map((catId) => (
-                  <a href={withBase(`/productos/?marca=${encodeURIComponent(marca.nombre)}#${catId}`)} class="brand-category-link">Ver en {nombreCategoria.get(catId)} →</a>
-                ))}
-              </div>
-            ))}
-          </div>
-        </div>
-      ))}
-    </div>
-  </section>
-
-  <section style="background:var(--sand);">
-    <div class="wrap">
-      <div class="cta-band" style="background:var(--ink);">
-        <h3>¿Buscas una marca que no ves aquí? Pregúntanos, seguro que podemos conseguirla.</h3>
-        <a href="https://wa.me/34607224454" class="btn-primary">Escribir por WhatsApp →</a>
-      </div>
-    </div>
-  </section>
+  <ProveedoresContent />
 </BaseLayout>

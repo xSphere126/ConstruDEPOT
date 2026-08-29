@@ -319,4 +319,144 @@ export const en: Dictionary = {
     cvNotPdf: 'The CV must be a PDF file.',
     cvTooLarge: 'The CV is too large (maximum 2 MB).',
   },
+  legal: {
+    translationDisclaimer: 'This page is a translation provided for convenience. The Spanish version is the legally binding text.',
+  },
+  notFound: {
+    breadcrumbCurrent: '404 error',
+    h1: "This page doesn't exist",
+    sub: 'The link may be broken or the page may have moved. Try one of these instead:',
+    destinos: [
+      { titulo: 'Home', desc: 'Go back to the homepage.' },
+      { titulo: 'About us', desc: 'Meet the team and our warehouse.' },
+      { titulo: 'Products', desc: 'Browse the catalogue by category.' },
+      { titulo: 'Suppliers', desc: 'The brands we work with.' },
+      { titulo: 'Careers', desc: 'Open positions and open applications.' },
+      { titulo: 'Contact', desc: 'Write to us or call us directly.' },
+    ],
+    ctaText: "Still couldn't find what you were looking for? Ask us directly.",
+    ctaButton: 'Write on WhatsApp',
+  },
+  proveedores: {
+    metaTitle: 'Suppliers',
+    metaDescription: 'The brands we work with at Construdepot by Quiles: tile and flooring, bathrooms, Pladur and much more.',
+    breadcrumbCurrent: 'Suppliers',
+    h1: 'Brands we work with',
+    sub: "We work with leading manufacturers in every category. Looking for a specific brand? Just ask us.",
+    groupNames: {
+      'Azulejo y pavimento': 'Tile and flooring',
+      Baños: 'Bathrooms',
+      'Resto de productos': 'Other products',
+      Pladur: 'Pladur',
+    },
+    verEn: 'See in',
+    ctaText: "Looking for a brand you don't see here? Ask us — we can probably get it.",
+    ctaButton: 'Write on WhatsApp',
+  },
+  avisoLegal: {
+    metaTitle: 'Legal notice',
+    metaDescription: 'Legal notice for Construdepot by Quiles under Spanish Law 34/2002 (LSSI-CE).',
+    breadcrumbCurrent: 'Legal notice',
+    h1: 'Legal notice',
+    sub: "Information about the owner of this website, in accordance with Spanish Law 34/2002 on Information Society Services and Electronic Commerce (LSSI-CE).",
+    updatedLabel: 'Last updated: July 2026',
+    bodyHtml: `
+      <h2>1. Identification of the site owner</h2>
+      <p>In compliance with article 10 of the LSSI-CE, the following details are provided:</p>
+      <ul>
+        <li><strong>Trade name:</strong> Construdepot by Quiles</li>
+        <li><strong>Registered company name:</strong> Autoservicio Construcción Elche, S.L.</li>
+        <li><strong>Tax ID (CIF):</strong> B75399659</li>
+        <li><strong>Company purpose:</strong> Installation and services for plumbing, climate control, gas, electricity and maintenance of installations. Sale and supply of building materials, hardware, construction and buildings, plumbing installations, electrical installations and water treatment.</li>
+        <li><strong>Registered address:</strong> N-340, Partida Jubalcoy, pol. 1, no. 74 · 03295 Elche, Alicante, Spain</li>
+        <li><strong>Email:</strong> <a href="mailto:info@construdepot.es">info@construdepot.es</a></li>
+        <li><strong>Phone:</strong> <a href="tel:+34607224454">+34 607 224 454</a> (WhatsApp) · <a href="tel:+34965799179">+34 965 79 91 79</a> (landline)</li>
+        <li><strong>Company registry details:</strong> Commercial Registry of Alicante, Section 8, Sheet A-194439 (entry 1, 2024).</li>
+      </ul>
+      <h2>2. Purpose</h2>
+      <p>This website is intended to provide information about the activity of Construdepot by Quiles (sale of building, renovation and decoration materials in Elche, Alicante) and to facilitate contact with homeowners and professionals. It does not include online sales or process payments.</p>
+      <h2>3. Terms of use</h2>
+      <p>Accessing and using this website grants the status of user and implies acceptance, from the moment of access, of the terms set out here. The user agrees to make appropriate use of the content and services offered, and not to use them to engage in unlawful activities, activities that infringe the rights of third parties, or that could in any way damage, disable or impair the website.</p>
+      <h2>4. Intellectual and industrial property</h2>
+      <p>The design, programming, text and images specific to this website are owned by Construdepot by Quiles and are protected by intellectual and industrial property regulations. Their reproduction, distribution or transformation without express authorisation is prohibited, except for personal and private use.</p>
+      <p>The logos and trademarks of the manufacturers shown in the Suppliers section and elsewhere on the site are registered trademarks of their respective owners. They are shown solely for identification purposes, to indicate which manufacturers and products Construdepot by Quiles sells, under the right to reference third-party trademarks when reselling original products (trademark exhaustion, articles 36-37 of Spanish Trademark Law 17/2001). Their use does not imply sponsorship, official affiliation or approval by those manufacturers unless expressly stated.</p>
+      <h2>5. Third-party links</h2>
+      <p>This website includes links and embedded content from third parties (Google Maps, Instagram, WhatsApp) over whose content Construdepot by Quiles has no control and assumes no responsibility. Their use is subject to each provider's own terms and privacy policies.</p>
+      <h2>6. Applicable law</h2>
+      <p>These terms are governed by Spanish law. For any dispute arising from the use of this website, the parties submit to the courts of the user's domicile, where consumer protection regulations so permit.</p>
+      <h2>7. Contact</h2>
+      <p>For any query about this legal notice, you can write to <a href="mailto:info@construdepot.es">info@construdepot.es</a>.</p>
+    `,
+  },
+  politicaPrivacidad: {
+    metaTitle: 'Privacy policy',
+    metaDescription: 'How Construdepot by Quiles handles the personal data of those who use this website, in accordance with the GDPR and Spanish LOPDGDD.',
+    breadcrumbCurrent: 'Privacy policy',
+    h1: 'Privacy policy',
+    sub: 'How we handle your personal data when you use the contact form or browse this website.',
+    updatedLabel: 'Last updated: August 2026',
+    bodyHtml: `
+      <h2>1. Data controller</h2>
+      <ul>
+        <li><strong>Trade name:</strong> Construdepot by Quiles</li>
+        <li><strong>Registered company name and tax ID:</strong> Autoservicio Construcción Elche, S.L. · B75399659</li>
+        <li><strong>Registered address:</strong> N-340, Partida Jubalcoy, pol. 1, no. 74 · 03295 Elche, Alicante, Spain</li>
+        <li><strong>Email:</strong> <a href="mailto:info@construdepot.es">info@construdepot.es</a></li>
+      </ul>
+      <h2>2. What data we process and why</h2>
+      <h3>Contact form</h3>
+      <p>When you fill in the form on the Contact page, we process the data you voluntarily provide: name, phone, email (optional), the message or product category you tell us about and, if you attach one, a photo of the job or the material you want to match. We use this data solely to respond to your enquiry and, where applicable, to manage any resulting business relationship.</p>
+      <p>The form is processed by our own script hosted on our server, which sends your enquiry by email via Microsoft 365 (Microsoft Graph API) and checks that you are not a robot using Cloudflare Turnstile before the message reaches our inbox.</p>
+      <h3>Job application form</h3>
+      <p>If you submit an application from the Careers page, we process the data you voluntarily provide: name, phone, email, your experience or the message you write and, if you attach one, your CV in PDF format. This data is used solely to assess your application within our selection process, and is sent through the same technical channel as the contact form (Microsoft 365 via the Microsoft Graph API, with the same Cloudflare Turnstile anti-bot check).</p>
+      <h3>Browsing and third-party content</h3>
+      <p>If you accept third-party cookies (see <a href="{cookiesLink}">Cookie policy</a>), this website loads embedded content from Google Maps and Instagram (via SnapWidget), which may process data about your browsing in accordance with their own privacy policies.</p>
+      <h2>3. Legal basis</h2>
+      <p>The legal basis for processing your data, for both the contact form and the job application form, is your own consent, given by voluntarily filling in and submitting the form (art. 6.1.a GDPR); in the case of the job application form, also by expressly ticking the consent box for the selection process.</p>
+      <h2>4. Data retention</h2>
+      <p>We keep contact form data for as long as necessary to handle your enquiry and, where applicable, for as long as any resulting business relationship lasts, unless you request its deletion beforehand. Job application data is kept for the duration of the relevant selection process and, at most, for a reasonable time during which we may need it to consider you for future vacancies matching your profile, unless you request its deletion beforehand.</p>
+      <h2>5. Recipients</h2>
+      <p>We do not share your data with third parties except where legally required. The contact and job application forms are sent by email via Microsoft 365 (Microsoft Corporation) and are protected against automated submissions by Cloudflare Turnstile (Cloudflare, Inc.) — both act as data processors for the strictly technical part of sending the message, not as independent third parties with access to your data. If you accept embedded third-party content (see next section), those providers may process data about your browsing in accordance with their own policies:</p>
+      <ul>
+        <li><strong>Google</strong> (embedded map): United States / EU, depending on the service</li>
+        <li><strong>Meta / SnapWidget</strong> (embedded Instagram feed): United States</li>
+      </ul>
+      <h2>6. Your rights</h2>
+      <p>You may exercise your rights of access, rectification, erasure, objection, restriction of processing and data portability at any time by writing to <a href="mailto:info@construdepot.es">info@construdepot.es</a>, indicating which right you wish to exercise together with a copy of a document proving your identity.</p>
+      <p>If you believe we have not properly handled your request, you may file a complaint with the Spanish Data Protection Agency (<a href="https://www.aepd.es" target="_blank" rel="noopener">aepd.es</a>).</p>
+      <h2>7. Security measures</h2>
+      <p>We apply reasonable technical and organisational measures to protect your personal data against unauthorised access, loss or alteration, appropriate to the state of the art and the nature of the data processed.</p>
+      <h2>8. Changes to this policy</h2>
+      <p>We may update this privacy policy to reflect legislative developments or changes to the website. The date of the last update appears at the top of this page.</p>
+    `,
+  },
+  politicaCookies: {
+    metaTitle: 'Cookie policy',
+    metaDescription: 'What cookies this website uses, what for, and how you can accept or reject them.',
+    breadcrumbCurrent: 'Cookie policy',
+    h1: 'Cookie policy',
+    sub: 'What cookies this website uses, what they are for, and how you can accept or reject them.',
+    updatedLabel: 'Last updated: July 2026',
+    bodyHtml: `
+      <h2>1. What are cookies?</h2>
+      <p>Cookies are small files that a website stores in your browser to remember information about your visit. Under this same term we also include other similar local storage technologies (such as <em>localStorage</em>), which we use for the same purpose of remembering your choice about cookies.</p>
+      <h2>2. Cookies we use</h2>
+      <h3>Technical / necessary (do not require your consent)</h3>
+      <p>We store, using local storage on your browser, the preference you choose in the cookie notice (accepting or rejecting third-party content), so we don't ask you again on every page. This information is not used for any other purpose and is exempt from consent because it is strictly necessary for the functionality you yourself request (art. 22.2 LSSI-CE).</p>
+      <h3>Third-party (require your prior consent)</h3>
+      <p>If you accept the cookie notice, this website loads the following third-party content, which may set its own cookies:</p>
+      <ul>
+        <li><strong>Google Maps</strong>: map embedded on the Home and Contact pages, to show our location. See <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google's privacy policy</a>.</li>
+        <li><strong>Instagram (SnapWidget)</strong>: feed of posts embedded on the Home page. See <a href="https://help.instagram.com/519522125107875" target="_blank" rel="noopener">Meta's data policy</a>.</li>
+      </ul>
+      <p>Until you accept this content, neither loads: you'll see a notice with a button to enable it, per section, instead of the map or the feed.</p>
+      <p>If we add web analytics tools in the future (for example, Google Analytics), they will fall under this same category and will likewise be subject to your prior consent. We will update this page when that happens.</p>
+      <h2>3. How to accept or reject cookies</h2>
+      <p>The first time you visit the site, you'll see a notice with two equally visible options: <strong>"Accept all"</strong> and <strong>"Reject"</strong>. Your choice is remembered for future visits. You can also accept the content of a specific item (for example, just the map) directly from its own notice, without affecting the rest.</p>
+      <p>You can change your decision at any time from the <strong>"Cookie settings"</strong> link in the footer of any page on the site.</p>
+      <p>You can also block or delete cookies from your browser settings; keep in mind this may affect how the map or the Instagram feed display on any website, not just this one.</p>
+      <h2>4. Contact</h2>
+      <p>For any question about this policy, write to us at <a href="mailto:info@construdepot.es">info@construdepot.es</a>.</p>
+    `,
+  },
 };

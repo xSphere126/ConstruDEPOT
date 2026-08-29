@@ -16,9 +16,10 @@ interface Props {
   active?: 'inicio' | 'sobre-nosotros' | 'productos' | 'empleo' | 'contacto';
   bodyClass?: string;
   pageKey?: PageKey;
+  forceArabicFont?: boolean;
 }
 
-const { title, description, headerVariant = 'solid', active, bodyClass, pageKey } = Astro.props;
+const { title, description, headerVariant = 'solid', active, bodyClass, pageKey, forceArabicFont = false } = Astro.props;
 
 const locale = (Astro.currentLocale as Locale | undefined) ?? 'es';
 const dir = isRtl(locale) ? 'rtl' : 'ltr';
@@ -115,7 +116,7 @@ const localBusinessLd = {
     <link rel="alternate" hreflang="x-default" href={new URL(getRelativeLocaleUrl('es', PAGE_PATHS[pageKey!]), Astro.site ?? Astro.url).toString()} />
   )}
 
-  {locale === 'ar' && (
+  {(locale === 'ar' || forceArabicFont) && (
     <>
       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
       <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap" />

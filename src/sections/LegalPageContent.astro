@@ -1,0 +1,36 @@
+---
+import { withBase } from '../lib/url';
+import { t, localizedHref } from '../i18n/useTranslations';
+import type { Locale } from '../i18n/locales';
+
+interface Props {
+  page: 'avisoLegal' | 'politicaPrivacidad' | 'politicaCookies';
+}
+
+const { page } = Astro.props;
+const locale = (Astro.currentLocale as Locale | undefined) ?? 'es';
+const dict = t(locale);
+const content = dict[page];
+
+const bodyHtml = content.bodyHtml.replaceAll('{cookiesLink}', localizedHref('politica-cookies', locale));
+---
+
+<section class="page-banner page-banner--photo" style={`--banner-photo:url(${withBase('/images/matexterior3.jpg')})`}>
+  <div class="wrap">
+    <div class="breadcrumb"><a href={localizedHref('home', locale)}>{dict.nav.inicio}</a> · {content.breadcrumbCurrent}</div>
+    <h1>{content.h1}</h1>
+    <p>{content.sub}</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap legal-content">
+    <p class="updated">{content.updatedLabel}</p>
+    {locale !== 'es' && <p class="legal-disclaimer">{dict.legal.translationDisclaimer}</p>}
+    <Fragment set:html={bodyHtml} />
+  </div>
+</section>
+
+<style>
+  .legal-disclaimer{ background:rgba(156,82,22,.08); border:1px solid rgba(156,82,22,.28); border-radius:12px; padding:14px 16px; font-size:13.5px; color:var(--amber); margin-bottom:32px; }
+</style>

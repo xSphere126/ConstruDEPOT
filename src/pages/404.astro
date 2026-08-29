@@ -1,49 +1,85 @@
 ---
+import { getRelativeLocaleUrl } from 'astro:i18n';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { withBase } from '../lib/url';
+import { t } from '../i18n/useTranslations';
+import { LOCALES, isRtl } from '../i18n/locales';
+import { PAGE_PATHS } from '../i18n/pages';
 
-const destinos = [
-  { href: '/', titulo: 'Inicio', desc: 'Vuelve a la página principal.' },
-  { href: '/sobre-nosotros/', titulo: 'Sobre nosotros', desc: 'Conoce al equipo y nuestro almacén.' },
-  { href: '/productos/', titulo: 'Productos', desc: 'Consulta el catálogo por categorías.' },
-  { href: '/proveedores/', titulo: 'Proveedores', desc: 'Las marcas con las que trabajamos.' },
-  { href: '/empleo/', titulo: 'Empleo', desc: 'Vacantes abiertas y candidatura espontánea.' },
-  { href: '/contacto/', titulo: 'Contacto', desc: 'Escríbenos o llámanos directamente.' },
-];
+// Página 404 real de IONOS: Apache sirve siempre este único archivo estático
+// para cualquier URL rota (ErrorDocument 404, ver README), sin importar bajo
+// qué prefijo de idioma estuviera la URL que falló — así que no existe (ni
+// puede existir) un 404.astro por idioma como con el resto de páginas. En
+// vez de dejarla fija en español, se renderizan los 4 idiomas a la vez (uno
+// visible, el resto oculto) y un script mínimo activa el que corresponda
+// según el primer segmento de la URL real que el visitante intentó abrir
+// (Apache cambia el contenido servido, pero no la barra de direcciones).
+const destinoKeys = ['home', 'sobre-nosotros', 'productos', 'proveedores', 'empleo', 'contacto'] as const;
+
+const bloques = LOCALES.map((locale) => {
+  const dict = t(locale);
+  const hrefs = destinoKeys.map((key) => getRelativeLocaleUrl(locale, PAGE_PATHS[key]));
+  return { locale, dir: isRtl(locale) ? 'rtl' : 'ltr', dict, hrefs };
+});
+
+const tituloPorLocale = Object.fromEntries(bloques.map((b) => [b.locale, `${b.dict.notFound.h1} · Construdepot by Quiles`]));
 ---
 
-<BaseLayout
-  title="Página no encontrada"
-  description="La página que buscas no existe o se ha movido."
-  headerVariant="solid"
->
-  <section class="page-banner page-banner--photo" style={`--banner-photo:url(${withBase('/images/matexterior2.jpg')})`}>
+<BaseLayout title="Página no encontrada" description="La página que buscas no existe o se ha movido." headerVariant="solid" forceArabicFont>
+  <section class="page-banner page-banner--photo" style="--banner-photo:url(/images/matexterior2.jpg)">
     <div class="wrap">
-      <div class="breadcrumb"><a href={withBase('/')}>Inicio</a> · Error 404</div>
-      <h1>Esta página no existe</h1>
-      <p>Puede que el enlace esté roto o que la página se haya movido. Prueba desde aquí:</p>
+      {bloques.map((b) => (
+        <div data-notfound-locale={b.locale} hidden={b.locale !== 'es'}>
+          <div class="breadcrumb"><a href={getRelativeLocaleUrl(b.locale, '')}>{b.dict.nav.inicio}</a> · {b.dict.notFound.breadcrumbCurrent}</div>
+          <h1>{b.dict.notFound.h1}</h1>
+          <p>{b.dict.notFound.sub}</p>
+        </div>
+      ))}
     </div>
   </section>
 
   <section>
     <div class="wrap">
-      <div class="grid grid-3">
-        {destinos.map((d) => (
-          <a href={withBase(d.href)} class="card" style="text-decoration:none;">
-            <h3>{d.titulo}</h3>
-            <p>{d.desc}</p>
-          </a>
-        ))}
-      </div>
+      {bloques.map((b) => (
+        <div class="grid grid-3" data-notfound-locale={b.locale} hidden={b.locale !== 'es'}>
+          {b.dict.notFound.destinos.map((d, i) => (
+            <a href={b.hrefs[i]} class="card" style="text-decoration:none;">
+              <h3>{d.titulo}</h3>
+              <p>{d.desc}</p>
+            </a>
+          ))}
+        </div>
+      ))}
     </div>
   </section>
 
   <section style="background:var(--sand);">
     <div class="wrap">
-      <div class="cta-band" style="background:var(--ink);">
-        <h3>¿Tampoco has encontrado lo que buscabas ahí? Pregúntanos directamente.</h3>
-        <a href="https://wa.me/34607224454" class="btn-primary">Escribir por WhatsApp →</a>
-      </div>
+      {bloques.map((b) => (
+        <div class="cta-band" style="background:var(--ink);" data-notfound-locale={b.locale} hidden={b.locale !== 'es'}>
+          <h3>{b.dict.notFound.ctaText}</h3>
+          <a href="https://wa.me/34607224454" class="btn-primary">{b.dict.notFound.ctaButton} <span class="arrow-icon">→</span></a>
+        </div>
+      ))}
     </div>
   </section>
 </BaseLayout>
+
+<script define:vars={{ tituloPorLocale }}>
+  // Apache conserva en la barra de direcciones la URL real que el visitante
+  // intentó abrir (ErrorDocument no redirige, solo cambia el contenido
+  // servido) — de ahí se puede leer el idioma pretendido aunque el HTML sea
+  // siempre el mismo archivo estático.
+  const supported = ['en', 'fr', 'ar'];
+  const firstSegment = window.location.pathname.split('/').filter(Boolean)[0];
+  const locale = supported.includes(firstSegment) ? firstSegment : 'es';
+
+  document.querySelectorAll('[data-notfound-locale]').forEach((el) => {
+    el.hidden = el.dataset.notfoundLocale !== locale;
+  });
+
+  if (locale !== 'es') {
+    document.documentElement.lang = locale;
+    document.documentElement.dir = locale === 'ar' ? 'rtl' : 'ltr';
+    document.title = tituloPorLocale[locale];
+  }
+</script>
