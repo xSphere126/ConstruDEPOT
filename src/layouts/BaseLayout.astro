@@ -62,11 +62,11 @@ const localBusinessLd = {
     addressRegion: 'Alicante',
     addressCountry: 'ES',
   },
-  // Horario real 2026 (flyer oficial de tienda): Almacén L-V 7:30-19:00 y
-  // Exposición L-V 9:00-20:00 se solapan de sobra entre semana como para
-  // representarlos de cara al buscador como una única franja 7:30-20:00 (unión
-  // de ambas); el sábado, en cambio, ambas áreas cierran a las 13:30 — mucho
-  // antes que la franja de entre semana, así que necesita su propio tramo.
+  // Horario real 2026 (flyer oficial de tienda): Almacén L-V 7:30-20:00 y
+  // Exposición L-V 9:00-20:00 comparten cierre entre semana, así que de cara
+  // al buscador basta una única franja 7:30-20:00 (unión de ambas); el
+  // sábado, Almacén (8:30-13:30) sigue abriendo antes que Exposición
+  // (9:00-13:30), así que su franja más amplia es la que representa la unión.
   openingHoursSpecification: [
     {
       '@type': 'OpeningHoursSpecification',

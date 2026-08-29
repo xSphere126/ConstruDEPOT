@@ -186,11 +186,13 @@ const navItems: { key: PageKey; navLabelKey: keyof typeof dict.nav; activeKey: N
 
   function scheduleStatus() {
     const { day, minutesNow } = getMadridDayAndMinutes();
-    const SAT_OPEN = 8 * 60 + 30;
     const SAT_CLOSE = 13 * 60 + 30;
 
-    const almacenOpen = isAreaOpen(day, minutesNow, 7 * 60 + 30, 19 * 60, SAT_OPEN, SAT_CLOSE);
-    const expoOpen = isAreaOpen(day, minutesNow, 9 * 60, 20 * 60, SAT_OPEN, SAT_CLOSE);
+    // Horario real 2026: Almacén y Exposición cierran a la misma hora entre
+    // semana (20:00) desde la última actualización, pero el sábado siguen
+    // abriendo a horas distintas (Almacén 8:30, Exposición 9:00).
+    const almacenOpen = isAreaOpen(day, minutesNow, 7 * 60 + 30, 20 * 60, 8 * 60 + 30, SAT_CLOSE);
+    const expoOpen = isAreaOpen(day, minutesNow, 9 * 60, 20 * 60, 9 * 60, SAT_CLOSE);
 
     return { almacenOpen, expoOpen };
   }
