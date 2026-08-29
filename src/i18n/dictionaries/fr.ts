@@ -18,7 +18,6 @@ export const fr: Dictionary = {
     scheduleExpo: 'Exposition',
     scheduleAbierto: 'Ouvert',
     scheduleCerrado: 'Fermé',
-    originalReviewInSpanish: 'Avis original en espagnol',
     verTodasLasMarcas: 'Voir toutes les marques',
   },
   cookieBanner: {
@@ -71,7 +70,18 @@ export const fr: Dictionary = {
     testimonials: {
       eyebrow: 'Témoignages',
       title: 'Ce que disent nos clients',
-      sub: 'Avis authentiques de notre fiche Google, tels qu’ils ont été écrits.',
+      sub: 'Avis authentiques de notre fiche Google, traduits de l’espagnol original.',
+      reviewsWord: 'avis',
+      localGuide: 'Guide Local',
+      translatedNote: 'Traduit de l’espagnol',
+      quotes: [
+        'Des matériaux de très bonne qualité à un très bon prix. L’amabilité et le service de Pepe sont incomparables. Il m’a recommandé un maçon, qui m’a refait une grande salle de bain en une semaine. Je suis très satisfait de cette entreprise.',
+        'Après plusieurs rénovations, c’est toujours ici que nous trouvons le meilleur prix et le meilleur service. Pepe comme Tania sont très compétents et vous aident à trouver la meilleure option pour chaque pièce. Nous avons comparé de nombreux endroits au fil des années, et le meilleur rapport qualité/prix se trouve sans aucun doute chez Construdepot.',
+        'Excellent entrepôt avec des matériaux de construction de première qualité à très bon prix. Très recommandable.',
+        'Bon service, bons matériaux et très attentionnés. Nous sommes allés voir des matériaux à plusieurs endroits et avons fini par tout acheter là-bas. Pepe nous a traités comme des proches et s’est adapté à tous nos besoins.',
+        'Je tiens à remercier pour l’excellent service et les conseils que j’ai reçus. On m’a recommandé cette entreprise de matériaux et l’expérience a été parfaite. Ils m’ont aidé à choisir le sol de ma maison, ont répondu à toutes mes questions avec beaucoup de professionnalisme et m’ont conseillé la meilleure option selon mes besoins. La qualité des matériaux est excellente et le résultat final a dépassé mes attentes. Je leur ferai à nouveau confiance sans hésiter et les recommanderai à quiconque cherche de bons matériaux et un service proche et professionnel.',
+        'Super aimables !!! Ils m’ont très bien pris en charge, ont répondu à toutes mes questions et m’ont aidé à trouver exactement les sols et les meubles que j’avais en tête !!! Je les recommande à 100 %.',
+      ],
     },
     projectCta: {
       eyebrow: 'Vous avez aussi un projet ?',

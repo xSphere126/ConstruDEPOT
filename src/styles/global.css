@@ -595,3 +595,9 @@ html[dir='rtl'] input, html[dir='rtl'] textarea, html[dir='rtl'] label{
 
 .arrow-icon{ display:inline-flex; }
 html[dir='rtl'] .arrow-icon{ transform:scaleX(-1); }
+
+/* Espejo de la esquina orgánica asimétrica de las tarjetas — antes quedaba
+   pendiente de iterar tras el lanzamiento en árabe (ver plan de i18n); al
+   auditar RTL se decidió que es una corrección trivial y de riesgo nulo, así
+   que se resuelve ya en vez de dejarla a medias. */
+html[dir='rtl'] .card{ border-radius:44px 20px 20px 20px; }

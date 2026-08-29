@@ -16,7 +16,6 @@ export const es = {
     scheduleExpo: 'Expo',
     scheduleAbierto: 'Abierto',
     scheduleCerrado: 'Cerrado',
-    originalReviewInSpanish: 'Reseña original en español',
     verTodasLasMarcas: 'Ver todas las marcas',
   },
   cookieBanner: {
@@ -70,6 +69,17 @@ export const es = {
       eyebrow: 'Testimonios',
       title: 'Lo que dicen nuestros clientes',
       sub: 'Reseñas reales de nuestra ficha de Google, tal cual las escribieron.',
+      reviewsWord: 'reseñas',
+      localGuide: 'Local Guide',
+      translatedNote: 'Reseña original en español',
+      quotes: [
+        'Materiales de muy buena calidad y a muy buen precio. La amabilidad y el servicio de Pepe sin comparación. Me recomendó a un albañil, que me hizo la reforma de un baño grande en una semana. He quedado muy satisfecho con esta compañía.',
+        'Tras varias reformas siempre encontramos aquí el mejor precio y el mejor trato. Tanto Pepe como Tania son súper competentes y te ayudan a encontrar la mejor opción para cada estancia. Hemos comparado muchos sitios en estos años y la mejor calidad/precio sin duda está en Construdepot.',
+        'Excelente almacén con materiales de construcción de primera a muy buenos precios. Super recomendable.',
+        'Buen trato, buen material y muy atentos. Fuimos a varios sitios a ver material y terminamos comprando todo allí. Pepe nos dio un trato muy familiar y se adaptó a todo.',
+        'Quiero agradecer el excelente trato y asesoramiento que he recibido. Me recomendaron esta empresa de materiales y la experiencia ha sido de 10. Me ayudaron a elegir el suelo para mi casa, resolvieron todas mis dudas con mucha profesionalidad y me aconsejaron la mejor opción según mis necesidades. La calidad de los materiales es excelente y el resultado final ha superado mis expectativas. Sin duda, volveré a confiar en ellos y los recomendaré a cualquiera que busque buenos materiales y un servicio cercano y profesional.',
+        'Súper amables!!! Me han atendido genial he podido resolver todas mis dudas y ha encontrado justo todos los suelos y muebles exactamente como la idea que tenía en mente!!! Os lo recomiendo 100%',
+      ],
     },
     projectCta: {
       eyebrow: '¿Tú también tienes un proyecto?',

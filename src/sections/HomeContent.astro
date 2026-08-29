@@ -17,47 +17,23 @@ const categorias = categoriaEntry!.data.categorias;
 
 const snapwidgetId = import.meta.env.PUBLIC_SNAPWIDGET_ID;
 
-// Reseñas reales de Google: nunca se traducen (ver plan de i18n) — se
-// muestran tal cual las escribieron sus autores en español, con una
-// etiqueta aclaratoria cuando el idioma activo no es español.
-const testimonios = [
-  {
-    name: 'Pere Serrano',
-    badge: 'Local Guide · 68 reseñas',
-    stars: 5,
-    quote: 'Materiales de muy buena calidad y a muy buen precio. La amabilidad y el servicio de Pepe sin comparación. Me recomendó a un albañil, que me hizo la reforma de un baño grande en una semana. He quedado muy satisfecho con esta compañía.',
-  },
-  {
-    name: 'Ada da Silva',
-    badge: '5 reseñas',
-    stars: 5,
-    quote: 'Tras varias reformas siempre encontramos aquí el mejor precio y el mejor trato. Tanto Pepe como Tania son súper competentes y te ayudan a encontrar la mejor opción para cada estancia. Hemos comparado muchos sitios en estos años y la mejor calidad/precio sin duda está en Construdepot.',
-  },
-  {
-    name: 'FERRER MASTER',
-    badge: 'Local Guide · 87 reseñas',
-    stars: 5,
-    quote: 'Excelente almacén con materiales de construcción de primera a muy buenos precios. Super recomendable.',
-  },
-  {
-    name: 'davidplayer87',
-    badge: '14 reseñas',
-    stars: 5,
-    quote: 'Buen trato, buen material y muy atentos. Fuimos a varios sitios a ver material y terminamos comprando todo allí. Pepe nos dio un trato muy familiar y se adaptó a todo.',
-  },
-  {
-    name: 'Ethan Alcaraz Sforza',
-    badge: '2 reseñas',
-    stars: 5,
-    quote: 'Quiero agradecer el excelente trato y asesoramiento que he recibido. Me recomendaron esta empresa de materiales y la experiencia ha sido de 10. Me ayudaron a elegir el suelo para mi casa, resolvieron todas mis dudas con mucha profesionalidad y me aconsejaron la mejor opción según mis necesidades. La calidad de los materiales es excelente y el resultado final ha superado mis expectativas. Sin duda, volveré a confiar en ellos y los recomendaré a cualquiera que busque buenos materiales y un servicio cercano y profesional.',
-  },
-  {
-    name: 'Ainoa Pastor González',
-    badge: 'Local Guide · 11 reseñas',
-    stars: 5,
-    quote: 'Súper amables!!! Me han atendido genial he podido resolver todas mis dudas y ha encontrado justo todos los suelos y muebles exactamente como la idea que tenía en mente!!! Os lo recomiendo 100%',
-  },
+// Reseñas reales de Google. El texto (home.testimonials.quotes, mismo orden
+// que aquí) se traduce por idioma — ver home.testimonials.translatedNote,
+// mostrada bajo cada cita cuando el idioma activo no es español para dejar
+// claro que es una traducción y no la reseña tal cual la escribió su autor.
+const testimoniosMeta = [
+  { name: 'Pere Serrano', stars: 5, reviewCount: 68, isLocalGuide: true },
+  { name: 'Ada da Silva', stars: 5, reviewCount: 5, isLocalGuide: false },
+  { name: 'FERRER MASTER', stars: 5, reviewCount: 87, isLocalGuide: true },
+  { name: 'davidplayer87', stars: 5, reviewCount: 14, isLocalGuide: false },
+  { name: 'Ethan Alcaraz Sforza', stars: 5, reviewCount: 2, isLocalGuide: false },
+  { name: 'Ainoa Pastor González', stars: 5, reviewCount: 11, isLocalGuide: true },
 ];
+const testimonios = testimoniosMeta.map((meta, i) => ({
+  ...meta,
+  badge: `${meta.isLocalGuide ? `${home.testimonials.localGuide} · ` : ''}${meta.reviewCount} ${home.testimonials.reviewsWord}`,
+  quote: home.testimonials.quotes[i],
+}));
 
 const catIcons: Record<string, string> = {
   'estructura-y-obra': '<path d="M3 21h18M5 21V10l7-7 7 7v11M9 21v-6h6v6"/>',
@@ -122,7 +98,7 @@ const catIcons: Record<string, string> = {
           <h3 style="margin-top:10px;">{testimonio.name}</h3>
           <p style="font-size:12.5px; color:#8a8b83; font-family:'Roboto', sans-serif; margin-bottom:12px;">{testimonio.badge}</p>
           <p>{testimonio.quote}</p>
-          {locale !== 'es' && <p class="original-review-note">{dict.common.originalReviewInSpanish}</p>}
+          {locale !== 'es' && <p class="original-review-note">{home.testimonials.translatedNote}</p>}
         </div>
       ))}
     </div>

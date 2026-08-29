@@ -18,7 +18,6 @@ export const en: Dictionary = {
     scheduleExpo: 'Showroom',
     scheduleAbierto: 'Open',
     scheduleCerrado: 'Closed',
-    originalReviewInSpanish: 'Original review in Spanish',
     verTodasLasMarcas: 'See all brands',
   },
   cookieBanner: {
@@ -71,7 +70,18 @@ export const en: Dictionary = {
     testimonials: {
       eyebrow: 'Testimonials',
       title: 'What our customers say',
-      sub: 'Real reviews from our Google listing, exactly as they wrote them.',
+      sub: 'Real reviews from our Google listing, translated from the original Spanish.',
+      reviewsWord: 'reviews',
+      localGuide: 'Local Guide',
+      translatedNote: 'Translated from Spanish',
+      quotes: [
+        'Very good quality materials at a very good price. Pepe’s friendliness and service are unmatched. He recommended a builder who redid a large bathroom for me in a week. I’m very happy with this company.',
+        'After several renovations, we always find the best price and the best service here. Both Pepe and Tania are extremely knowledgeable and help you find the best option for every room. We’ve compared many places over the years, and the best quality/price is without a doubt at Construdepot.',
+        'Excellent warehouse with top-quality building materials at very good prices. Highly recommended.',
+        'Good service, good materials and very attentive. We went to several places to look at materials and ended up buying everything there. Pepe treated us like family and worked around everything we needed.',
+        'I want to thank them for the excellent service and advice I received. This materials company was recommended to me and the experience has been a 10 out of 10. They helped me choose the flooring for my home, answered all my questions very professionally, and advised me on the best option for my needs. The quality of the materials is excellent and the final result has exceeded my expectations. I will definitely trust them again and recommend them to anyone looking for good materials and a close, professional service.',
+        'Super friendly!!! They took great care of me, answered all my questions, and helped me find exactly the flooring and furniture I had in mind!!! I recommend them 100%.',
+      ],
     },
     projectCta: {
       eyebrow: 'Do you have a project too?',
@@ -146,7 +156,7 @@ export const en: Dictionary = {
     verProveedores: 'See all suppliers',
     searchPlaceholder: 'Search a product, brand, or even a room in your home…',
     searchAriaLabel: 'Search product, brand or room of the house',
-    searchExamples: ['tile', 'bathroom', 'cement', 'garden', 'paint', 'faucet'],
+    searchExamples: ['tile', 'bathroom', 'cement', 'garden', 'paint', 'taps'],
     searchEmptyBefore: "We couldn't find anything with that term — try another word, or ",
     searchEmptyLink: 'ask us on WhatsApp',
     categoriaTag: 'Category',
