@@ -1,0 +1,58 @@
+{
+  "categorias": [
+    {
+      "id": "estructura-y-obra",
+      "nombre": "Estructura y Obra",
+      "desc": "Los materiales de base para que cualquier construcción empiece con buenos cimientos.",
+      "zonas": ["fachada"],
+      "productos": [
+        "Hormigón preparado", "Cemento gris y blanco", "Ladrillo cerámico", "Bloque de hormigón",
+        "Mortero de cemento", "Morteros técnicos", "Arena y gravas", "Mallas y varillas de armado",
+        "Aditivos para hormigón", "Bovedillas", "Placas de Pladur", "Perfilería de Pladur y escayola",
+        "Yesos y escayola", "Prefabricados de hormigón", "Tejas cerámicas y de hormigón", "Lana de roca y de vidrio"
+      ]
+    },
+    {
+      "id": "acabados-y-revestimientos",
+      "nombre": "Acabados y Revestimientos",
+      "desc": "El punto final que define el estilo de cada espacio.",
+      "zonas": ["salón", "suelos", "interior"],
+      "productos": [
+        "Gres porcelánico", "Pavimento cerámico", "Azulejo de pared", "Parqué flotante",
+        "Suelo vinílico (SPC/LVT)", "Rodapiés y perfilería", "Piedra natural", "Adhesivos y juntas de alicatado",
+        "Terrazos y baldosas", "Material cerámico refractario"
+      ]
+    },
+    {
+      "id": "decoracion-y-pintura",
+      "nombre": "Decoración y Pintura",
+      "desc": "Todo lo necesario para dar el último toque, dentro y fuera.",
+      "zonas": [],
+      "productos": [
+        "Pintura plástica interior", "Pintura de fachada", "Esmaltes sintéticos", "Imprimaciones y selladores",
+        "Barnices para madera", "Rodillos y brochas", "Cintas y protección", "Pasta niveladora"
+      ]
+    },
+    {
+      "id": "fontaneria-y-climatizacion",
+      "nombre": "Fontanería y Climatización",
+      "desc": "Instalaciones que no se ven pero que marcan la diferencia en el día a día.",
+      "zonas": ["baño", "cocina"],
+      "productos": [
+        "Grifería de baño y cocina", "Sanitarios e inodoros", "Platos de ducha y mamparas", "Tubería PVC y multicapa",
+        "Bombas de agua", "Radiadores", "Aire acondicionado", "Termos eléctricos", "Válvulas y racores",
+        "Bañeras e hidromasaje", "Fregaderos de cocina", "Muebles y espejos de baño"
+      ]
+    },
+    {
+      "id": "jardin-y-exterior",
+      "nombre": "Jardín y Exterior",
+      "desc": "Para que el exterior de tu casa o proyecto esté a la altura del interior.",
+      "zonas": ["terraza", "patio"],
+      "productos": [
+        "Hormigón impreso", "Césped artificial", "Adoquín y baldosa de exterior", "Piedra decorativa",
+        "Vallas y cerramientos", "Iluminación exterior", "Riego y goteo", "Macetas y jardineras"
+      ]
+    }
+  ]
+}

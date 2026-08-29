@@ -1,0 +1,184 @@
+---
+import { getEntry } from 'astro:content';
+import { withBase } from '../lib/url';
+import { todasLasMarcas } from '../data/marcas';
+import { t, localizedHref } from '../i18n/useTranslations';
+import type { Locale } from '../i18n/locales';
+
+const locale = (Astro.currentLocale as Locale | undefined) ?? 'es';
+const dict = t(locale);
+const p = dict.productos;
+
+const categoriaEntry = (await getEntry('categorias', locale)) ?? (await getEntry('categorias', 'es'));
+
+// Las marcas de cada categoría se derivan de marcas.ts (única fuente de verdad,
+// compartida con /proveedores/) en vez de mantener una segunda lista a mano que
+// podría desincronizarse. Los nombres de marca son nombres propios y no se
+// traducen en ningún idioma.
+const categorias = categoriaEntry!.data.categorias.map((cat) => ({
+  ...cat,
+  marcas: todasLasMarcas.filter((m) => m.categorias?.includes(cat.id)).map((m) => m.nombre),
+}));
+---
+
+<section class="page-banner page-banner--photo" style={`--banner-photo:url(${withBase('/images/matalmacen.jpg')})`}>
+  <div class="wrap">
+    <div class="breadcrumb"><a href={localizedHref('home', locale)}>{dict.nav.inicio}</a> · {p.breadcrumbCurrent}</div>
+    <h1>{p.h1}</h1>
+    <p>{p.sub}</p>
+  </div>
+</section>
+
+<section style="background:var(--sand);">
+  <div class="wrap">
+    <div class="eyebrow-sm">{p.eyebrow}</div>
+    <h2>{p.title}</h2>
+    <p class="section-sub">{p.sectionSub} <a href={withBase('/proveedores/')} style="color:var(--green-deep); font-weight:600; text-decoration:underline;">{p.verProveedores} <span class="arrow-icon">→</span></a></p>
+    <div class="product-search-bar">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      <input id="product-search" type="search" placeholder={p.searchPlaceholder} aria-label={p.searchAriaLabel}>
+    </div>
+    <div class="product-search-examples">
+      {p.searchExamples.map((ej) => (
+        <button type="button" class="product-chip" data-example={ej}>{ej}</button>
+      ))}
+    </div>
+    <p id="product-search-empty" role="status" hidden style="margin-top:-14px; margin-bottom:32px; font-size:13.5px; color:#6b6c64;">{p.searchEmptyBefore}<a href="https://wa.me/34607224454" style="color:var(--green-dark); font-weight:600;">{p.searchEmptyLink}</a>.</p>
+
+    <div class="grid" style="gap:24px;">
+      {categorias.map((cat) => (
+        <div class="card product-category-card" id={cat.id} data-cat-name={cat.nombre} data-cat-marcas={(cat.marcas ?? []).join(' ')} data-cat-zonas={cat.zonas.join(' ')} style="padding:34px 32px;">
+          <div class="grid grid-2" style="gap:32px; align-items:start;">
+            <div>
+              <span class="tag">{p.categoriaTag}</span>
+              <h3>{cat.nombre}</h3>
+              <p>{cat.desc}</p>
+              {cat.marcas.length > 0 && (
+                <p class="category-brands"><strong>{p.marcasLabel}</strong> {cat.marcas.map((m, i) => (
+                  <>
+                    {i > 0 && ' · '}
+                    <span class="marca-nombre" data-marca={m}>{m}</span>
+                  </>
+                ))}</p>
+              )}
+              <div style="margin-top:20px;">
+                <a href={`${localizedHref('contacto', locale)}?categoria=${encodeURIComponent(cat.nombre)}`} class="btn-outline" style="padding:14px 18px; font-size:13.5px;">{p.consultar} <span class="arrow-icon">→</span></a>
+              </div>
+            </div>
+            <div class="product-chips">
+              {cat.productos.map((prod) => <span class="product-chip">{prod}</span>)}
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="cta-band" style="background:var(--ink);">
+      <h3>{p.ctaBandText}</h3>
+      <a href="https://wa.me/34607224454" class="btn-primary">{p.ctaBandButton} <span class="arrow-icon">→</span></a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .product-search-bar{ display:flex; align-items:center; gap:12px; background:var(--cream-card); border:1px solid var(--line); border-radius:999px; padding:14px 22px; max-width:520px; margin-bottom:14px; }
+  .product-search-bar svg{ flex:0 0 auto; color:#8a8b83; }
+  .product-search-bar input{ flex:1 1 auto; min-width:0; border:none; outline:none; background:none; font-family:inherit; font-size:14.5px; color:var(--ink); }
+  .product-search-bar input::placeholder{ color:#8a8b83; }
+  .product-search-bar:focus-within{ border-color:var(--green); }
+
+  .product-search-examples{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:32px; }
+  .product-search-examples .product-chip{ cursor:pointer; transition:border-color .15s ease, background .15s ease, color .15s ease; }
+  .product-search-examples .product-chip:hover{ border-color:var(--green); }
+  .product-search-examples .product-chip.is-active{ background:var(--green); border-color:var(--green); color:var(--ink); }
+
+  .marca-nombre.is-highlighted{ color:var(--green-dark); font-weight:700; }
+  .product-category-card.is-highlighted{ border-color:var(--green); box-shadow:0 0 0 3px rgba(65,183,24,.25); animation:highlight-pop .5s ease; }
+  @keyframes highlight-pop{
+    0%{ box-shadow:0 0 0 0 rgba(65,183,24,.5); }
+    100%{ box-shadow:0 0 0 3px rgba(65,183,24,.25); }
+  }
+</style>
+
+<script>
+  // Buscador de productos: filtra en el propio navegador sobre el catálogo
+  // ya existente (nombre de producto, categoría o marca), sin backend ni
+  // base de datos — no hay tantos productos como para necesitar más.
+  // Ignora acentos al comparar para que "climatizacion" encuentre
+  // "climatización" (y de paso no afecta a idiomas sin esos acentos).
+  function normalize(value: string): string {
+    return value
+      .toLowerCase()
+      .replace(/[áàäâ]/g, 'a')
+      .replace(/[éèëê]/g, 'e')
+      .replace(/[íìïî]/g, 'i')
+      .replace(/[óòöô]/g, 'o')
+      .replace(/[úùüû]/g, 'u')
+      .replace(/ñ/g, 'n');
+  }
+
+  const searchInput = document.getElementById('product-search') as HTMLInputElement | null;
+  const emptyMsg = document.getElementById('product-search-empty');
+  const categoryCards = document.querySelectorAll<HTMLElement>('.product-category-card');
+  const exampleButtons = document.querySelectorAll<HTMLButtonElement>('[data-example]');
+
+  function applyFilter(rawQuery: string) {
+    const q = normalize(rawQuery.trim());
+    let anyVisible = false;
+
+    categoryCards.forEach((card) => {
+      const catMatch = q === '' || normalize(card.dataset.catName ?? '').includes(q) || normalize(card.dataset.catMarcas ?? '').includes(q) || normalize(card.dataset.catZonas ?? '').includes(q);
+      const chips = card.querySelectorAll<HTMLElement>('.product-chip');
+      let chipMatchAny = false;
+
+      chips.forEach((chip) => {
+        const match = q === '' || catMatch || normalize(chip.textContent ?? '').includes(q);
+        chip.style.display = match ? '' : 'none';
+        if (match) chipMatchAny = true;
+      });
+
+      const show = q === '' || catMatch || chipMatchAny;
+      card.style.display = show ? '' : 'none';
+      if (show) anyVisible = true;
+    });
+
+    if (emptyMsg) emptyMsg.hidden = q === '' || anyVisible;
+
+    exampleButtons.forEach((btn) => {
+      btn.classList.toggle('is-active', q !== '' && normalize(btn.dataset.example ?? '') === q);
+    });
+  }
+
+  searchInput?.addEventListener('input', () => applyFilter(searchInput.value));
+
+  // Si se llega desde /proveedores/ (enlace "Ver en [categoría]" de una
+  // marca concreta), resalta esa marca y da un aviso visual a su tarjeta.
+  (function resaltarMarcaDesdeProveedores() {
+    const params = new URLSearchParams(window.location.search);
+    const marca = params.get('marca');
+    if (!marca) return;
+
+    const hashId = window.location.hash.replace('#', '');
+    const scope = hashId ? document.getElementById(hashId) : null;
+    const marcaSpan =
+      (scope?.querySelector<HTMLElement>(`.marca-nombre[data-marca="${CSS.escape(marca)}"]`)) ??
+      Array.from(document.querySelectorAll<HTMLElement>('.marca-nombre')).find((el) => el.dataset.marca === marca);
+    if (!marcaSpan) return;
+
+    marcaSpan.classList.add('is-highlighted');
+    marcaSpan.closest('.product-category-card')?.classList.add('is-highlighted');
+  })();
+
+  exampleButtons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      if (!searchInput) return;
+      searchInput.value = btn.dataset.example ?? '';
+      applyFilter(searchInput.value);
+      searchInput.focus();
+    });
+  });
+</script>

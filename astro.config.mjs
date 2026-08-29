@@ -22,5 +22,18 @@ export default defineConfig({
     ? { site: 'https://xsphere126.github.io', base: '/ConstruDEPOT' }
     : { site: 'https://construdepot.es' }),
 
-  integrations: [sitemap()]
+  i18n: {
+    defaultLocale: 'es',
+    locales: ['es', 'en', 'fr', 'ar'],
+    routing: { prefixDefaultLocale: false },
+  },
+
+  integrations: [
+    sitemap({
+      i18n: {
+        defaultLocale: 'es',
+        locales: { es: 'es', en: 'en', fr: 'fr', ar: 'ar' },
+      },
+    }),
+  ],
 });

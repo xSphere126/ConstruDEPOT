@@ -1,0 +1,62 @@
+---
+import { LOCALES, LOCALE_NAMES, type Locale } from '../i18n/locales';
+import { localizedHref } from '../i18n/useTranslations';
+import type { PageKey } from '../i18n/pages';
+
+interface Props {
+  pageKey: PageKey;
+}
+
+const { pageKey } = Astro.props;
+const currentLocale = (Astro.currentLocale as Locale | undefined) ?? 'es';
+---
+
+<div class="lang-switcher">
+  <button type="button" class="lang-switcher-toggle" id="langSwitcherToggle" aria-expanded="false" aria-haspopup="true" aria-controls="langSwitcherMenu">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.4 2.6 3.6 5.7 3.6 9s-1.2 6.4-3.6 9c-2.4-2.6-3.6-5.7-3.6-9s1.2-6.4 3.6-9Z"/></svg>
+    <span>{LOCALE_NAMES[currentLocale]}</span>
+  </button>
+  <div class="lang-switcher-menu" id="langSwitcherMenu" hidden>
+    {LOCALES.map((loc) => (
+      <a
+        href={localizedHref(pageKey, loc)}
+        class={loc === currentLocale ? 'is-active' : undefined}
+        data-lang-option={loc}
+        aria-current={loc === currentLocale ? 'true' : undefined}
+      >
+        {LOCALE_NAMES[loc]}
+      </a>
+    ))}
+  </div>
+</div>
+
+<script>
+  const STORAGE_KEY = 'preferredLocale';
+
+  document.querySelectorAll<HTMLElement>('.lang-switcher').forEach((switcher) => {
+    const toggle = switcher.querySelector<HTMLButtonElement>('.lang-switcher-toggle');
+    const menu = switcher.querySelector<HTMLElement>('.lang-switcher-menu');
+
+    toggle?.addEventListener('click', () => {
+      if (!menu) return;
+      const isOpen = !menu.hidden;
+      menu.hidden = isOpen;
+      toggle.setAttribute('aria-expanded', String(!isOpen));
+    });
+
+    document.addEventListener('click', (e) => {
+      if (menu && !menu.hidden && !switcher.contains(e.target as Node)) {
+        menu.hidden = true;
+        toggle?.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    menu?.querySelectorAll<HTMLAnchorElement>('[data-lang-option]').forEach((option) => {
+      option.addEventListener('click', () => {
+        try {
+          localStorage.setItem(STORAGE_KEY, option.dataset.langOption ?? '');
+        } catch {}
+      });
+    });
+  });
+</script>

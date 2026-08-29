@@ -1,4 +1,7 @@
 ---
+import { t } from '../i18n/useTranslations';
+import type { Locale } from '../i18n/locales';
+
 interface Props {
   category: 'maps' | 'social';
   src: string;
@@ -9,12 +12,16 @@ interface Props {
 }
 
 const { category, src, title, label, class: className, style } = Astro.props;
+
+const locale = (Astro.currentLocale as Locale | undefined) ?? 'es';
+const dict = t(locale).gatedEmbed;
+const text = dict.textTemplate.replace('{value}', label);
 ---
 
 <div class:list={['gated-embed', className]} style={style} data-gated-embed data-category={category} data-src={src} data-title={title}>
   <div class="gated-embed-placeholder">
     <svg class="ic" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9"/></svg>
-    <p>Este contenido carga {label} y usa cookies de terceros. Actívalo si aceptas su uso.</p>
-    <button type="button" class="btn-outline gated-embed-accept" style="padding:14px 18px; font-size:13.5px;">Aceptar y mostrar</button>
+    <p>{text}</p>
+    <button type="button" class="btn-outline gated-embed-accept" style="padding:14px 18px; font-size:13.5px;">{dict.accept}</button>
   </div>
 </div>

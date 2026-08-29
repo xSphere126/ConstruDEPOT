@@ -1,8 +1,12 @@
 ---
+import { getRelativeLocaleUrl } from 'astro:i18n';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import CookieConsent from '../components/CookieConsent.astro';
 import { withBase } from '../lib/url';
+import { t } from '../i18n/useTranslations';
+import { isRtl, type Locale } from '../i18n/locales';
+import { PAGE_PATHS, TRANSLATED_LOCALES, type PageKey } from '../i18n/pages';
 import '../styles/global.css';
 
 interface Props {
@@ -11,9 +15,29 @@ interface Props {
   headerVariant?: 'transparent' | 'solid';
   active?: 'inicio' | 'sobre-nosotros' | 'productos' | 'empleo' | 'contacto';
   bodyClass?: string;
+  pageKey?: PageKey;
 }
 
-const { title, description, headerVariant = 'solid', active, bodyClass } = Astro.props;
+const { title, description, headerVariant = 'solid', active, bodyClass, pageKey } = Astro.props;
+
+const locale = (Astro.currentLocale as Locale | undefined) ?? 'es';
+const dir = isRtl(locale) ? 'rtl' : 'ltr';
+const dict = t(locale);
+
+const alternateLocales = pageKey ? TRANSLATED_LOCALES[pageKey] : [];
+const showHreflang = alternateLocales.length > 1;
+
+// Solo en la home española: si ya hay un idioma preferido guardado (ver
+// LanguageSwitcher.astro) y esa home está traducida, se redirige una vez de
+// forma silenciosa. No se toca ninguna página profunda ni se fuerza esto
+// fuera de la home, para no pelearse con quien entra directo a una URL en
+// español ni disparar redirecciones agresivas por idioma percibido.
+const homeRedirectTargets =
+  pageKey === 'home' && locale === 'es'
+    ? Object.fromEntries(
+        TRANSLATED_LOCALES.home.filter((loc) => loc !== 'es').map((loc) => [loc, getRelativeLocaleUrl(loc, PAGE_PATHS.home)])
+      )
+    : null;
 
 const fullTitle = `${title} · Construdepot by Quiles`;
 // Astro.site solo existe una vez que se configure `site` en astro.config.mjs con el
@@ -21,6 +45,8 @@ const fullTitle = `${title} · Construdepot by Quiles`;
 // publicar una URL inventada.
 const canonicalURL = Astro.site ? new URL(Astro.url.pathname, Astro.site) : undefined;
 const ogImage = Astro.site ? new URL(withBase('/og-cover.jpg'), Astro.site) : undefined;
+
+const ogLocaleMap: Record<Locale, string> = { es: 'es_ES', en: 'en_US', fr: 'fr_FR', ar: 'ar_AR' };
 
 const localBusinessLd = {
   '@context': 'https://schema.org',
@@ -71,7 +97,7 @@ const localBusinessLd = {
 ---
 
 <!DOCTYPE html>
-<html lang="es">
+<html lang={locale} dir={dir}>
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -82,9 +108,23 @@ const localBusinessLd = {
   <link rel="alternate icon" href={withBase('/favicon.ico')} />
   {canonicalURL && <link rel="canonical" href={canonicalURL} />}
 
+  {showHreflang && alternateLocales.map((loc) => (
+    <link rel="alternate" hreflang={loc} href={new URL(getRelativeLocaleUrl(loc, PAGE_PATHS[pageKey!]), Astro.site ?? Astro.url).toString()} />
+  ))}
+  {showHreflang && (
+    <link rel="alternate" hreflang="x-default" href={new URL(getRelativeLocaleUrl('es', PAGE_PATHS[pageKey!]), Astro.site ?? Astro.url).toString()} />
+  )}
+
+  {locale === 'ar' && (
+    <>
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap" />
+    </>
+  )}
+
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Construdepot by Quiles" />
-  <meta property="og:locale" content="es_ES" />
+  <meta property="og:locale" content={ogLocaleMap[locale]} />
   <meta property="og:title" content={fullTitle} />
   <meta property="og:description" content={description} />
   {canonicalURL && <meta property="og:url" content={canonicalURL} />}
@@ -97,8 +137,18 @@ const localBusinessLd = {
   <script type="application/ld+json" is:inline set:html={JSON.stringify(localBusinessLd)} />
 </head>
 <body class={bodyClass}>
-  <a href="#main" class="skip-link">Saltar al contenido</a>
-  <Header variant={headerVariant} active={active} />
+  {homeRedirectTargets && (
+    <script define:vars={{ targets: homeRedirectTargets }} is:inline>
+      try {
+        const preferred = localStorage.getItem('preferredLocale');
+        if (preferred && targets[preferred]) {
+          window.location.replace(targets[preferred]);
+        }
+      } catch {}
+    </script>
+  )}
+  <a href="#main" class="skip-link">{dict.skipLink}</a>
+  <Header variant={headerVariant} active={active} pageKey={pageKey} />
   <main id="main">
     <slot />
   </main>

@@ -2,6 +2,20 @@
 import Logo from './Logo.astro';
 import IconInstagram from './IconInstagram.astro';
 import { withBase } from '../lib/url';
+import { t, localizedHref } from '../i18n/useTranslations';
+import type { Locale } from '../i18n/locales';
+import type { PageKey } from '../i18n/pages';
+
+const locale = (Astro.currentLocale as Locale | undefined) ?? 'es';
+const dict = t(locale);
+
+const navItems: { key: PageKey; navLabelKey: keyof typeof dict.nav }[] = [
+  { key: 'home', navLabelKey: 'inicio' },
+  { key: 'sobre-nosotros', navLabelKey: 'sobre-nosotros' },
+  { key: 'productos', navLabelKey: 'productos' },
+  { key: 'empleo', navLabelKey: 'empleo' },
+  { key: 'contacto', navLabelKey: 'contacto' },
+];
 ---
 
 <footer>
@@ -9,31 +23,29 @@ import { withBase } from '../lib/url';
     <div class="footer-grid">
       <div>
         <div class="footer-logo"><Logo primaryFill="#FFFFFF" secondaryFill="#EDEDED" /></div>
-        <p class="footer-tag">Materiales de construcción, reformas y decoración en Elche. Para particulares y profesionales.</p>
+        <p class="footer-tag">{dict.footer.tagline}</p>
       </div>
       <div>
-        <h4>Navegación</h4>
+        <h4>{dict.footer.navHeading}</h4>
         <ul>
-          <li><a href={withBase('/')}>Inicio</a></li>
-          <li><a href={withBase('/sobre-nosotros/')}>Sobre nosotros</a></li>
-          <li><a href={withBase('/productos/')}>Productos</a></li>
-          <li><a href={withBase('/empleo/')}>Empleo</a></li>
-          <li><a href={withBase('/contacto/')}>Contacto</a></li>
+          {navItems.map((item) => (
+            <li><a href={localizedHref(item.key, locale)}>{dict.nav[item.navLabelKey]}</a></li>
+          ))}
         </ul>
       </div>
       <div>
-        <h4>Contacto</h4>
+        <h4>{dict.footer.contactHeading}</h4>
         <ul>
           <li><a href="https://wa.me/34607224454">+34 607 224 454</a></li>
           <li><a href="tel:+34965799179">965 79 91 79</a></li>
           <li><a href="mailto:info@construdepot.es">info@construdepot.es</a></li>
-          <li><a href={withBase('/contacto/')}>Elche, Alicante</a></li>
-          <li>Almacén: L-V 7:30–19:00 · Sáb 8:30–13:30</li>
-          <li>Exposición: L-V 9:00–20:00 · Sáb 8:30–13:30</li>
+          <li><a href={localizedHref('contacto', locale)}>{dict.footer.location}</a></li>
+          <li>{dict.footer.almacenSchedule}</li>
+          <li>{dict.footer.expoSchedule}</li>
         </ul>
       </div>
       <div>
-        <h4>Síguenos</h4>
+        <h4>{dict.footer.followHeading}</h4>
         <div class="footer-social">
           <a href="https://www.instagram.com/construdepot_by_quiles/" target="_blank" rel="noopener" aria-label="Instagram"><IconInstagram /></a>
           <a href="https://www.facebook.com/ConstrudepotbyQuiles/" target="_blank" rel="noopener" aria-label="Facebook"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3Z"/></svg></a>
@@ -41,14 +53,14 @@ import { withBase } from '../lib/url';
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© 2026 Construdepot by Quiles. Todos los derechos reservados.</span>
+      <span>{dict.footer.copyright}</span>
       <div class="footer-legal-links">
-        <a href={withBase('/aviso-legal/')}>Aviso legal</a>
-        <a href={withBase('/politica-privacidad/')}>Privacidad</a>
-        <a href={withBase('/politica-cookies/')}>Cookies</a>
-        <a href="#" data-open-cookie-settings>Configurar cookies</a>
+        <a href={withBase('/aviso-legal/')}>{dict.footer.avisoLegal}</a>
+        <a href={withBase('/politica-privacidad/')}>{dict.footer.privacidad}</a>
+        <a href={withBase('/politica-cookies/')}>{dict.footer.cookies}</a>
+        <a href="#" data-open-cookie-settings>{dict.footer.configurarCookies}</a>
       </div>
-      <span>Elche, Alicante</span>
+      <span>{dict.footer.location}</span>
     </div>
   </div>
 </footer>

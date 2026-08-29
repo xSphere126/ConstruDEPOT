@@ -38,7 +38,7 @@ img, svg{ max-width:100%; display:block; }
 a:focus, button:focus{ outline:none; }
 a:focus-visible, button:focus-visible, [role="button"]:focus-visible{ outline:2px solid var(--green); outline-offset:4px; border-radius:4px; }
 
-.skip-link{ position:absolute; top:-100%; left:12px; z-index:100; background:var(--ink); color:#fff; padding:12px 20px; border-radius:0 0 10px 10px; font-weight:600; font-size:14px; transition:top .15s ease; }
+.skip-link{ position:absolute; top:-100%; inset-inline-start:12px; z-index:100; background:var(--ink); color:#fff; padding:12px 20px; border-radius:0 0 10px 10px; font-weight:600; font-size:14px; transition:top .15s ease; }
 .skip-link:focus-visible{ top:0; }
 
 section{ padding:76px 0; }
@@ -140,8 +140,8 @@ h1 em{ font-style:normal; color:var(--green); }
 .cta-row{ display:flex; align-items:center; gap:18px; margin-bottom:40px; flex-wrap:wrap; }
 
 .info-strip{ display:inline-flex; align-items:center; gap:0; background:rgba(255,255,255,.08); backdrop-filter:blur(10px); border:1px solid rgba(255,255,255,.16); border-radius:16px; padding:16px 22px; flex-wrap:wrap; }
-.info-item{ display:flex; align-items:center; gap:8px; font-size:13.5px; font-weight:600; color:#fff; padding-right:20px; margin-right:20px; border-right:1px solid var(--line-dark); }
-.info-item:last-child{ border-right:none; margin-right:0; padding-right:0; }
+.info-item{ display:flex; align-items:center; gap:8px; font-size:13.5px; font-weight:600; color:#fff; padding-inline-end:20px; margin-inline-end:20px; border-inline-end:1px solid var(--line-dark); }
+.info-item:last-child{ border-inline-end:none; margin-inline-end:0; padding-inline-end:0; }
 .info-item .ic{ color:var(--green); flex-shrink:0; }
 .badge-public{ background:rgba(65,183,24,.22); color:#D6F5C4; padding:5px 12px; border-radius:999px; font-size:12.5px; font-weight:700; display:flex; align-items:center; }
 
@@ -204,7 +204,7 @@ h1 em{ font-style:normal; color:var(--green); }
    del CTA), así que una caja blanca lisa se fundiría con el fondo — el
    tinte de color es lo que la separa ahí, además de sobre el fondo arena
    de contacto. */
-.form-status.form-success{ display:flex; align-items:flex-start; gap:12px; background:rgba(65,183,24,.08); border:1px solid var(--line); border-left:4px solid var(--green-dark); border-radius:12px; padding:16px 18px; box-shadow:0 4px 14px -8px rgba(0,0,0,.18); color:var(--ink); font-size:14px; }
+.form-status.form-success{ display:flex; align-items:flex-start; gap:12px; background:rgba(65,183,24,.08); border:1px solid var(--line); border-inline-start:4px solid var(--green-dark); border-radius:12px; padding:16px 18px; box-shadow:0 4px 14px -8px rgba(0,0,0,.18); color:var(--ink); font-size:14px; }
 .form-status.form-success::before{ content:'✓'; flex:0 0 22px; width:22px; height:22px; border-radius:50%; background:var(--green-dark); color:#fff; font-size:12px; font-weight:700; display:flex; align-items:center; justify-content:center; margin-top:1px; }
 @media (prefers-reduced-motion: reduce){ .card:target{ animation:none; } }
 
@@ -478,7 +478,7 @@ footer a:hover{ color:#fff; }
 .cookie-banner-title{ font-family:'Roboto', sans-serif; font-size:17px; font-weight:600; color:#fff; margin:0 0 6px; }
 .cookie-banner-inner p{ font-size:15px; color:rgba(255,255,255,.82); max-width:680px; line-height:1.6; margin:0; }
 .cookie-banner-inner a{ color:#fff; text-decoration:underline; font-weight:600; }
-.cookie-banner-actions{ display:flex; gap:14px; flex-shrink:0; margin-left:auto; }
+.cookie-banner-actions{ display:flex; gap:14px; flex-shrink:0; margin-inline-start:auto; }
 .cookie-banner-actions .btn-outline{ border-color:rgba(255,255,255,.45); color:#fff; padding:14px 26px; font-size:15px; }
 .cookie-banner-actions .btn-outline:hover{ border-color:#fff; }
 /* .btn-primary rellena con --ink por defecto, igual que el propio banner
@@ -507,7 +507,7 @@ footer a:hover{ color:#fff; }
   .cookie-banner-text{ flex:none; }
   .cookie-banner-title{ font-size:16px; }
   .cookie-banner-inner p{ font-size:14px; max-width:none; }
-  .cookie-banner-actions{ width:100%; margin-left:0; flex-shrink:0; }
+  .cookie-banner-actions{ width:100%; margin-inline-start:0; flex-shrink:0; }
   .cookie-banner-actions button{ flex:1; padding:14px 16px; }
 }
 
@@ -548,7 +548,7 @@ footer a:hover{ color:#fff; }
   .cta-row{ margin-bottom:26px; gap:12px; }
   body.home .btn-primary{ padding:14px 22px; font-size:14px; }
   .info-strip{ display:flex; flex-direction:column; align-items:flex-start; gap:10px; padding:16px; width:100%; }
-  .info-item{ border-right:none; margin-right:0; padding-right:0; width:100%; }
+  .info-item{ border-inline-end:none; margin-inline-end:0; padding-inline-end:0; width:100%; }
   .scroll-cue{ display:none; }
 
   .page-banner{ padding:44px 0 40px; }
@@ -570,3 +570,32 @@ footer a:hover{ color:#fff; }
 
   .footer-grid{ grid-template-columns:1fr; gap:32px; }
 }
+
+.lang-switcher{ position:relative; flex-shrink:0; }
+.lang-switcher-toggle{ display:flex; align-items:center; gap:6px; background:none; border:1px solid var(--line-dark); color:#fff; font-family:'Roboto', sans-serif; font-size:12.5px; font-weight:600; padding:8px 12px; border-radius:999px; cursor:pointer; white-space:nowrap; transition:border-color .15s ease; }
+.lang-switcher-toggle:hover{ border-color:var(--green); }
+header.solid .lang-switcher-toggle{ color:var(--ink); border-color:var(--line); }
+.lang-switcher-menu{ position:absolute; top:calc(100% + 8px); inset-inline-end:0; min-width:150px; background:var(--cream-card); border:1px solid var(--line); border-radius:12px; box-shadow:0 12px 32px -12px rgba(0,0,0,.35); padding:6px; z-index:60; }
+.lang-switcher-menu a{ display:block; padding:9px 12px; border-radius:8px; font-size:13.5px; font-weight:500; color:var(--ink); }
+.lang-switcher-menu a:hover{ background:var(--sand); }
+.lang-switcher-menu a.is-active{ color:var(--green-deep); font-weight:700; }
+.mobile-menu-footer .lang-switcher{ width:100%; }
+.mobile-menu-footer .lang-switcher-toggle{ width:100%; justify-content:center; color:#fff; border-color:rgba(255,255,255,.35); padding:14px 16px; }
+.mobile-menu-footer .lang-switcher-menu{ inset-inline-end:auto; inset-inline-start:0; width:100%; }
+
+/* --- Árabe (RTL) ---
+   `dir="rtl"` en <html> (BaseLayout.astro) ya invierte por sí solo la
+   mayoría del layout (flexbox, alineación de texto por defecto). Lo de
+   abajo cubre lo que no se invierte solo: tipografía árabe y los pocos
+   sitios de Fase 1 que usaban propiedades físicas (left/right) en vez de
+   lógicas. El resto de global.css (secciones exclusivas de Sobre
+   Nosotros/Empleo/legales) queda fuera de esta fase a propósito. */
+html[dir='rtl'] body,
+html[dir='rtl'] h1, html[dir='rtl'] h2, html[dir='rtl'] h3, html[dir='rtl'] h4,
+html[dir='rtl'] p, html[dir='rtl'] a, html[dir='rtl'] span, html[dir='rtl'] button,
+html[dir='rtl'] input, html[dir='rtl'] textarea, html[dir='rtl'] label{
+  font-family:'Noto Sans Arabic', 'Roboto', sans-serif;
+}
+
+.arrow-icon{ display:inline-flex; }
+html[dir='rtl'] .arrow-icon{ transform:scaleX(-1); }

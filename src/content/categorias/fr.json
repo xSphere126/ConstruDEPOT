@@ -1,0 +1,58 @@
+{
+  "categorias": [
+    {
+      "id": "estructura-y-obra",
+      "nombre": "Structure et Gros œuvre",
+      "desc": "Les matériaux de base pour que toute construction parte sur de bonnes fondations.",
+      "zonas": ["façade"],
+      "productos": [
+        "Béton prêt à l'emploi", "Ciment gris et blanc", "Brique céramique", "Bloc de béton",
+        "Mortier de ciment", "Mortiers techniques", "Sable et graviers", "Treillis et fers à béton",
+        "Adjuvants pour béton", "Hourdis", "Plaques de plâtre", "Ossatures pour plaques de plâtre et plâtrerie",
+        "Plâtres", "Éléments préfabriqués en béton", "Tuiles céramiques et en béton", "Laine de roche et de verre"
+      ]
+    },
+    {
+      "id": "acabados-y-revestimientos",
+      "nombre": "Finitions et Revêtements",
+      "desc": "La touche finale qui définit le style de chaque espace.",
+      "zonas": ["salon", "sols", "intérieur"],
+      "productos": [
+        "Grès cérame", "Carrelage sol", "Faïence murale", "Parquet flottant",
+        "Sol vinylique (SPC/LVT)", "Plinthes et profilés", "Pierre naturelle", "Colles et joints de carrelage",
+        "Terrazzo et dalles", "Matériau céramique réfractaire"
+      ]
+    },
+    {
+      "id": "decoracion-y-pintura",
+      "nombre": "Décoration et Peinture",
+      "desc": "Tout ce qu'il faut pour apporter la touche finale, à l'intérieur comme à l'extérieur.",
+      "zonas": [],
+      "productos": [
+        "Peinture plastique intérieure", "Peinture de façade", "Émaux synthétiques", "Impressions et fixateurs",
+        "Vernis pour bois", "Rouleaux et pinceaux", "Rubans et protection", "Enduit de ragréage"
+      ]
+    },
+    {
+      "id": "fontaneria-y-climatizacion",
+      "nombre": "Plomberie et Climatisation",
+      "desc": "Des installations invisibles qui font toute la différence au quotidien.",
+      "zonas": ["salle de bain", "cuisine"],
+      "productos": [
+        "Robinetterie salle de bain et cuisine", "Sanitaires et WC", "Receveurs de douche et parois", "Tuyauterie PVC et multicouche",
+        "Pompes à eau", "Radiateurs", "Climatisation", "Chauffe-eau électriques", "Vannes et raccords",
+        "Baignoires et balnéo", "Éviers de cuisine", "Meubles et miroirs de salle de bain"
+      ]
+    },
+    {
+      "id": "jardin-y-exterior",
+      "nombre": "Jardin et Extérieur",
+      "desc": "Pour que l'extérieur de votre maison ou de votre projet soit à la hauteur de l'intérieur.",
+      "zonas": ["terrasse", "patio"],
+      "productos": [
+        "Béton imprimé", "Gazon synthétique", "Pavés et dalles extérieures", "Pierre décorative",
+        "Clôtures et enceintes", "Éclairage extérieur", "Arrosage et goutte-à-goutte", "Pots et jardinières"
+      ]
+    }
+  ]
+}

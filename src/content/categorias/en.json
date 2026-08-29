@@ -1,0 +1,58 @@
+{
+  "categorias": [
+    {
+      "id": "estructura-y-obra",
+      "nombre": "Structure and Construction",
+      "desc": "The base materials so any build starts on solid foundations.",
+      "zonas": ["facade"],
+      "productos": [
+        "Ready-mix concrete", "Grey and white cement", "Ceramic brick", "Concrete block",
+        "Cement mortar", "Technical mortars", "Sand and gravel", "Reinforcement mesh and rebar",
+        "Concrete additives", "Vaulted floor blocks", "Plasterboard sheets", "Plasterboard and plaster profiles",
+        "Plaster and gypsum", "Precast concrete", "Ceramic and concrete roof tiles", "Rock and glass wool"
+      ]
+    },
+    {
+      "id": "acabados-y-revestimientos",
+      "nombre": "Finishes and Cladding",
+      "desc": "The final touch that defines the style of every space.",
+      "zonas": ["living room", "flooring", "interior"],
+      "productos": [
+        "Porcelain stoneware", "Ceramic flooring", "Wall tile", "Floating parquet",
+        "Vinyl flooring (SPC/LVT)", "Skirting boards and trim", "Natural stone", "Tiling adhesives and grout",
+        "Terrazzo and tiles", "Refractory ceramic material"
+      ]
+    },
+    {
+      "id": "decoracion-y-pintura",
+      "nombre": "Decoration and Paint",
+      "desc": "Everything you need for the finishing touch, indoors and out.",
+      "zonas": [],
+      "productos": [
+        "Interior plastic paint", "Facade paint", "Synthetic enamels", "Primers and sealers",
+        "Wood varnishes", "Rollers and brushes", "Tapes and protection", "Levelling compound"
+      ]
+    },
+    {
+      "id": "fontaneria-y-climatizacion",
+      "nombre": "Plumbing and Climate Control",
+      "desc": "Installations you don't see, but that make the difference every day.",
+      "zonas": ["bathroom", "kitchen"],
+      "productos": [
+        "Bathroom and kitchen taps", "Sanitaryware and toilets", "Shower trays and screens", "PVC and multilayer pipe",
+        "Water pumps", "Radiators", "Air conditioning", "Electric water heaters", "Valves and fittings",
+        "Bathtubs and whirlpool baths", "Kitchen sinks", "Bathroom furniture and mirrors"
+      ]
+    },
+    {
+      "id": "jardin-y-exterior",
+      "nombre": "Garden and Outdoor",
+      "desc": "So the outside of your home or project matches the inside.",
+      "zonas": ["terrace", "patio"],
+      "productos": [
+        "Stamped concrete", "Artificial grass", "Outdoor pavers and tiles", "Decorative stone",
+        "Fencing and enclosures", "Outdoor lighting", "Irrigation and drip systems", "Pots and planters"
+      ]
+    }
+  ]
+}

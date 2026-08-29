@@ -1,0 +1,354 @@
+---
+import GatedEmbed from '../components/GatedEmbed.astro';
+import { withBase } from '../lib/url';
+import { t, localizedHref } from '../i18n/useTranslations';
+import type { Locale } from '../i18n/locales';
+
+const locale = (Astro.currentLocale as Locale | undefined) ?? 'es';
+const dict = t(locale);
+const c = dict.contacto;
+
+// showProfesionalesSection: false hasta tener condiciones reales de
+// suministro (plazos, facturación, zona de reparto) — la tabla de abajo es
+// contenido de relleno. Si se reactiva, actualizar también el enlace "Ver
+// condiciones de suministro" en index.astro.
+const showProfesionalesSection = false;
+
+// Cloudflare Turnstile (anti-bot): opcional a propósito, ver .env.example.
+// Sin site key configurada, el widget simplemente no se muestra y el
+// formulario sigue funcionando como hasta ahora (sin verificación).
+const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
+
+// Textos que el <script> cliente necesita para las precargas de
+// categoría/proyecto y los mensajes de estado del formulario — se pasan
+// como JSON en un data-* (mismo patrón que ya usa GatedEmbed.astro) para que
+// el script no tenga ningún texto fijo en español.
+const i18nForm = {
+  prefillCategoria: c.prefillCategoria,
+  bannerCategoria: c.bannerCategoria,
+  prefillProyecto: c.prefillProyecto,
+  bannerProyecto: c.bannerProyecto,
+  sending: c.sending,
+  success: c.success,
+  genericError: c.genericError,
+  errorSuffix: c.errorSuffix,
+  networkError: c.networkError,
+  photoTooLarge: c.photoTooLarge,
+  defaultStatus: c.formStatusDefault,
+  defaultBannerSub: c.bannerSubDefault,
+};
+---
+
+<section class="page-banner page-banner--photo" style={`--banner-photo:url(${withBase('/images/oficinas.webp')})`}>
+  <div class="wrap">
+    <div class="breadcrumb"><a href={localizedHref('home', locale)}>{dict.nav.inicio}</a> · {c.breadcrumbCurrent}</div>
+    <h1>{c.h1}</h1>
+    <p id="banner-sub">{c.bannerSubDefault}</p>
+  </div>
+</section>
+
+<section style="background:var(--sand);">
+  <div class="wrap">
+    <div class="grid grid-2" style="align-items:start; gap:48px;">
+
+      <div>
+        <div class="eyebrow-sm">{c.formEyebrow}</div>
+        <h2>{c.formTitle}</h2>
+        <form id="contactForm" data-action={withBase('/enviar-contacto.php')} data-i18n={JSON.stringify(i18nForm)} style="display:flex; flex-direction:column; gap:16px; margin-top:20px;" enctype="multipart/form-data">
+          <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute; inset-inline-start:-9999px;" />
+          <p style="font-size:12px; color:#6b6c64; margin:0;"><span class="required-mark">*</span> {c.requiredNote}</p>
+          <div>
+            <span class="field-label">{c.whoAreYou}</span>
+            <div style="display:flex; gap:10px; margin-top:8px;">
+              <button type="button" class="btn-toggle" data-perfil="particular" aria-pressed="false">{c.perfilParticular}</button>
+              <button type="button" class="btn-toggle" data-perfil="profesional" aria-pressed="false">{c.perfilProfesional}</button>
+            </div>
+            <input type="hidden" name="perfil" id="f-perfil" />
+          </div>
+          <div>
+            <label class="field-label" for="f-nombre">{c.fieldNombre} <span class="required-mark">*</span></label>
+            <input id="f-nombre" name="nombre" type="text" required placeholder={c.placeholderNombre} style="width:100%; margin-top:6px; padding:14px 16px; border-radius:10px; border:1px solid var(--line); font-family:inherit; font-size:14.5px;">
+          </div>
+          <div>
+            <label class="field-label" for="f-telefono">{c.fieldTelefono} <span class="required-mark">*</span></label>
+            <input id="f-telefono" name="telefono" type="tel" required placeholder={c.placeholderTelefono} style="width:100%; margin-top:6px; padding:14px 16px; border-radius:10px; border:1px solid var(--line); font-family:inherit; font-size:14.5px;">
+          </div>
+          <div>
+            <label class="field-label" for="f-email">{c.fieldEmail}</label>
+            <input id="f-email" name="email" type="email" placeholder={c.placeholderEmail} style="width:100%; margin-top:6px; padding:14px 16px; border-radius:10px; border:1px solid var(--line); font-family:inherit; font-size:14.5px;">
+          </div>
+          <div>
+            <label class="field-label" for="f-mensaje">{c.fieldMensaje}</label>
+            <textarea id="f-mensaje" name="mensaje" placeholder={c.placeholderMensaje} rows="4" style="width:100%; margin-top:6px; padding:14px 16px; border-radius:10px; border:1px solid var(--line); font-family:inherit; font-size:14.5px; resize:vertical;"></textarea>
+          </div>
+          <div>
+            <label class="field-label" for="f-foto">{c.fieldFoto}</label>
+            <input id="f-foto" name="foto" type="file" accept="image/*" style="width:100%; margin-top:6px; padding:12px 14px; border-radius:10px; border:1px solid var(--line); font-family:inherit; font-size:13.5px; background:#fff;">
+            <p style="font-size:12px; color:#6b6c64; margin-top:6px;">{c.fotoHelp}</p>
+          </div>
+          {turnstileSiteKey && <div class="cf-turnstile" data-sitekey={turnstileSiteKey}></div>}
+          <button type="submit" class="btn-primary" style="justify-content:center;">{c.submit} <span class="arrow-icon">→</span></button>
+        </form>
+        {turnstileSiteKey && <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>}
+        <p id="form-status" class="form-status" role="status">{c.formStatusDefault}</p>
+        <button type="button" id="form-again" hidden style="background:none; border:none; padding:0; margin-top:14px; color:var(--green-dark); font-weight:600; font-size:13px; cursor:pointer; text-decoration:underline;">{c.formAgain}</button>
+      </div>
+
+      <div>
+        <div class="eyebrow-sm">{c.directEyebrow}</div>
+        <h2>{c.directTitle}</h2>
+        <div class="card" style="margin-bottom:16px;">
+          <h3>{c.whatsappCardTitle}</h3>
+          <p><a href="https://wa.me/34607224454" style="color:var(--green-dark); font-weight:600;">607 224 454</a>{c.whatsappCardText}</p>
+        </div>
+        <div class="card" style="margin-bottom:16px;">
+          <h3>{c.ubicacionCardTitle}</h3>
+          <p>{c.ubicacionText}</p>
+        </div>
+        <div class="card" style="margin-bottom:16px;">
+          <h3>{c.horarioCardTitle}</h3>
+          <p><strong>{c.horarioAlmacenLabel}</strong> · {c.horarioAlmacenText}</p>
+          <p style="margin-top:6px;"><strong>{c.horarioExpoLabel}</strong> · {c.horarioExpoText}</p>
+          <p style="margin-top:10px; font-size:13px; color:#6b6c64;">{c.horarioNota}</p>
+        </div>
+        <div class="card">
+          <h3>{c.telefonoCardTitle}</h3>
+          <p><a href="tel:+34965799179" style="color:var(--green-dark); font-weight:600;">965 79 91 79</a></p>
+          <p style="margin-top:10px;"><a href="mailto:info@construdepot.es" style="color:var(--green-dark); font-weight:600;">info@construdepot.es</a></p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{showProfesionalesSection && (
+  <section id="profesionales">
+    <div class="wrap">
+      <div class="eyebrow-sm">Para profesionales</div>
+      <h2>Suministro para profesionales, sin esperas ni excusas</h2>
+      <p class="section-sub">Tu obra no puede parar. Nosotros tampoco. Si eres contratista o autónomo, esto es lo que necesitas saber.</p>
+
+      <div class="grid grid-3" style="margin-bottom:40px;">
+        <div class="card">
+          <h3>Suministro rápido</h3>
+          <p>Pides hoy, lo tienes cuando lo necesitas. Sin depender de plazos de fabricante genéricos.</p>
+        </div>
+        <div class="card">
+          <h3>Trato directo</h3>
+          <p>Un contacto fijo para tus pedidos, no un formulario genérico que tarda días en responder.</p>
+        </div>
+        <div class="card">
+          <h3>Materiales técnicos</h3>
+          <p>Seleccionamos producto pensado para obra, no solo para reforma doméstica.</p>
+        </div>
+      </div>
+
+      <div class="card" style="border-radius:20px; padding:8px 8px; margin-bottom:12px;">
+        <table class="cond">
+          <tr><th>Condición</th><th>Detalle</th></tr>
+          <tr><td>Plazos de entrega</td><td class="placeholder-text">A concretar con el equipo</td></tr>
+          <tr><td>Facturación</td><td class="placeholder-text">A concretar con el equipo</td></tr>
+          <tr><td>Zona de reparto</td><td class="placeholder-text">A concretar con el equipo</td></tr>
+          <tr><td>Contacto directo</td><td class="placeholder-text">A concretar con el equipo</td></tr>
+        </table>
+      </div>
+      <span class="placeholder-note" style="margin-bottom:24px;">✎ Condiciones de ejemplo, pendientes de confirmar</span>
+
+      <p class="section-sub" style="margin-bottom:0;">Ya trabajamos con contratistas y autónomos de Elche y alrededores. Si necesitas referencias, pregúntanos: usa el formulario de arriba y marca "Profesional".</p>
+    </div>
+  </section>
+)}
+
+<section>
+  <div class="wrap">
+    <div class="eyebrow-sm">{c.mapaEyebrow}</div>
+    <h2>{c.mapaTitle}</h2>
+    <div class="map-frame" style="height:340px;">
+      <GatedEmbed category="maps" src="https://www.google.com/maps?q=Construdepot+by+Quiles,+N-340+Partida+Jubalcoy,+Elche,+Alicante&output=embed" title={dict.gatedEmbed.mapTitle} label={dict.gatedEmbed.mapLabel} />
+    </div>
+  </div>
+</section>
+
+<script>
+  function selectPerfil(btn: HTMLButtonElement) {
+    document.querySelectorAll<HTMLButtonElement>('.btn-toggle').forEach((b) => {
+      b.classList.remove('is-active');
+      b.setAttribute('aria-pressed', 'false');
+    });
+    btn.classList.add('is-active');
+    btn.setAttribute('aria-pressed', 'true');
+
+    const perfilField = document.getElementById('f-perfil') as HTMLInputElement | null;
+    if (perfilField) perfilField.value = btn.dataset.perfil ?? '';
+
+    if (btn.dataset.perfil === 'profesional') {
+      document.getElementById('profesionales')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+
+  document.querySelectorAll<HTMLButtonElement>('.btn-toggle').forEach((btn) => {
+    btn.addEventListener('click', () => selectPerfil(btn));
+  });
+
+  interface FormI18n {
+    prefillCategoria: string;
+    bannerCategoria: string;
+    prefillProyecto: string;
+    bannerProyecto: string;
+    sending: string;
+    success: string;
+    genericError: string;
+    errorSuffix: string;
+    networkError: string;
+    photoTooLarge: string;
+    defaultStatus: string;
+    defaultBannerSub: string;
+  }
+
+  const form = document.getElementById('contactForm') as HTMLFormElement | null;
+  const i18n: FormI18n | null = form?.dataset.i18n ? JSON.parse(form.dataset.i18n) : null;
+
+  function fillTemplate(template: string, value: string): string {
+    return template.replace('{value}', value);
+  }
+
+  // Si se llega desde una categoría de Productos (ej. ?categoria=Fontanería), precargar el mensaje
+  (function prefillFromCategoria() {
+    const params = new URLSearchParams(window.location.search);
+    const categoria = params.get('categoria');
+    if (!categoria || !i18n) return;
+
+    const msg = document.getElementById('f-mensaje') as HTMLTextAreaElement | null;
+    if (msg) {
+      msg.value = fillTemplate(i18n.prefillCategoria, categoria);
+      msg.focus();
+    }
+    const banner = document.getElementById('banner-sub');
+    if (banner) {
+      banner.textContent = fillTemplate(i18n.bannerCategoria, categoria);
+    }
+  })();
+
+  // Si se llega desde un botón de proyecto de Inicio (ej. ?proyecto=reformar
+  // un baño), precargar el mensaje. Aparte de prefillFromCategoria (y con su
+  // propia plantilla) porque la frase natural es distinta en cada caso.
+  (function prefillFromProyecto() {
+    const params = new URLSearchParams(window.location.search);
+    const proyecto = params.get('proyecto');
+    if (!proyecto || !i18n) return;
+
+    const msg = document.getElementById('f-mensaje') as HTMLTextAreaElement | null;
+    if (msg) {
+      msg.value = fillTemplate(i18n.prefillProyecto, proyecto);
+      msg.focus();
+    }
+    const banner = document.getElementById('banner-sub');
+    if (banner) {
+      banner.textContent = fillTemplate(i18n.bannerProyecto, proyecto);
+    }
+  })();
+
+  declare global {
+    interface Window {
+      turnstile?: {
+        render: (container: string | HTMLElement, options: { sitekey: string }) => string;
+        reset: (widgetId?: string | HTMLElement) => void;
+        remove: (widgetId: string) => void;
+      };
+    }
+  }
+
+  // Límite del adjunto en el servidor (ver enviar-contacto.php): Graph solo
+  // admite fileAttachment de hasta ~3 MB ya codificados en base64 en una
+  // sola llamada a sendMail, así que el original debe quedarse en 2 MB.
+  // Una foto de móvil sin tocar suele pesar 3-8 MB, así que en vez de
+  // rechazarla se reduce en el propio navegador antes de enviarla.
+  const MAX_PHOTO_BYTES = 2 * 1024 * 1024;
+  const MAX_PHOTO_DIMENSION = 1600;
+
+  async function resizePhoto(file: File): Promise<File> {
+    const bitmap = await createImageBitmap(file);
+    const scale = Math.min(1, MAX_PHOTO_DIMENSION / Math.max(bitmap.width, bitmap.height));
+    const canvas = document.createElement('canvas');
+    canvas.width = Math.round(bitmap.width * scale);
+    canvas.height = Math.round(bitmap.height * scale);
+    const ctx = canvas.getContext('2d');
+    if (!ctx) throw new Error('sin contexto de canvas');
+    ctx.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+    const blob: Blob | null = await new Promise((resolve) => canvas.toBlob(resolve, 'image/jpeg', 0.8));
+    if (!blob) throw new Error('no se pudo generar la imagen comprimida');
+    return new File([blob], 'foto.jpg', { type: 'image/jpeg' });
+  }
+
+  const statusEl = document.getElementById('form-status');
+  const againBtn = document.getElementById('form-again') as HTMLButtonElement | null;
+
+  againBtn?.addEventListener('click', () => {
+    if (!form || !statusEl || !i18n) return;
+    form.hidden = false;
+    againBtn.hidden = true;
+    statusEl.classList.remove('form-success');
+    statusEl.textContent = i18n.defaultStatus;
+    form.querySelector<HTMLInputElement>('#f-nombre')?.focus();
+  });
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!statusEl || !i18n) return;
+
+    const action = form.dataset.action;
+    if (!action) return;
+
+    const fotoInput = form.querySelector<HTMLInputElement>('#f-foto');
+    const fotoFile = fotoInput?.files?.[0];
+    let fotoParaEnviar: File | null = null;
+    if (fotoFile) {
+      try {
+        fotoParaEnviar = await resizePhoto(fotoFile);
+      } catch {
+        if (fotoFile.size > MAX_PHOTO_BYTES) {
+          statusEl.textContent = i18n.photoTooLarge;
+          return;
+        }
+        fotoParaEnviar = fotoFile;
+      }
+    }
+
+    const submitBtn = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+    if (submitBtn) submitBtn.disabled = true;
+    statusEl.classList.remove('form-success');
+    statusEl.textContent = i18n.sending;
+
+    try {
+      const formData = new FormData(form);
+      if (fotoParaEnviar) {
+        formData.set('foto', fotoParaEnviar, fotoParaEnviar.name);
+      } else {
+        formData.delete('foto');
+      }
+      const res = await fetch(action, {
+        method: 'POST',
+        body: formData,
+        headers: { Accept: 'application/json' },
+      });
+      const data = await res.json().catch(() => null);
+
+      if (res.ok && data?.ok) {
+        form.reset();
+        form.hidden = true;
+        statusEl.classList.add('form-success');
+        statusEl.textContent = i18n.success;
+        if (againBtn) againBtn.hidden = false;
+      } else {
+        const motivo = data?.message || i18n.genericError;
+        statusEl.textContent = `${motivo} ${i18n.errorSuffix}`;
+      }
+    } catch {
+      statusEl.textContent = i18n.networkError;
+    } finally {
+      if (submitBtn) submitBtn.disabled = false;
+      window.turnstile?.reset();
+    }
+  });
+</script>
